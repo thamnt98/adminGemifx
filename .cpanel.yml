@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/gemimnhr/accounts.gemifx.com/
+    - /bin/cp -R * $DEPLOYPATH
+  script:
+    - composer require laravel/ui  
+    - php artisan ui bootstrap --auth  
+    - npm install
+    - npm run dev
