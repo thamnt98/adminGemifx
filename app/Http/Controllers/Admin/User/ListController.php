@@ -23,7 +23,7 @@ class ListController extends Controller
     }
 
     public function main(){
-        $userList = $this->userRepository->get(['first_name', 'last_name', 'email', 'phone_number', 'copy_of_id', 'country', 'address']);
+        $userList = $this->userRepository->paginate(15);
         return view('admin.user.list', compact('userList'));
     }
 }

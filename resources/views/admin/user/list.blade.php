@@ -4,7 +4,7 @@
 
     <div class="container-fluid">
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" data-pagination="true">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -33,6 +33,7 @@
                 </tbody>
             </table>
         </div>
+     {!! $userList->links() !!}
     </div>
 
 @endsection
