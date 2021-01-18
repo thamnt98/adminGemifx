@@ -30,8 +30,8 @@
                             <img style="height: 75px" src="{{ $user->copy_of_id }}">
                         </td>
                         <td>
-                            <a href="{{ route('user.detail', $user->id) }}" style="color:white" class="btn btn-success">Chi tiết</a>
-                            <a style="color:white"  class="btn btn-danger">Xóa</a>
+                        <td style="width: 14%">
+                            <a href="{{ route('user.detail', $user->id) }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
                         </td>
                     </tr>
                 @endforeach

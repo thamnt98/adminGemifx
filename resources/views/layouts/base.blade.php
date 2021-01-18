@@ -17,25 +17,10 @@
     <link href="{{ asset('css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     @yield('css')
-
     <!-- Global site tag (gtag.js) - Google Analytics-->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      // Shared ID
-      gtag('config', 'UA-118965717-3');
-      // Bootstrap ID
-      gtag('config', 'UA-118965717-5');
-    </script>
-
-    <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
   </head>
 
 
@@ -51,7 +36,7 @@
 
         <main class="c-main">
 
-          @yield('content') 
+          @yield('content')
 
         </main>
         @include('layouts.footer')
