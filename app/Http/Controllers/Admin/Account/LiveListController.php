@@ -23,7 +23,7 @@ class LiveListController extends Controller
 
     public function main()
     {
-        $accountList = $this->liveAccountRepository->paginate(15);
+        $accountList = $this->liveAccountRepository->orderBy('user_id', 'asc')->paginate(15);
         return view('admin.account.livelist', compact('accountList'));
     }
 }
