@@ -32,4 +32,10 @@ Route::group([
     ], function () {
         Route::get('/list', 'ListController@main')->name('user.list');
     });
+    Route::group([
+        'namespace' => 'Account',
+        'prefix' => 'account',
+    ], function () {
+        Route::get('/live', 'LiveListController@main')->name('account.live');
+    });
 });

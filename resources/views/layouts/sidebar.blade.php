@@ -17,15 +17,15 @@
         </a>
     </li>
     <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="https://coreui.io">
+        <a class="c-sidebar-nav-link" href="{{ route('account.live') }}">
             <i class="cil-cloud-download c-sidebar-nav-icon"></i>
-            Quản lý nạp tiền
+            Quản lý tài khoản Live
         </a>
     </li>
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="https://coreui.io">
             <i class="cil-cloud-download c-sidebar-nav-icon"></i>
-            Quản lý tài khoản Live
+            Quản lý nạp tiền
         </a>
     </li>
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
