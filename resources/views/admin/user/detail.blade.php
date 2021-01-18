@@ -61,19 +61,19 @@
                 <div class="form-group col-md-6">
                     <label for="copyOfId">Copy of id</label>
                     <input type="file" class="form-control-file" id="copyOfId" name="copy_of_id">
-                    <img src="{{ $user->copy_of_id }}" style="height: 75px">
+                    <img style="margin-top:20px"  src="{{ $user->copy_of_id }}" style="height: 75px">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="proofOfAddress">Address</label>
+                    <label for="proofOfAddress">Proof of address</label>
                     <input type="file" class="form-control-file" id="proofOfAddress" name="proof_of_address">
-                    <img src="{{ $user->proof_of_address }}" style="height: 75px">
+                    <img style="margin-top:20px" src="{{ $user->proof_of_address }}" style="height: 75px">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="addtionFile">Address</label>
+                    <label for="addtionFile">Addtional file</label>
                     <input type="file" class="form-control-file" id="addtionFile" name="addtional_file">
-                    <img src="{{ $user->addtional_file }}" style="height: 75px">
+                    <img style="margin-top:20px" src="{{ $user->addtional_file }}" style="height: 75px">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Cập nhât</button>
