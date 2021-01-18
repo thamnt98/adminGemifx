@@ -14,6 +14,7 @@
                     <th scope="col">Address</th>
                     <th scope="col">Country</th>
                     <th scope="col">Copy_of_id</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -27,6 +28,10 @@
                         <td>{{ $user->country }}</td>
                         <td>
                             <img style="height: 75px" src="{{ $user->copy_of_id }}">
+                        </td>
+                        <td>
+                            <a href="{{ route('user.detail', $user->id) }}" style="color:white" class="btn btn-success">Chi tiết</a>
+                            <a style="color:white"  class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 @endforeach

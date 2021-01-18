@@ -31,6 +31,7 @@ Route::group([
         'prefix' => 'user',
     ], function () {
         Route::get('/list', 'ListController@main')->name('user.list');
+        Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
     });
     Route::group([
         'namespace' => 'Account',

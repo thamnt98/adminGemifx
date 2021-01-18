@@ -5466,6 +5466,7 @@ html:not([dir="rtl"]) .dropleft .dropdown-toggle:empty::after {
       align-items: center;
   height: 50px;
   padding: 0 1rem;
+    margin-top:50px;
 }
 
 .c-footer[class*="bg-"] {
