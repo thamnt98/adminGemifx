@@ -5888,10 +5888,10 @@ html:not([dir="rtl"]) .custom-select.is-valid {
 }
 
 .invalid-feedback {
-  display: none;
+  /* display: none; */
   width: 100%;
   margin-top: 0.25rem;
-  font-size: 80%;
+  /* font-size: 80%; */
   color: #e55353;
 }
 
@@ -12498,7 +12498,7 @@ html:not([dir="rtl"])
 
 .c-sidebar .c-sidebar-brand {
   color: #fff;
-  background: rgba(0, 0, 21, 0.2);
+  background: white;
 }
 
 .c-sidebar .c-sidebar-header {
