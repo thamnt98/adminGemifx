@@ -20,9 +20,16 @@ Route::post('/login', 'Auth\HandleLoginController@main')->name('login');
 
 Route::group([
     'namespace' => 'Admin',
-    'middleware' => 'auth'
+    'middleware' => 'auth',
+    'prefix' => 'admin',
 ], function () {
     Route::get('/logout', 'LogoutController@main')->name('logout');
     Route::get('/dashboard', 'DashboardController@main')->name('dashboard');
     Route::get('/', 'DashboardController@main')->name('home');
+    Route::group([
+        'namespace' => 'User',
+        'prefix' => 'user',
+    ], function () {
+        Route::get('/list', 'ListController@main')->name('user.list');
+    });
 });
