@@ -8,16 +8,16 @@
             <div class="card-group">
                 <div class="card p-4">
                     @if ($message = Session::get('error'))
-                        <div class="alert alert-danger alert-block" style="margin: 0px 15px 20px 15px">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
+                    <div class="alert alert-danger alert-block" style="margin: 0px 15px 20px 15px">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
                     @endif
                     @if ($message = Session::get('success'))
-                        <div class="alert alert-success alert-block" style="margin: 0px 15px 20px 15px">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
+                    <div class="alert alert-success alert-block" style="margin: 0px 15px 20px 15px">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
                     @endif
                     <div class="card-body">
                         <h1>Login</h1>
@@ -34,6 +34,9 @@
                                 </div>
                                 <input class="form-control" type="text" placeholder="{{ __('E-Mail Address') }}"
                                     name="email" value="{{ old('email') }}" required autofocus>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('email') }}
+                                </div>
                             </div>
                             <div class="input-group mb-4">
                                 <div class="input-group-prepend">
@@ -46,6 +49,9 @@
                                 </div>
                                 <input class="form-control" type="password" placeholder="{{ __('Password') }}"
                                     name="password" required>
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('password') }}
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
