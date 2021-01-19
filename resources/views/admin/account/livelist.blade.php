@@ -28,9 +28,34 @@
                         <td>{{ $account->leverage }}</td>
                         <td style="width: 14%">
                             <a href="" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
-                            <a href="" class="btn btn-sm btn-danger bold uppercase" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                            <button class="btn btn-sm btn-danger bold uppercase" data-toggle="modal"
+                            data-target="#deleteAccount"><i class="fa fa-trash-o" aria-hidden="true"></i> </button>
                         </td>
                     </tr>
+                     <!-- Modal -->
+                    <div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Xoá tài khoản</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn có chắc chắn muốn xóa tài khoản này không ?
+                                </div>
+                                <div class="modal-footer">
+                                    <form method="post" action="{{ route('account.live.delete', $account->login) }}">
+                                        @csrf
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                        <button type="submit" class="btn btn-primary">Xóa</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
                 </tbody>
             </table>

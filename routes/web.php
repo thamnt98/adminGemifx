@@ -32,11 +32,13 @@ Route::group([
     ], function () {
         Route::get('/list', 'ListController@main')->name('user.list');
         Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
+        Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete');
     });
     Route::group([
         'namespace' => 'Account',
         'prefix' => 'account',
     ], function () {
         Route::get('/live', 'LiveListController@main')->name('account.live');
+        Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete');
     });
 });
