@@ -31,4 +31,9 @@ class User extends Model
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function liveAccounts()
+    {
+        return $this->hasMany('App\Models\LiveAccount', 'user_id');
+    }
 }
