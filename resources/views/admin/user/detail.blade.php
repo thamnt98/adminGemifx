@@ -141,7 +141,7 @@
                                                 Bạn có chắc chắn muốn xóa tài khoản này không ?
                                             </div>
                                             <div class="modal-footer">
-                                                <form method="post" action="{{ route('account.live.delete', $account->login) }}">
+                                                <form method="post" action="{{ route('account.live.delete', $liveAccount->login) }}">
                                                     @csrf
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                                                     <button type="submit" class="btn btn-primary">Xóa</button>
