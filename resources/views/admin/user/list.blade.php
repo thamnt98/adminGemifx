@@ -15,7 +15,7 @@
             <strong>{{ $message }}</strong>
         </div>
     @endif
-    <a style="margin-bottom: 40px" href="" class="btn btn-info">Thêm mới</a>
+    <a style="margin-bottom: 40px" href="{{ route('user.create') }}" class="btn btn-info">Thêm mới</a>
     <div class="table-responsive">
         <table class="table table-striped" data-pagination="true">
             <thead>
@@ -79,9 +79,4 @@
     </div>
     {!! $userList->links() !!}
 </div>
-
-@endsection
-
-@section('javascript')
-<script src="{{ asset('js/main.js') }}" defer></script>
 @endsection

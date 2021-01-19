@@ -19,4 +19,9 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
     {
         return User::class;
     }
+
+    public function getUserBySelect($select)
+    {
+        return $this->all($select);
+    }
 }

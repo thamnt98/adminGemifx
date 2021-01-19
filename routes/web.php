@@ -31,6 +31,7 @@ Route::group([
         'prefix' => 'user',
     ], function () {
         Route::get('/list', 'ListController@main')->name('user.list');
+        Route::get('/create', 'CreateController@main')->name('user.create');
         Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
         Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete');
     });
@@ -40,5 +41,7 @@ Route::group([
     ], function () {
         Route::get('/live', 'LiveListController@main')->name('account.live');
         Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete');
+        Route::get('/create', 'CreateLiveAccountController@main')->name('account.live.create');
+        Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
     });
 });

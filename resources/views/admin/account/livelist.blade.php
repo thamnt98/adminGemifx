@@ -15,7 +15,7 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <a style="margin-bottom: 40px" href="" class="btn btn-info">Thêm mới</a>
+        <a style="margin-bottom: 40px" href="{{ route('account.live.create') }}" class="btn btn-info">Thêm mới</a>
         <div class="table-responsive">
             <table class="table table-striped" data-pagination="true">
                 <thead>
@@ -39,7 +39,7 @@
                         <td>{{ $account->group }}</td>
                         <td>{{ $account->leverage }}</td>
                         <td style="width: 14%">
-                            <a href="" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
+                            <a href="{{ route('account.live.detail') }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
                             <button class="btn btn-sm btn-danger bold uppercase" data-toggle="modal"
                             data-target="#deleteAccount"><i class="fa fa-trash-o" aria-hidden="true"></i> </button>
                         </td>
@@ -75,8 +75,4 @@
         {!! $accountList->links() !!}
     </div>
 
-@endsection
-
-@section('javascript')
-    <script src="{{ asset('js/main.js') }}" defer></script>
 @endsection
