@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Account;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
-use Illuminate\Http\Request;
 
 class LiveListController extends Controller
 {
@@ -23,7 +22,7 @@ class LiveListController extends Controller
 
     public function main()
     {
-        $accountList = $this->liveAccountRepository->orderBy('user_id', 'asc')->paginate(15);
+        $accountList = $this->liveAccountRepository->orderBy('user_id', 'asc')->paginate(20);
         return view('admin.account.livelist', compact('accountList'));
     }
 }

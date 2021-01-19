@@ -30,7 +30,6 @@
                         <td>
                             <img style="height: 75px" src="{{ $user->copy_of_id }}">
                         </td>
-                        <td>
                         <td style="width: 14%">
                             <a href="{{ route('user.detail', $user->id) }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
                             <a href="" class="btn btn-sm btn-danger bold uppercase" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
