@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Admin\User;
 
-use App\Helper\MT4Connect;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
-
-use function PHPUnit\Framework\isEmpty;
 
 class DeleteController extends Controller
 {
@@ -38,7 +35,7 @@ class DeleteController extends Controller
             DB::beginTransaction();
             $this->userRepository->delete($id);
             $message = $this->liveAccountRepository->deleteLiveAccountByUserId($id);
-            if (!isEmpty($message)) {
+            if (!empty($message)) {
                 return redirect()->back()->with('error', $message);
             }
             DB::commit();

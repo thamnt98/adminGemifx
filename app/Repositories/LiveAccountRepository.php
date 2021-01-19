@@ -29,4 +29,9 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         $this->where('user_id', $userId)->delete();
         return $message;
     }
+
+    public function deleteByLogin($login)
+    {
+        $this->where('login', $login)->delete();
+    }
 }

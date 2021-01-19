@@ -10,10 +10,10 @@
         </div>
     @endif
     @if ($message = Session::get('success'))
-    <div class="alert alert-success alert-block">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>{{ $message }}</strong>
-    </div>
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ $message }}</strong>
+        </div>
     @endif
     <a style="margin-bottom: 40px" href="" class="btn btn-info">Thêm mới</a>
     <div class="table-responsive">
