@@ -121,7 +121,7 @@
                                     <td>{{ $liveAccount->login }}</td>
                                     <td>{{ $liveAccount->leverage }}</td>
                                     <td style="width: 14%">
-                                        <a href="{{ route('account.live.detail') }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
+                                        <a href="{{ route('account.live.detail', $liveAccount->id) }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
                                         <button class="btn btn-sm btn-danger bold uppercase" data-toggle="modal"
                                         data-target="#deleteAccount"><i class="fa fa-trash-o" aria-hidden="true"></i> </button>
                                     </td>
