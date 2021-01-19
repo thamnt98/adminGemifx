@@ -22,7 +22,8 @@ class ListController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function main(){
+    public function main()
+    {
         $userList = $this->userRepository->paginate(15);
         return view('admin.user.list', compact('userList'));
     }

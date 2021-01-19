@@ -3,6 +3,7 @@
 @section('content')
 
     <div class="container-fluid">
+        <a style="margin-bottom: 40px" href="" class="btn btn-info">Thêm mới</a>
         <div class="table-responsive">
             <table class="table table-striped" data-pagination="true">
                 <thead>
@@ -32,6 +33,7 @@
                         <td>
                         <td style="width: 14%">
                             <a href="{{ route('user.detail', $user->id) }}" class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
+                            <a href="" class="btn btn-sm btn-danger bold uppercase" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
                         </td>
                     </tr>
                 @endforeach
@@ -44,8 +46,5 @@
 @endsection
 
 @section('javascript')
-
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
 @endsection

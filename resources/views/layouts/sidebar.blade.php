@@ -6,25 +6,25 @@
 <ul class="c-sidebar-nav ps">
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="">
-            <i class="cil-speedometer c-sidebar-nav-icon"></i>
+            <i class="fa fa-dashboard"></i>
             Dashboard
         </a>
     </li>
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('user.list') }}">
-            <i class="cil-cloud-download c-sidebar-nav-icon"></i>
+            <i class="fa fa-user"></i>
             Quản lý khách hàng
         </a>
     </li>
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('account.live') }}">
-            <i class="cil-cloud-download c-sidebar-nav-icon"></i>
+            <i class="fa fa-home"></i>
             Quản lý tài khoản Live
         </a>
     </li>
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="https://coreui.io">
-            <i class="cil-cloud-download c-sidebar-nav-icon"></i>
+            <i class="fa fa-credit-card"></i>
             Quản lý nạp tiền
         </a>
     </li>
