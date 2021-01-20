@@ -3,12 +3,27 @@
 namespace App\Http\Controllers\Admin\Account;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Repositories\LiveAccountRepository;
 
 class DetailLiveAccountController extends Controller
 {
-    public function main()
+
+     /**
+     * @var LiveAccountRepository
+     */
+    private $liveAccountRepository;
+
+    /**
+     * LiveListController constructor.
+     */
+    public function __construct(LiveAccountRepository $liveAccountRepository)
     {
-        return view('admin.account.detaillive');
+        $this->liveAccountRepository = $liveAccountRepository;
+    }
+
+    public function main($id)
+    {
+        $account = $this->liveAccountRepository->find($id);
+        return view('admin.account.detaillive', compact('account'));
     }
 }

@@ -44,5 +44,6 @@ Route::group([
         Route::get('/create', 'CreateLiveAccountController@main')->name('account.live.create');
         Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open');
         Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
+        Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update');
     });
 });

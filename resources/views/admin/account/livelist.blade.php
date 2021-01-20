@@ -26,6 +26,7 @@
                     <th scope="col">Full Name</th>
                     <th scope="col">Group</th>
                     <th scope="col">Leverage</th>
+                    <th scope="col">IB ID</th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,6 +39,7 @@
                     <td>{{ $account->user->full_name }}</td>
                     <td>{{ $account->group }}</td>
                     <td>{{ $account->leverage }}</td>
+                    <td>{{ $account->ib_id }}</td>
                     <td style="width: 14%">
                         <a href="{{ route('account.live.detail', $account->id) }}"
                             class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
