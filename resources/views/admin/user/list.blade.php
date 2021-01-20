@@ -4,16 +4,16 @@
 
 <div class="container-fluid">
     @if ($message = Session::get('error'))
-        <div class="alert alert-danger alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
     @endif
     @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-block">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{ $message }}</strong>
-        </div>
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
     @endif
     <a style="margin-bottom: 40px" href="{{ route('user.create') }}" class="btn btn-info">Thêm mới</a>
     <div class="table-responsive">
@@ -45,38 +45,52 @@
                     <td style="width: 14%">
                         <a href="{{ route('user.detail', $user->id) }}" class="btn btn-sm btn-success bold uppercase"
                             title="Edit"><i class="fa fa-edit"></i> </a>
-                        <button class="btn btn-sm btn-danger bold uppercase" data-toggle="modal"
-                            data-target="#deleteUser"><i class="fa fa-trash-o" aria-hidden="true"></i> </button>
+                        <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-user"
+                            data-toggle="modal" data-target="#deleteUser" data-id="{{ $user->id }}"
+                            data-name="{{ $user->full_name }}"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
                     </td>
                 </tr>
                 <!-- Modal -->
-                <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Xoá khách hàng</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Bạn có chắc chắn muốn xóa khách hàng {{ $user->full_name }}cùng với các tài khoản của họ không ?
-                            </div>
-                            <div class="modal-footer">
-                                <form method="post" action="{{ route('user.delete', $user->id) }}">
-                                    @csrf
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="submit" class="btn btn-primary">Xóa</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 @endforeach
             </tbody>
         </table>
     </div>
     {!! $userList->links() !!}
 </div>
+<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xoá khách hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <form method="post" id="delete-user">
+                    @csrf
+                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                    <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Xóa</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+@section('javascript')
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script>
+    $('.btn-delete-user').on('click', function () {
+        let currentUrl = window.location.origin
+        let id = $(this).attr('data-id');
+        let name = $(this).attr('data-name');
+        $('.modal-body').html("Bạn có muốn xóa khách hàng " + name +
+            " cùng với tất cả tài khoản của họ không ?");
+        let redirectUrl = currentUrl + '/admin/user/delete/' + id;
+        $("#delete-user").attr('action', redirectUrl);
+    })
+
+</script>
 @endsection
