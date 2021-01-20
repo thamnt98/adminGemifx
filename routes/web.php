@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', 'Auth\RegisterController@main')->name('register');
-Route::post('/register', 'Auth\HandleRegisterController@main')->name('register');
+// Route::get('/register', 'Auth\RegisterController@main')->name('register');
+// Route::post('/register', 'Auth\HandleRegisterController@main')->name('register');
 Route::get('/login', 'Auth\LoginController@main')->name('login');
 Route::post('/login', 'Auth\HandleLoginController@main')->name('login');
 
@@ -42,6 +42,7 @@ Route::group([
         Route::get('/live', 'LiveListController@main')->name('account.live');
         Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete');
         Route::get('/create', 'CreateLiveAccountController@main')->name('account.live.create');
+        Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open');
         Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
     });
 });

@@ -21,7 +21,7 @@ class CreateLiveAccountController extends Controller
 
     public function main()
     {
-        $users = $this->userRepository->getUserBySelect(['email', 'phone_number']);
+        $users = $this->userRepository->getUserBySelect(['email', 'phone_number', 'id']);
         return view('admin.account.createlive', compact('users'));
     }
 }

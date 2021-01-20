@@ -76,4 +76,35 @@ class MT4Connect
             return "Xóa tài khoản thất bại";
         }
     }
+
+    public static function openLiveAccount($data)
+    {
+        try {
+            $fp = self::connect();
+            if (!$fp) {
+                return 'Không thể kết nối tới MT4';
+            }
+            $cmd = 'action=createaccount&login=next';
+            foreach ($data as $key => $value) {
+                $cmd = $cmd . '&' . $key . '=' . $value;
+            }
+            fwrite($fp, $cmd);
+            stream_set_timeout($fp, 1);
+            $result = '';
+            $info = stream_get_meta_data($fp);
+            while (!$info['timed_out'] && !feof($fp)) {
+                $str = @fgets($fp, 1024);
+                if (strpos($str, 'login')) {
+                    $result .= $str;
+                    $info = stream_get_meta_data($fp);
+                }
+            }
+            fclose($fp);
+            $result = explode('&', $result);
+            $data['login'] = explode('=', $result[1])[1];
+            return $data['login'];
+        } catch (\Exception $e) {
+            return "Xóa tài khoản thất bại";
+        }
+    }
 }

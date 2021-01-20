@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LiveAccount extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'group',
+        'leverage',
+        'login',
+        'phone_number',
+        'ib_id'
+    ];
 
     use SoftDeletes;
 
