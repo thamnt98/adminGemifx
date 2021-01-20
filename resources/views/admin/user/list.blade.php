@@ -61,7 +61,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                Bạn có chắc chắn muốn xóa khách hàng cùng với các tài khoản của họ không ?
+                                Bạn có chắc chắn muốn xóa khách hàng {{ $user->full_name }}cùng với các tài khoản của họ không ?
                             </div>
                             <div class="modal-footer">
                                 <form method="post" action="{{ route('user.delete', $user->id) }}">
