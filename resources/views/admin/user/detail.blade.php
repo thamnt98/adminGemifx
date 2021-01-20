@@ -3,6 +3,18 @@
 @section('content')
 
 <div class="container-fluid">
+    @if ($message = Session::get('error'))
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
+    @endif
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ $message }}</strong>
+    </div>
+    @endif
     <section class="mx-2 pb-3">
         <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
             <li class="nav-item waves-effect waves-light">
@@ -16,29 +28,38 @@
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel" aria-labelledby="information-tab-md" style="margin:40px">
-                <form>
+                <form method="post" action="{{ route('user.update', $user->id) }}">
+                    @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="firstName">First name</label>
                             <input type="text" class="form-control" id="firstName" name="first_name"
                                 value="{{ old('first_name', $user->first_name) }}">
+                            @if($errors->has('first_name'))
+                                <span class="text-danger text-md-left">{{ $errors->first('first_name') }}</span>
+                            @endif
                         </div>
                         <div class="form-group col-md-6">
                             <label for="lastName">Last name</label>
                             <input type="text" class="form-control" id="lastName" name="last_name"
                                 value="{{ old('last_name', $user->last_name) }}">
+                            @if($errors->has('last_name'))
+                                <span class="text-danger text-md-left">{{ $errors->first('last_name') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                value="{{ old('email', $user->email) }}">
+                            <input type="email" class="form-control"  value="{{ $user->email }}" disabled>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="phoneNumber">Phone Number</label>
                             <input type="text" class="form-control" id="phoneNumber" name="phone_number"
                                 value="{{ old('phone_number', $user->phone_number) }}">
+                            @if($errors->has('phone_number'))
+                                <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-row">
@@ -46,11 +67,17 @@
                             <label for="city">City</label>
                             <input type="text" class="form-control" id="city" name="city"
                                 value="{{ old('city', $user->city) }}">
+                            @if($errors->has('city'))
+                                <span class="text-danger text-md-left">{{ $errors->first('city') }}</span>
+                            @endif
                         </div>
                         <div class="form-group col-md-6">
                             <label for="state">State</label>
                             <input type="text" class="form-control" id="state" name="state"
                                 value="{{ old('state', $user->state) }}">
+                            @if($errors->has('state'))
+                                <span class="text-danger text-md-left">{{ $errors->first('state') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-row">
@@ -61,16 +88,19 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="country">State</label>
-                            <select id="country" class="form-control">
-                                <option selected>Choose...</option>
+                            <select id="country" class="form-control" name="country">
+                                <option value="">Choose...</option>
                                 @foreach(config('country') as $key => $country)
-                                @if(old('country', $user->country) == $key)
-                                <option value="{{ $key }}" selected>{{ $country }}</option>
-                                @else
-                                <option value="{{ $key }}">{{ $country }}</option>
-                                @endif
+                                    @if(old('country', $user->country) == $key)
+                                        <option value="{{ $key }}" selected>{{ $country }}</option>
+                                    @else
+                                        <option value="{{ $key }}">{{ $country }}</option>
+                                    @endif
                                 @endforeach
                             </select>
+                            @if($errors->has('country'))
+                                <span class="text-danger text-md-left">{{ $errors->first('country') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-row">
@@ -78,11 +108,17 @@
                             <label for="address">Address</label>
                             <input type="text" class="form-control" id="address" name="address"
                                 value="{{ old('address', $user->address) }}">
+                            @if($errors->has('address'))
+                                <span class="text-danger text-md-left">{{ $errors->first('address') }}</span>
+                            @endif
                         </div>
                         <div class="form-group col-md-6">
                             <label for="copyOfId">Copy of id</label>
                             <input type="file" class="form-control-file" id="copyOfId" name="copy_of_id">
                             <img style="margin-top:20px; height: 75px" src="{{ $user->copy_of_id }}" style="height: 75px">
+                            @if($errors->has('copy_of_id'))
+                                <span class="text-danger text-md-left">{{ $errors->first('copy_of_id') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-row">
@@ -91,12 +127,18 @@
                             <input type="file" class="form-control-file" id="proofOfAddress" name="proof_of_address">
                             <img style="margin-top:20px; height: 75px" src="{{ $user->proof_of_address }}"
                                 style="height: 75px">
+                            @if($errors->has('proof_of_address'))
+                                <span class="text-danger text-md-left">{{ $errors->first('proof_of_address') }}</span>
+                            @endif
                         </div>
                         <div class="form-group col-md-6">
                             <label for="addtionFile">Addtional file</label>
                             <input type="file" class="form-control-file" id="addtionFile" name="addtional_file">
                             <img style="margin-top:20px; height: 75px" src="{{ $user->addtional_file }}"
                                 style="height: 75px">
+                            @if($errors->has('addtional_file'))
+                                <span class="text-danger text-md-left">{{ $errors->first('addtional_file') }}</span>
+                            @endif
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Cập nhât</button>

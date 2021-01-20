@@ -72,4 +72,8 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         }
         return $result;
     }
+
+    public function updateLiveAccountInfoByUser($userId, $data)
+    {
+    }
 }

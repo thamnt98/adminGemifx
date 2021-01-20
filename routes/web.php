@@ -33,6 +33,7 @@ Route::group([
         Route::get('/list', 'ListController@main')->name('user.list');
         Route::get('/create', 'CreateController@main')->name('user.create');
         Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
+        Route::post('/update/{id}', 'UpdateController@main')->name('user.update');
         Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete');
     });
     Route::group([
