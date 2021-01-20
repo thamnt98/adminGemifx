@@ -56,7 +56,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Bạn có chắc chắn muốn xóa tài khoản này của khách hàng {{ $user->full_name }} không ?
+                                    Bạn có chắc chắn muốn xóa tài khoản này của khách hàng {{ $account->full_name }} không ?
                                 </div>
                                 <div class="modal-footer">
                                     <form method="post" action="{{ route('account.live.delete', $account->login) }}">
