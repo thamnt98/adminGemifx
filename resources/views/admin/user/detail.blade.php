@@ -141,7 +141,8 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Cập nhât</button>
+                    <button type="submit" class="btn btn-primary " style="margin-top: 20px">Cập nhật</button>
+                    </div>
                 </form>
             </div>
             <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md" style="margin:40px">

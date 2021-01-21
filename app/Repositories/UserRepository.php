@@ -86,6 +86,6 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
 
         $name = time() . '.' . $file->getClientOriginalName();
         Storage::disk('public')->put($name, file_get_contents($file));
-        return  Storage::disk('public')->url($name);
+        return Storage::disk('public')->url($name);
     }
 }
