@@ -33,18 +33,11 @@ class UpdateController extends Controller
         if ($validateData->fails()) {
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
-        try {
-            DB::beginTransaction();
-            $this->userRepository->update($id, $data);
-            // if ($result) {
-            //     return redirect()->back()->with('error', $result);
-            // }
-            DB::commit();
-            return redirect()->back()->with('success', 'Bạn đã cập nhật tài khoản thành công');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Cập nhật thất bại');
-        }   
+        $result = $this->userRepository->updateUser($id, $data);
+        if (!is_null($result)) {
+            return redirect()->back()->with('error', $result);
+        }
+        return redirect()->back()->with('success', 'Bạn đã cập nhật thành công');
     }
 
     public function validateData($data)
@@ -57,13 +50,13 @@ class UpdateController extends Controller
                 'last_name' => 'required|string|max:255',
                 'country' => ['required', Rule::in(array_keys($countries))],
                 'phone_number' => 'required|regex:/[0-9]{10,11}/',
-                "city" => 'string|max:255',
-                "state" => 'string|max:255',
-                "zip_code" => 'string|max:255',
-                "address" => 'string|max:255',
-                'copy_of_id' => 'bail|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'addtional_file' => 'bail|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'proof_of_address' => 'bail|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                "city" => 'nullable|string|max:255',
+                "state" => 'nullable|string|max:255',
+                "zip_code" => 'nullable|string|max:255',
+                "address" => 'nullable|string|max:255',
+                'copy_of_id' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'addtional_file' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'proof_of_address' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]
         );
     }

@@ -27,8 +27,8 @@
             </li>
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
-            <div class="tab-pane fade show active" id="information-md" role="tabpanel" aria-labelledby="information-tab-md" style="margin:40px">
-                <form method="post" action="{{ route('user.update', $user->id) }}">
+            <div class="tab-pane fade show active" id="information-md" role="tabpanel" aria-labelledby="information-tab-md" style="margin:40px" >
+                <form method="post" action="{{ route('user.update', $user->id) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">

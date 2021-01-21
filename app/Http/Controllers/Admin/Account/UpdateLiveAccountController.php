@@ -36,7 +36,7 @@ class UpdateLiveAccountController extends Controller
         try {
             DB::beginTransaction();
             $result = $this->liveAccountRepository->updateLiveAccount($id, $data);
-            if ($result) {
+            if (!is_null($result)) {
                 return redirect()->back()->with('error', $result);
             }
             DB::commit();

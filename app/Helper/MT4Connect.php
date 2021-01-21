@@ -133,7 +133,6 @@ class MT4Connect
             fclose($fp);
             $result = explode('&', $result);
             $data['result'] = explode('=', $result[0])[1];
-            return $data['result'];
         } catch (\Exception $e) {
             return "Cập nhật tài khoản thất bại";
         }
