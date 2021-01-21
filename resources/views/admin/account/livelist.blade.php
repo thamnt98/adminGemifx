@@ -15,7 +15,7 @@
         <strong>{{ $message }}</strong>
     </div>
     @endif
-    <a style="margin-bottom: 40px" href="{{ route('account.live.create') }}" class="btn btn-info">Thêm mới</a>
+    <a style="margin-bottom: 40px" href="{{ route('account.live.create', 0) }}" class="btn btn-info">Thêm mới</a>
     <div class="table-responsive">
         <table class="table table-striped" data-pagination="true">
             <thead>
