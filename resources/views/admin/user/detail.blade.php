@@ -27,7 +27,8 @@
             </li>
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
-            <div class="tab-pane fade show active" id="information-md" role="tabpanel" aria-labelledby="information-tab-md" style="margin:40px" >
+            <div class="tab-pane fade show active" id="information-md" role="tabpanel"
+                aria-labelledby="information-tab-md" style="margin:40px">
                 <form method="post" action="{{ route('user.update', $user->id) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-row">
@@ -36,7 +37,7 @@
                             <input type="text" class="form-control" id="firstName" name="first_name"
                                 value="{{ old('first_name', $user->first_name) }}">
                             @if($errors->has('first_name'))
-                                <span class="text-danger text-md-left">{{ $errors->first('first_name') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('first_name') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-md-6">
@@ -44,21 +45,21 @@
                             <input type="text" class="form-control" id="lastName" name="last_name"
                                 value="{{ old('last_name', $user->last_name) }}">
                             @if($errors->has('last_name'))
-                                <span class="text-danger text-md-left">{{ $errors->first('last_name') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('last_name') }}</span>
                             @endif
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control"  value="{{ $user->email }}" disabled>
+                            <input type="email" class="form-control" value="{{ $user->email }}" disabled>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="phoneNumber">Phone Number</label>
                             <input type="text" class="form-control" id="phoneNumber" name="phone_number"
                                 value="{{ old('phone_number', $user->phone_number) }}">
                             @if($errors->has('phone_number'))
-                                <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
                             @endif
                         </div>
                     </div>
@@ -68,7 +69,7 @@
                             <input type="text" class="form-control" id="city" name="city"
                                 value="{{ old('city', $user->city) }}">
                             @if($errors->has('city'))
-                                <span class="text-danger text-md-left">{{ $errors->first('city') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('city') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-md-6">
@@ -76,7 +77,7 @@
                             <input type="text" class="form-control" id="state" name="state"
                                 value="{{ old('state', $user->state) }}">
                             @if($errors->has('state'))
-                                <span class="text-danger text-md-left">{{ $errors->first('state') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('state') }}</span>
                             @endif
                         </div>
                     </div>
@@ -91,15 +92,15 @@
                             <select id="country" class="form-control" name="country">
                                 <option value="">Choose...</option>
                                 @foreach(config('country') as $key => $country)
-                                    @if(old('country', $user->country) == $key)
-                                        <option value="{{ $key }}" selected>{{ $country }}</option>
-                                    @else
-                                        <option value="{{ $key }}">{{ $country }}</option>
-                                    @endif
+                                @if(old('country', $user->country) == $key)
+                                <option value="{{ $key }}" selected>{{ $country }}</option>
+                                @else
+                                <option value="{{ $key }}">{{ $country }}</option>
+                                @endif
                                 @endforeach
                             </select>
                             @if($errors->has('country'))
-                                <span class="text-danger text-md-left">{{ $errors->first('country') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('country') }}</span>
                             @endif
                         </div>
                     </div>
@@ -109,15 +110,16 @@
                             <input type="text" class="form-control" id="address" name="address"
                                 value="{{ old('address', $user->address) }}">
                             @if($errors->has('address'))
-                                <span class="text-danger text-md-left">{{ $errors->first('address') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('address') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-md-6">
                             <label for="copyOfId">Copy of id</label>
                             <input type="file" class="form-control-file" id="copyOfId" name="copy_of_id">
-                            <img style="margin-top:20px; height: 75px" src="{{ $user->copy_of_id }}" style="height: 75px">
+                            <img style="margin-top:20px; height: 75px" src="{{ $user->copy_of_id }}"
+                                style="height: 75px">
                             @if($errors->has('copy_of_id'))
-                                <span class="text-danger text-md-left">{{ $errors->first('copy_of_id') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('copy_of_id') }}</span>
                             @endif
                         </div>
                     </div>
@@ -128,7 +130,7 @@
                             <img style="margin-top:20px; height: 75px" src="{{ $user->proof_of_address }}"
                                 style="height: 75px">
                             @if($errors->has('proof_of_address'))
-                                <span class="text-danger text-md-left">{{ $errors->first('proof_of_address') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('proof_of_address') }}</span>
                             @endif
                         </div>
                         <div class="form-group col-md-6">
@@ -137,15 +139,15 @@
                             <img style="margin-top:20px; height: 75px" src="{{ $user->addtional_file }}"
                                 style="height: 75px">
                             @if($errors->has('addtional_file'))
-                                <span class="text-danger text-md-left">{{ $errors->first('addtional_file') }}</span>
+                            <span class="text-danger text-md-left">{{ $errors->first('addtional_file') }}</span>
                             @endif
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary " style="margin-top: 20px">Cập nhật</button>
-                    </div>
                 </form>
             </div>
-            <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md" style="margin:40px">
+            <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md"
+                style="margin:40px">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -159,19 +161,21 @@
                         </thead>
                         <tbody>
                             @foreach($user->liveAccounts as $key => $liveAccount)
-                                <tr>
-                                    <th scope="row">{{ $key + 1 }}</th>
-                                    <td>{{ $liveAccount->login }}</td>
-                                    <td>{{ $liveAccount->leverage }}</td>
-                                    <td style="width: 14%">
-                                        <a href="{{ route('account.live.detail', $liveAccount->id) }}"
-                                            class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i> </a>
-                                        <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-account "
-                                            data-toggle="modal" data-login="{{  $liveAccount->login }}"
-                                            data-name="{{ $user->full_name }}" data-target="#deleteAccount"><i
-                                                class="fa fa-trash-o" aria-hidden="true"></i> </a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <th scope="row">{{ $key + 1 }}</th>
+                                <td>{{ $liveAccount->login }}</td>
+                                <td>{{ $liveAccount->leverage }}</td>
+                                <td style="width: 14%">
+                                    <a href="{{ route('account.live.detail', $liveAccount->id) }}"
+                                        class="btn btn-sm btn-success bold uppercase" title="Edit"><i
+                                            class="fa fa-edit"></i> </a>
+                                    <a style="color:white"
+                                        class="btn btn-sm btn-danger bold uppercase btn-delete-account "
+                                        data-toggle="modal" data-login="{{  $liveAccount->login }}"
+                                        data-name="{{ $user->full_name }}" data-target="#deleteAccount"><i
+                                            class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -214,5 +218,6 @@
         let redirectUrl = currentUrl + '/admin/account/delete/' + login;
         $("#delete-account").attr('action', redirectUrl);
     })
+
 </script>
 @endsection
