@@ -91,11 +91,12 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
 
     public function getUserListBySearch($search)
     {
-        if (empty($search) || (is_null($search['name']) && is_null($search['phone_number']) && is_null($search['email']))) {
+        if (empty($search)) {
             return $this->paginate(20);
         } else {
+            unset($search['page']);
             $query = $this;
-            if ($search['name']) {
+            if (isset($search['name']) && !is_null($search['name'])) {
                 $query = $query->whereRaw("concat(first_name, ' ', last_name) like '%" . $search['name'] . "%'");
                 unset($search['name']);
             }
