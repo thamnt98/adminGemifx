@@ -94,13 +94,11 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
         if (empty($search) || (is_null($search['name']) && is_null($search['phone_number']) && is_null($search['email']))) {
             return $this->paginate(20);
         } else {
+            $query = $this;
             if ($search['name']) {
-                $name = explode(" ", $search['name']);
-                $search['first_name'] = $name[0];
-                $search['last_name'] = $name[1] ?? null;
+                $query = $query->whereRaw("concat(first_name, ' ', last_name) like '%" . $search['name'] . "%'");
                 unset($search['name']);
             }
-            $query = $this;
             foreach ($search as $key => $value) {
                 if (!is_null($value)) {
                     $query =  $query->where($key, 'like', '%' . $value . '%');
