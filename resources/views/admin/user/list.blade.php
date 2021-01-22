@@ -41,7 +41,7 @@
         <div class="col-md-3"></div>
     </div>
     <div class="table-responsive" style="margin-top: 70px">
-        <table class="table table-striped" data-pagination="true">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -79,7 +79,7 @@
             </tbody>
         </table>
     </div>
-    {!! $userList->links() !!}
+    {!! $userList->appends(request()->input())->links() !!}
 </div>
 <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
