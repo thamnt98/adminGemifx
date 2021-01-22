@@ -19,4 +19,9 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
     {
         return WithdrawalFund::class;
     }
+
+    public function getWithdrawalByLogin($login)
+    {
+        return $this->where('login', $login)->get();
+    }
 }

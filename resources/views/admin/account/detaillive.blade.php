@@ -148,7 +148,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($account->withdrawals as $key => $withdrawal)
+                            @foreach($withdrawals as $key => $withdrawal)
                             <tr class="text-center">
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $withdrawal->login }}</td>

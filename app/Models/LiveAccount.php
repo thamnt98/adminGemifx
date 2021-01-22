@@ -22,9 +22,4 @@ class LiveAccount extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
-
-    public function withdrawals()
-    {
-        return $this->hasMany('App\Models\WithdrawalFund', 'user_id', 'user_id');
-    }
 }
