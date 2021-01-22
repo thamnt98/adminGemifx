@@ -15,8 +15,32 @@
         <strong>{{ $message }}</strong>
     </div>
     @endif
-    <a style="margin-bottom: 40px" href="{{ route('user.create') }}" class="btn btn-info">Thêm mới</a>
-    <div class="table-responsive">
+    <a style="margin-bottom: 40px" href="{{ route('user.store') }}" class="btn btn-info">Thêm mới</a>
+    <div class="form-search row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form method="get" action="{{ route('user.list') }}">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input class="form-control" type="text" name="name" value="{{ $data['name'] ?? '' }}"
+                            style="height: 40px" placeholder="Name">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input class="form-control" type="text" name="email" value="{{ $data['email'] ?? '' }}"
+                            style="height: 40px" placeholder="Email">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input class="form-control" type="text" name="phone_number" value="{{ $data['phone_number'] ?? '' }}"
+                            style="height: 40px" placeholder="Phone number">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="table-responsive" style="margin-top: 70px">
         <table class="table table-striped" data-pagination="true">
             <thead>
                 <tr>

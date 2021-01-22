@@ -22,9 +22,10 @@ class ListController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function main()
+    public function main(Request $request)
     {
-        $userList = $this->userRepository->paginate(20);
-        return view('admin.user.list', compact('userList'));
+        $data = $request->except('_token');
+        $userList = $this->userRepository->getUserListBySearch($data);
+        return view('admin.user.list', compact('userList', 'data'));
     }
 }

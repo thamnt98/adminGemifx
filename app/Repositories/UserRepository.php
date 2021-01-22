@@ -88,4 +88,25 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
         Storage::disk('public')->put($name, file_get_contents($file));
         return Storage::disk('public')->url($name);
     }
+
+    public function getUserListBySearch($search)
+    {
+        if (empty($search) || (is_null($search['name']) && is_null($search['phone_number']) && is_null($search['email']))) {
+            return $this->paginate(20);
+        } else {
+            if ($search['name']) {
+                $name = explode(" ", $search['name']);
+                $search['first_name'] = $name[0];
+                $search['last_name'] = $name[1] ?? null;
+                unset($search['name']);
+            }
+            $query = $this;
+            foreach ($search as $key => $value) {
+                if (!is_null($value)) {
+                    $query =  $query->where($key, 'like', '%' . $value . '%');
+                }
+            }
+            return $query->paginate(20);
+        }
+    }
 }
