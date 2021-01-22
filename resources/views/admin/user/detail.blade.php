@@ -25,6 +25,10 @@
                 <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab"
                     aria-controls="account-md" aria-selected="false">Account</a>
             </li>
+            <li class="nav-item waves-effect waves-light">
+                <a class="nav-link" id="deposit-tab-md" data-toggle="tab" href="#deposit-md" role="tab"
+                    aria-controls="account-md" aria-selected="false">Deposit</a>
+            </li>
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel"
@@ -148,7 +152,8 @@
             </div>
             <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md"
                 style="margin:40px">
-                <a style="margin-bottom: 40px" href="{{ route('account.live.create', $user->id) }}" class="btn btn-info">Thêm mới</a>
+                <a style="margin-bottom: 40px" href="{{ route('account.live.create', $user->id) }}"
+                    class="btn btn-info">Thêm mới</a>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -182,6 +187,44 @@
                     </table>
                 </div>
             </div>
+            <div class="tab-pane fade" id="deposit-md" role="tabpanel" aria-labelledby="deposit-tab-md"
+                style="margin:40px">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th>Amount Money</th>
+                                <th>Type</th>
+                                <th>Transaction Date</th>
+                                <th>Bank Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($user->orders as $key => $order)
+                                <tr>
+                                    <th scope="row">{{ $key + 1 }}</th>
+                                    <td>{{ number_format($order->amount_money) }}</td>
+                                    <td>{{ config('deposit.type_text')[$order->type] }}</td>
+                                    <td>{{ $order->created_at }}</td>
+                                    <td>{{ $order->bank_name }}</td>
+                                    <td>
+                                        @if($order->status == config('deposit.status.yes'))
+                                        <button type="button" class="btn btn-dark"
+                                            disabled>{{ config('deposit.status_text')[$order->status] }}</button>
+                                        @else
+                                        <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
+                                            data-target="#approve" data-id="{{ $order->id }}"
+                                            style="width:150px">{{ config('deposit.status_text')[$order->status] }}</a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </section>
 </div>
@@ -207,6 +250,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Bạn có chắc chắn xác nhận không ?</div>
+            <div class="modal-footer">
+                <form method="post" id="approve-order">
+                    @csrf
+                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                    <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('javascript')
 <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -218,6 +281,13 @@
         $('.modal-body').html("Bạn có muốn xóa tài khoản này của khách hàng " + name + " không ?");
         let redirectUrl = currentUrl + '/admin/account/delete/' + login;
         $("#delete-account").attr('action', redirectUrl);
+    })
+
+    $('.btn-approve').on('click', function () {
+        let currentUrl = window.location.origin
+        let id = $(this).attr('data-id');
+        let redirectUrl = currentUrl + '/admin/deposit/approve/' + id;
+        $("#approve-order").attr('action', redirectUrl);
     })
 
 </script>
