@@ -18,7 +18,7 @@
     <div class="table-responsive">
         <table class="table table-striped" data-pagination="true">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th scope="col">#</th>
                     <th>Login</th>
                     <th>Email</th>
@@ -27,13 +27,15 @@
                     <th>Bank Name</th>
                     <th>Account Name</th>
                     <th>Amount Money</th>
-                    <th>Status</th>
+                    <th>Withdrawal Currency</th>
                     <th>Transaction Date</th>
+                    <th>Note</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($withdrawals as $key => $withdrawal)
-                <tr>
+                <tr class="text-center">
                     <th scope="row">{{ $key + 1 }}</th>
                     <td>{{ $withdrawal->login }}</td>
                     <td>{{ $withdrawal->user->email }}</td>
@@ -42,7 +44,9 @@
                     <td>{{ $withdrawal->bank_name }}</td>
                     <td>{{ $withdrawal->account_name }}</td>
                     <td>{{ number_format($withdrawal->amount) }}</td>
+                    <td>{{ $withdrawal->withdrawal_currency }}</td>
                     <td>{{ $withdrawal->created_at }}</td>
+                    <th>{{ $withdrawal->note }}</th>
                     <td>
                         @if($withdrawal->status == config('deposit.status.yes'))
                         <button type="button" class="btn btn-dark"
