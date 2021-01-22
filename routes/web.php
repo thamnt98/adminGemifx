@@ -48,4 +48,11 @@ Route::group([
         Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
         Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update');
     });
+    Route::group([
+        'namespace' => 'Deposit',
+        'prefix' => 'deposit',
+    ], function () {
+        Route::get('/list', 'ListController@main')->name('deposit.list');
+        Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve');
+    });
 });
