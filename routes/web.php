@@ -55,4 +55,11 @@ Route::group([
         Route::get('/list', 'ListController@main')->name('deposit.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve');
     });
+    Route::group([
+        'namespace' => 'Withdrawal',
+        'prefix' => 'withdrawal',
+    ], function () {
+        Route::get('/list', 'ListController@main')->name('withdrawal.list');
+        Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve');
+    });
 });
