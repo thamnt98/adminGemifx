@@ -62,18 +62,13 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function updateLiveAccount($id, $data)
     {
-        unset($data['ib_id']);
         $data['login'] = $this->find($id)->login;
         $result = MT4Connect::updateLiveAccount($data);
-        if ($result == 1) {
+        if (is_null($result)) {
             $data['phone_number'] = $data['phone'];
             $this->update($data, $id);
             return null;
         }
         return $result;
-    }
-
-    public function updateLiveAccountInfoByUser($userId, $data)
-    {
     }
 }
