@@ -22,17 +22,13 @@
             <form method="get" action="{{ route('user.list') }}">
                 @csrf
                 <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <input class="form-control" type="text" name="name" value="{{ $data['name'] ?? '' }}"
-                            style="height: 40px" placeholder="Name">
-                    </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <input class="form-control" type="text" name="email" value="{{ $data['email'] ?? '' }}"
                             style="height: 40px" placeholder="Email">
                     </div>
-                    <div class="form-group col-md-4">
-                        <input class="form-control" type="text" name="phone_number" value="{{ $data['phone_number'] ?? '' }}"
-                            style="height: 40px" placeholder="Phone number">
+                    <div class="form-group col-md-6">
+                        <input class="form-control" type="text" name="login" value="{{ $data['login'] ?? '' }}"
+                            style="height: 40px" placeholder="Login">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>

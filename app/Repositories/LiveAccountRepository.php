@@ -4,10 +4,9 @@ namespace App\Repositories;
 
 use App\Helper\MT4Connect;
 use App\Models\LiveAccount;
-use Illuminate\Support\Facades\Auth;
-use \Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
-use Prettus\Repository\Contracts\RepositoryInterface;
 use Illuminate\Support\Str;
+use Prettus\Repository\Contracts\RepositoryInterface;
+use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 
 /**
  * Class AdminRepository
@@ -70,5 +69,22 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
             return null;
         }
         return $result;
+    }
+
+    public function getAccountListBySearch($search)
+    {
+        $query = $this;
+        if (!empty($search)) {
+            if (isset($search['login']) && !is_null($search['login'])) {
+                $query = $query->where('login', 'like', '%' . $search['login'] . '%');
+            }
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $query = $query
+                    ->join('users', 'live_accounts.user_id', '=', 'users.id')
+                    ->where('users.email', 'like', '%' . $search['email'] . '%');
+            }
+        }
+        return $query->orderBy('live_accounts.user_id')->paginate(20, ['live_accounts.id', 'live_accounts.login',
+            'live_accounts.group', 'live_accounts.leverage', 'live_accounts.ib_id', 'live_accounts.user_id']);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Deposit;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\DepositRepository;
+use Illuminate\Http\Request;
 
 class ListController extends Controller
 {
@@ -22,9 +23,10 @@ class ListController extends Controller
     }
 
 
-    public function main()
+    public function main(Request $request)
     {
-        $orders = $this->depositRepository->paginate(20);
-        return view('admin.deposit.list', compact('orders'));
+        $data = $request->except('_token');
+        $orders = $this->depositRepository->getDepositListBySearch($data);
+        return view('admin.deposit.list', compact('orders', 'data'));
     }
 }

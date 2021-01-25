@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use \Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
-use Prettus\Repository\Contracts\RepositoryInterface;
 use App\Models\Order;
+use Prettus\Repository\Contracts\RepositoryInterface;
+use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 
 /**
  * Class AdminRepository
@@ -18,5 +18,15 @@ class DepositRepository extends EloquentBaseRepository implements RepositoryInte
     public function model()
     {
         return Order::class;
+    }
+
+    public function getDepositListBySearch($search)
+    {
+        $query = $this;
+        if (isset($search['email']) && !is_null($search['email'])) {
+            $query = $query->where('email', 'like', '%' . $search['email'] . '%');
+        }
+        return $query->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_code', 'orders.status',
+            'orders.type', 'orders.amount_money', 'orders.created_at']);
     }
 }

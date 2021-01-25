@@ -5,10 +5,11 @@ namespace App\Repositories;
 use App\Helper\MT4Connect;
 use App\Models\LiveAccount;
 use App\Models\User;
-use \Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
-use Prettus\Repository\Contracts\RepositoryInterface;
-use Illuminate\Support\Facades\Storage;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Prettus\Repository\Contracts\RepositoryInterface;
+use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 
 /**
  * Class AdminRepository
@@ -75,7 +76,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                 }
             }
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Cập nhật thất bại');
         }
@@ -91,21 +92,19 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
 
     public function getUserListBySearch($search)
     {
-        if (empty($search)) {
-            return $this->paginate(20);
-        } else {
-            unset($search['page']);
-            $query = $this;
-            if (isset($search['name']) && !is_null($search['name'])) {
-                $query = $query->whereRaw("concat(first_name, ' ', last_name) like '%" . $search['name'] . "%'");
-                unset($search['name']);
+        $query = $this;
+        if (!empty($search)) {
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
             }
-            foreach ($search as $key => $value) {
-                if (!is_null($value)) {
-                    $query =  $query->where($key, 'like', '%' . $value . '%');
-                }
+            if (isset($search['login']) && !is_null($search['login'])) {
+                $query = $query
+                    ->join('live_accounts', 'users.id', '=', 'live_accounts.user_id')
+                    ->where('live_accounts.login', 'like', '%' . $search['login'] . '%')
+                    ->distinct('live_accounts.user_id');
             }
-            return $query->paginate(20);
         }
+        return $query->paginate(20, ['users.last_name', 'users.first_name', 'users.id',
+            'users.email', 'users.phone_number', 'users.copy_of_id', 'users.address', 'users.country']);
     }
 }
