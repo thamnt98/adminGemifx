@@ -23,9 +23,10 @@ class ListController extends Controller
         $this->withdrawalRepository = $withdrawalRepository;
     }
 
-    public function main()
+    public function main(Request $request)
     {
-        $withdrawals = $this->withdrawalRepository->paginate(20);
-        return view('admin.withdrawal.list', compact('withdrawals'));
+        $data = $request->except('_token');
+        $withdrawals = $this->withdrawalRepository->getWithdrawalListBySearch($data);
+        return view('admin.withdrawal.list', compact('withdrawals', 'data'));
     }
 }

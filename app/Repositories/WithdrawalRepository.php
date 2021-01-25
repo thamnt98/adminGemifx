@@ -24,4 +24,16 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
     {
         return $this->where('login', $login)->get();
     }
+
+    public function getWithdrawalListBySearch($search){
+        $query = $this;
+        if (isset($search['email']) && !is_null($search['email'])) {
+            $query = $query->join('users', 'withdrawal_funds.user_id', '=', 'users.id')
+                ->where('users.email', 'like', '%' . $search['email'] . '%');
+        }
+        if (isset($search['login']) && !is_null($search['login'])) {
+            $query = $query->where('login', 'like', '%' . $search['login'] . '%');
+        }
+        return $query->paginate(20, 'withdrawal_funds.*');
+    }
 }

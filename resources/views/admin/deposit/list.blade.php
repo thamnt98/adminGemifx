@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-3"></div>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive" style="margin-top: 70px">
             <table class="table table-striped" data-pagination="true">
                 <thead>
                 <tr>
