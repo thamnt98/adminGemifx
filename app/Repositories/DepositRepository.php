@@ -26,7 +26,7 @@ class DepositRepository extends EloquentBaseRepository implements RepositoryInte
         if (isset($search['email']) && !is_null($search['email'])) {
             $query = $query->where('email', 'like', '%' . $search['email'] . '%');
         }
-        return $query->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_code', 'orders.status',
+        return $query->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_name', 'orders.status',
             'orders.type', 'orders.amount_money', 'orders.created_at']);
     }
 }
