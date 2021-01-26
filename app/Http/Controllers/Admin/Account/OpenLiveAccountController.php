@@ -65,7 +65,6 @@ class OpenLiveAccountController extends Controller
                 'customer' => 'required',
                 'group' => ['required', Rule::in($groups)],
                 'leverage' => ['required', Rule::in($leverages)],
-                'ib_id' => 'required'
             ]
         );
     }

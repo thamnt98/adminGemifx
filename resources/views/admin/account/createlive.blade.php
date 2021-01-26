@@ -74,13 +74,6 @@
                 <span class="text-danger text-md-left">{{ $errors->first('leverage') }}</span>
                 @endif
             </div>
-            <div class="form-group col-md-6">
-                <label>IB ID</label>
-                <input class="form-control" type="text" name="ib_id" value="{{ old('ib_id') }}">
-                @if($errors->has('ib_id'))
-                <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
-                @endif
-            </div>
         </div>
         <button type="submit" class="btn btn-primary">Open account</button>
     </form>

@@ -56,7 +56,6 @@ class UpdateLiveAccountController extends Controller
             [
                 'group' => ['required', Rule::in($groups)],
                 'leverage' => ['required', Rule::in($leverages)],
-                'ib_id' => 'required',
                 'phone' => 'required|regex:/[0-9]{10,11}/',
             ]
         );

@@ -75,11 +75,11 @@
                             @endif
                         </div>
                         <div class="form-group col-md-6">
-                            <label>IB ID</label>
-                            <input class="form-control" type="text" value="{{ old('ib_id', $account->ib_id) }}"
-                                name="ib_id">
-                            @if($errors->has('ib_id'))
-                            <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
+                            <label>Phone number</label>
+                            <input class="form-control" type="text" name="phone"
+                                   value="{{ old('phone', $account->phone_number) }}">
+                            @if($errors->has('phone'))
+                                <span class="text-danger text-md-left">{{ $errors->first('phone') }}</span>
                             @endif
                         </div>
                     </div>
@@ -89,40 +89,30 @@
                             <input class="form-control" type="text" value="{{ $account->user->full_name }}" disabled>
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Phone number</label>
-                            <input class="form-control" type="text" name="phone"
-                                value="{{ old('phone', $account->phone_number) }}">
-                            @if($errors->has('phone'))
-                            <span class="text-danger text-md-left">{{ $errors->first('phone') }}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
                             <label>Zip code</label>
                             <input class="form-control" type="text" value="{{ $account->user->zip_code }}" disabled>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>City</label>
                             <input class="form-control" type="text" value="{{ $account->city }}" disabled>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>State </label>
                             <input class="form-control" type="text" value="{{ $account->user->state }}" disabled>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Address</label>
                             <input class="form-control" type="text" value="{{ $account->address }}" disabled>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Country</label>
                             <input class="form-control" type="text" value="{{ $account->user->state }}" disabled>
                             @if($errors->has('country'))
-                            <span class="text-danger text-md-left">{{ $errors->first('country') }}</span>
+                                <span class="text-danger text-md-left">{{ $errors->first('country') }}</span>
                             @endif
                         </div>
                     </div>

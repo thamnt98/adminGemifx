@@ -172,6 +172,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $liveAccount->login }}</td>
+                                <td>{{ $liveAccount->group }}</td>
                                 <td>{{ $liveAccount->leverage }}</td>
                                 <td style="width: 14%">
                                     <a href="{{ route('account.live.detail', $liveAccount->id) }}"
