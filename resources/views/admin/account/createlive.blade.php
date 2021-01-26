@@ -27,11 +27,13 @@
                 <select class="form-control" name="customer">
                     <option value="">Choose one customer</option>
                     @foreach($users as $user)
-                    @if(old('customer') == $user->id || $id == $user->id)
-                    <option value="{{ $user->id }}" selected>{{ $user->email . '-' . $user->phone_number }}</option>
-                    @else
-                    <option value="{{ $user->id }}">{{ $user->email . '-' . $user->phone_number }}</option>
-                    @endif
+                        @if(count($user->liveAccounts) <2)
+                            @if(old('customer') == $user->id || $id == $user->id)
+                                <option value="{{ $user->id }}" selected>{{ $user->email . '-' . $user->phone_number }}</option>
+                            @else
+                                <option value="{{ $user->id }}">{{ $user->email . '-' . $user->phone_number }}</option>
+                            @endif
+                        @endif
                     @endforeach
                 </select>
                 @if($errors->has('customer'))

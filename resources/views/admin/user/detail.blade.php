@@ -152,8 +152,10 @@
             </div>
             <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md"
                 style="margin:40px">
-                <a style="margin-bottom: 40px" href="{{ route('account.live.create', $user->id) }}"
-                    class="btn btn-info">Thêm mới</a>
+                @if(count($user->liveAccounts) <2)
+                    <a style="margin-bottom: 40px" href="{{ route('account.live.create', $user->id) }}"
+                       class="btn btn-info">Thêm mới</a>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
