@@ -84,7 +84,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
                     ->where('users.email', 'like', '%' . $search['email'] . '%');
             }
         }
-        return $query->orderBy('live_accounts.user_id')->paginate(20, ['live_accounts.id', 'live_accounts.login',
+        return $query->orderBy('live_accounts.created_at', 'desc')->paginate(20, ['live_accounts.id', 'live_accounts.login',
             'live_accounts.group', 'live_accounts.leverage', 'live_accounts.ib_id', 'live_accounts.user_id']);
     }
 }

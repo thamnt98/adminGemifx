@@ -104,7 +104,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                     ->distinct('live_accounts.user_id');
             }
         }
-        return $query->paginate(20, ['users.last_name', 'users.first_name', 'users.id',
+        return $query->orderBy('users.created_at', 'desc')->paginate(20, ['users.last_name', 'users.first_name', 'users.id',
             'users.email', 'users.phone_number', 'users.copy_of_id', 'users.address', 'users.country']);
     }
 }

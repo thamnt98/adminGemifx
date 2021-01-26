@@ -27,7 +27,7 @@ class DepositRepository extends EloquentBaseRepository implements RepositoryInte
             $query = $query->join('users', 'orders.user_id', '=', 'users.id')
                 ->where('email', 'like', '%' . $search['email'] . '%');
         }
-        return $query->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_name', 'orders.status',
+        return $query->orderBy('orders.created_at', 'desc')->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_name', 'orders.status',
             'orders.type', 'orders.amount_money', 'orders.created_at']);
     }
 }

@@ -34,6 +34,6 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
         if (isset($search['login']) && !is_null($search['login'])) {
             $query = $query->where('login', 'like', '%' . $search['login'] . '%');
         }
-        return $query->paginate(20, 'withdrawal_funds.*');
+        return $query->orderBy('withdrawal_funds.created_at', 'desc')->paginate(20, 'withdrawal_funds.*');
     }
 }
