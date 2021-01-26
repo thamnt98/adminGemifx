@@ -1,7 +1,8 @@
 @extends('layouts.base')
-
+@section('css')
+    <link href="{{ asset('css/boostrap-datepicker.css') }}" rel="stylesheet">
+@endsection
 @section('content')
-
     <div class="container-fluid">
         @if ($message = Session::get('error'))
             <div class="alert alert-danger alert-block">
@@ -15,25 +16,45 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <div class="form-search row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <form method="get" action="{{ route('withdrawal.list') }}">
-                    @csrf
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input class="form-control" type="text" name="email" value="{{ $data['email'] ?? '' }}"
-                                   style="height: 40px" placeholder="Email">
+        <div class="form-search">
+            <form method="get" action="{{ route('withdrawal.list') }}">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <input class="form-control" type="text" name="email" value="{{ $data['email'] ?? '' }}"
+                               style="height: 40px" placeholder="Email">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input class="form-control" type="text" name="login" value="{{ $data['login'] ?? '' }}"
+                               style="height: 40px" placeholder="Login">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="input-group date" data-provide="datepicker">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: white">
+                                        <i class="fa fa-calendar" style="margin-right: 0px"></i>
+                                    </span>
+                            </div>
+                            <input class="form-control" type="text" id="startDate" name="start_date"
+                                   value="{{ $data['start_date'] ?? '' }}"
+                                   style="height: 40px" placeholder="Start date" autocomplete="off">
                         </div>
-                        <div class="form-group col-md-6">
-                            <input class="form-control" type="text" name="login" value="{{ $data['login'] ?? '' }}"
-                                   style="height: 40px" placeholder="Login">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="input-group date" data-provide="datepicker">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: white">
+                                        <i class="fa fa-calendar" style="margin-right: 0px"></i>
+                                    </span>
+                            </div>
+                            <input class="form-control" type="text" id="endDate" name="end_date"
+                                   value="{{ $data['end_date'] ?? '' }}"
+                                   style="height: 40px" placeholder="End date" autocomplete="off">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>
-                </form>
-            </div>
-            <div class="col-md-3"></div>
+                </div>
+            </form>
         </div>
         <div class="table-responsive" style="margin-top: 70px">
             <table class="table table-striped" data-pagination="true">
@@ -108,6 +129,7 @@
 @endsection
 @section('javascript')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/boostrap-datepicker.js') }}"></script>
     <script>
         $('.btn-approve').on('click', function () {
             let currentUrl = window.location.origin
@@ -115,6 +137,6 @@
             let redirectUrl = currentUrl + '/admin/withdrawal/approve/' + id;
             $("#approve-order").attr('action', redirectUrl);
         })
-
+        $.fn.datepicker.defaults.format = "yyyy/mm/dd";
     </script>
 @endsection

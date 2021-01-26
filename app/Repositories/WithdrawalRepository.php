@@ -32,7 +32,13 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
                 ->where('users.email', 'like', '%' . $search['email'] . '%');
         }
         if (isset($search['login']) && !is_null($search['login'])) {
-            $query = $query->where('login', 'like', '%' . $search['login'] . '%');
+            $query = $query->where('withdrawal_funds.login', 'like', '%' . $search['login'] . '%');
+        }
+        if (isset($search['start_date']) && !is_null($search['start_date'])) {
+            $query = $query->whereDate('withdrawal_funds.created_at', '>=', $search['start_date']);
+        }
+        if (isset($search['end_date']) && !is_null($search['end_date'])) {
+            $query = $query->whereDate('withdrawal_funds.created_at', '<=', $search['end_date']);
         }
         return $query->orderBy('withdrawal_funds.created_at', 'desc')->paginate(20, 'withdrawal_funds.*');
     }
