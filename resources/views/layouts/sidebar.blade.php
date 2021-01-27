@@ -36,6 +36,14 @@
             </a>
         </li>
     @endif
+    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.staff'))
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('agent.link') }}">
+                <i class="fa fa-user"></i>
+                Agent Link
+            </a>
+        </li>
+    @endif
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
         <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
     </div>

@@ -64,4 +64,10 @@ Route::group([
         Route::get('/list', 'ListController@main')->name('withdrawal.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve');
     });
+    Route::group([
+        'namespace' => 'Agent',
+        'prefix' => 'agent',
+    ], function () {
+        Route::get('/link', 'LinkController@main')->name('agent.link');
+    });
 });
