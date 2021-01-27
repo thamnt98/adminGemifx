@@ -20,7 +20,7 @@
     @endif
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('user.list') }}">
-            <i class="fa fa-user"></i>
+            <i class="fa fa-users"></i>
             Khách hàng
         </a>
     </li>
