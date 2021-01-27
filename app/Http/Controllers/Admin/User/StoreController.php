@@ -42,7 +42,7 @@ class StoreController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         $data['password'] = Hash::make(Str::random(8));
-        $data['admin_id'] = Auth::user()->id;
+        $data['ib_id'] = Auth::user()->ib_id;
         $user = $this->userRepository->create($data);
         if ($user) {
             $email = $user->email;

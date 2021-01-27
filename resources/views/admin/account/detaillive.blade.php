@@ -25,10 +25,12 @@
                 <a class="nav-link active" id="information-tab-md" data-toggle="tab" href="#information-md" role="tab"
                     aria-controls="information-md" aria-selected="true">Information</a>
             </li>
-            <li class="nav-item waves-effect waves-light">
-                <a class="nav-link" id="withdrawal-tab-md" data-toggle="tab" href="#withdrawal-md" role="tab"
-                    aria-controls="withdrawal-md" aria-selected="false">Withdrawal</a>
-            </li>
+            @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link" id="withdrawal-tab-md" data-toggle="tab" href="#withdrawal-md" role="tab"
+                       aria-controls="withdrawal-md" aria-selected="false">Withdrawal</a>
+                </li>
+            @endif
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel"

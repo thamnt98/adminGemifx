@@ -25,10 +25,12 @@
                 <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab"
                     aria-controls="account-md" aria-selected="false">Account</a>
             </li>
-            <li class="nav-item waves-effect waves-light">
-                <a class="nav-link" id="deposit-tab-md" data-toggle="tab" href="#deposit-md" role="tab"
-                    aria-controls="account-md" aria-selected="false">Deposit</a>
-            </li>
+            @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link" id="deposit-tab-md" data-toggle="tab" href="#deposit-md" role="tab"
+                        aria-controls="account-md" aria-selected="false">Deposit</a>
+                </li>
+            @endif
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel"
