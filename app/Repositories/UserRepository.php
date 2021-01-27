@@ -6,6 +6,7 @@ use App\Helper\MT4Connect;
 use App\Models\LiveAccount;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Prettus\Repository\Contracts\RepositoryInterface;
@@ -27,6 +28,10 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
 
     public function getUserBySelect($select)
     {
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            return $this->where('users.ib_id', $user->ib_id)->get($select);
+        }
         return $this->all($select);
     }
 
@@ -84,7 +89,6 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
 
     private function uploadFile($file)
     {
-
         $name = time() . '.' . $file->getClientOriginalName();
         Storage::disk('public')->put($name, file_get_contents($file));
         return Storage::disk('public')->url($name);
@@ -104,7 +108,19 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                     ->distinct('live_accounts.user_id');
             }
         }
-        return $query->orderBy('users.created_at', 'desc')->paginate(20, ['users.last_name', 'users.first_name', 'users.id',
-            'users.email', 'users.phone_number', 'users.copy_of_id', 'users.address', 'users.country']);
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            $query = $query->where('users.ib_id', $user->ib_id);
+        }
+        return $query->orderBy('users.created_at', 'desc')->paginate(20, [
+            'users.last_name',
+            'users.first_name',
+            'users.id',
+            'users.email',
+            'users.phone_number',
+            'users.copy_of_id',
+            'users.address',
+            'users.country',
+        ]);
     }
 }

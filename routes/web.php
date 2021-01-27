@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/register', 'Auth\RegisterController@main')->name('register');
-// Route::post('/register', 'Auth\HandleRegisterController@main')->name('register');
+ Route::get('/register', 'Auth\RegisterController@main')->name('register');
+ Route::post('/register', 'Auth\HandleRegisterController@main')->name('register');
 Route::get('/login', 'Auth\LoginController@main')->name('login');
 Route::post('/login', 'Auth\HandleLoginController@main')->name('login');
 
@@ -51,6 +51,7 @@ Route::group([
     Route::group([
         'namespace' => 'Deposit',
         'prefix' => 'deposit',
+        'middleware' => 'role.admin'
     ], function () {
         Route::get('/list', 'ListController@main')->name('deposit.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve');
@@ -58,6 +59,7 @@ Route::group([
     Route::group([
         'namespace' => 'Withdrawal',
         'prefix' => 'withdrawal',
+        'middleware' => 'role.admin'
     ], function () {
         Route::get('/list', 'ListController@main')->name('withdrawal.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve');

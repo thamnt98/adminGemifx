@@ -22,18 +22,20 @@
             Tài khoản
         </a>
     </li>
-    <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('deposit.list') }}">
-            <i class="fa fa-credit-card"></i>
-            Deposit
-        </a>
-    </li>
-    <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('withdrawal.list') }}">
-            <i class="fa fa-credit-card"></i>
-            Withdrawal
-        </a>
-    </li>
+    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('deposit.list') }}">
+                <i class="fa fa-credit-card"></i>
+                Deposit
+            </a>
+        </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('withdrawal.list') }}">
+                <i class="fa fa-credit-card"></i>
+                Withdrawal
+            </a>
+        </li>
+    @endif
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
         <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
     </div>

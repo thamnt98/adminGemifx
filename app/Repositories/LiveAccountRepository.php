@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Helper\MT4Connect;
 use App\Models\LiveAccount;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
@@ -47,13 +48,14 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         $data['country'] = $user->country;
         $data['password'] = Str::random(7);
         $data['login'] = MT4Connect::openLiveAccount($data);
+        $data['ib_id'] = Auth::user()->ib_id;
         if (strlen($data['login']) == 10) {
             $data['phone_number'] = $user->phone_number;
             $data['user_id'] = $user->id;
             $this->create($data);
             return [
-                'login' => $data['login'],
-                'password' => $data['password']
+                'login'    => $data['login'],
+                'password' => $data['password'],
             ];
         }
         return $data['login'];
@@ -84,7 +86,17 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
                     ->where('users.email', 'like', '%' . $search['email'] . '%');
             }
         }
-        return $query->orderBy('live_accounts.created_at', 'desc')->paginate(20, ['live_accounts.id', 'live_accounts.login',
-            'live_accounts.group', 'live_accounts.leverage', 'live_accounts.ib_id', 'live_accounts.user_id']);
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            $query = $query->where('live_accounts.ib_id', $user->ib_id);
+        }
+        return $query->orderBy('live_accounts.created_at', 'desc')->paginate(20, [
+            'live_accounts.id',
+            'live_accounts.login',
+            'live_accounts.group',
+            'live_accounts.leverage',
+            'live_accounts.ib_id',
+            'live_accounts.user_id',
+        ]);
     }
 }

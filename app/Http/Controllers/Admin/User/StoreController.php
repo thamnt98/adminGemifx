@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\User;
 use App\Http\Controllers\Controller;
 use App\Mail\CreateUserSuccess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Repositories\UserRepository;
 use Illuminate\Validation\Rule;
@@ -41,6 +42,7 @@ class StoreController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         $data['password'] = Hash::make(Str::random(8));
+        $data['admin_id'] = Auth::user()->id;
         $user = $this->userRepository->create($data);
         if ($user) {
             $email = $user->email;
