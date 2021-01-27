@@ -54,6 +54,20 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
+                                    <i class="fa fa-phone"></i>
+                                </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="{{ __('Phone number') }}"
+                                   name="phone_number" value="{{ old('phone_number') }}" required>
+                            @if($errors->has('phone_number'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('phone_number') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
                                     <i class="fa fa-lock"></i>
                                 </span>
                             </div>

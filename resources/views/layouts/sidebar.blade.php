@@ -10,6 +10,14 @@
             Dashboard
         </a>
     </li>
+    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('agent.list') }}">
+                <i class="fa fa-user"></i>
+                Agent
+            </a>
+        </li>
+    @endif
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('user.list') }}">
             <i class="fa fa-user"></i>

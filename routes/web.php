@@ -69,5 +69,6 @@ Route::group([
         'prefix' => 'agent',
     ], function () {
         Route::get('/link', 'LinkController@main')->name('agent.link');
+        Route::get('/list', 'ListController@main')->name('agent.list');
     });
 });

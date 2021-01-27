@@ -43,7 +43,8 @@ class HandleRegisterController extends Controller
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:admins',
                 'password' => 'required|regex:/[A-z0-9]{8,}/',
-                'password_confirmation' => 'required|same:password'
+                'password_confirmation' => 'required|same:password',
+                'phone_number' => 'required|regex:/[0-9]{10,11}/',
             ]
         );
     }

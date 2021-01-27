@@ -25,4 +25,9 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
     {
         return Auth::attempt($credentials);
     }
+
+    public function getAgentList()
+    {
+        return $this->where('role', config('role.staff'))->paginate(20, ['name', 'email', 'phone_number', 'ib_id']);
+    }
 }
