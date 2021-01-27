@@ -76,12 +76,20 @@
                             <span class="text-danger text-md-left">{{ $errors->first('leverage') }}</span>
                             @endif
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label>Phone number</label>
                             <input class="form-control" type="text" name="phone"
                                    value="{{ old('phone', $account->phone_number) }}">
                             @if($errors->has('phone'))
                                 <span class="text-danger text-md-left">{{ $errors->first('phone') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>IB ID</label>
+                            <input class="form-control" type="text" name="ib_id" disabled
+                                   value="{{ old('ib_id', $account->ib_id) }}">
+                            @if($errors->has('ib_id'))
+                                <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
                             @endif
                         </div>
                     </div>

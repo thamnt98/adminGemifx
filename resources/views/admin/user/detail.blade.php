@@ -60,12 +60,20 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" value="{{ $user->email }}" disabled>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label for="phoneNumber">Phone Number</label>
                             <input type="text" class="form-control" id="phoneNumber" name="phone_number"
                                 value="{{ old('phone_number', $user->phone_number) }}">
                             @if($errors->has('phone_number'))
                             <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="phoneNumber">IB ID</label>
+                            <input type="text" class="form-control" id="ib_id" name="ib_id"
+                                   value="{{ old('ib_id', $user->ib_id) }}">
+                            @if($errors->has('ib_id'))
+                                <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
                             @endif
                         </div>
                     </div>
@@ -164,6 +172,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Login</th>
+                                <th scope="col">IB ID</th>
                                 <th scope="col">Group</th>
                                 <th scope="col">Leverage</th>
                                 <th></th>
@@ -174,6 +183,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $liveAccount->login }}</td>
+                                <td>{{ $liveAccount->ib_id }}</td>
                                 <td>{{ $liveAccount->group }}</td>
                                 <td>{{ $liveAccount->leverage }}</td>
                                 <td style="width: 14%">

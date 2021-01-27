@@ -42,7 +42,6 @@ class StoreController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         $data['password'] = Hash::make(Str::random(8));
-        $data['ib_id'] = Auth::user()->ib_id;
         $user = $this->userRepository->create($data);
         if ($user) {
             $email = $user->email;
@@ -60,11 +59,15 @@ class StoreController extends Controller
         return Validator::make(
             $data,
             [
-                'email' => 'required|email|unique:users',
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'country' => ['required', Rule::in(array_keys($countries))],
+                'email'        => 'required|email|unique:users',
+                'first_name'   => 'required|string|max:255',
+                'last_name'    => 'required|string|max:255',
+                'country'      => ['required', Rule::in(array_keys($countries))],
                 'phone_number' => 'required|regex:/[0-9]{10,11}/',
+                'ib_id'        => 'bail|required|regex:/[0-9]{6}/',
+            ],
+            [
+                'ib_id.regex' => 'The IB ID has only 6 digits',
             ]
         );
     }
@@ -79,9 +82,9 @@ class StoreController extends Controller
         $this->passwordResetRepository->updateOrCreate(
             ['email' => $email],
             [
-                'token' => $token,
-                'email' =>  $email,
-                'created_at' => Carbon::now()
+                'token'      => $token,
+                'email'      => $email,
+                'created_at' => Carbon::now(),
             ]
         );
         return $token;

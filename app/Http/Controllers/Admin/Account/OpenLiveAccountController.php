@@ -65,6 +65,10 @@ class OpenLiveAccountController extends Controller
                 'customer' => 'required',
                 'group' => ['required', Rule::in($groups)],
                 'leverage' => ['required', Rule::in($leverages)],
+                'ib_id' => 'bail|required|regex:/[0-9]{6}/',
+            ],
+            [
+                'ib_id.regex' => 'The IB ID has only 6 digits',
             ]
         );
     }

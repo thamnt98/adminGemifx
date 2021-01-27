@@ -44,11 +44,18 @@
                 <span class="text-danger text-md-left">{{ $errors->first('email') }}</span>
                 @endif
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-3">
                 <label>Phone number</label>
                 <input class="form-control" type="text" name="phone_number" value="{{ old('phone_number') }}" required>
                 @if($errors->has('phone_number'))
                 <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
+                @endif
+            </div>
+            <div class="form-group col-md-3">
+                <label>IB ID</label>
+                <input class="form-control" type="text" name="ib_id" value="{{ old('ib_id', $ibId) }}" required @if(!is_null($ibId)) readonly @endif>
+                @if($errors->has('ib_id'))
+                    <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
                 @endif
             </div>
         </div>

@@ -41,6 +41,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">IB ID</th>
                     <th scope="col">Full Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone number</th>
@@ -54,6 +55,7 @@
                 @foreach($userList as $key => $user)
                 <tr>
                     <th scope="row">{{ $key + 1 }}</th>
+                    <th>{{ $user->ib_id }}</th>
                     <td>{{ $user->full_name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->phone_number }}</td>

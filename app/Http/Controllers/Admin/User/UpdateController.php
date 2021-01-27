@@ -46,17 +46,21 @@ class UpdateController extends Controller
         return Validator::make(
             $data,
             [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'country' => ['required', Rule::in(array_keys($countries))],
-                'phone_number' => 'required|regex:/[0-9]{10,11}/',
-                "city" => 'nullable|string|max:255',
-                "state" => 'nullable|string|max:255',
-                "zip_code" => 'nullable|string|max:255',
-                "address" => 'nullable|string|max:255',
-                'copy_of_id' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'addtional_file' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'first_name'       => 'required|string|max:255',
+                'last_name'        => 'required|string|max:255',
+                'country'          => ['required', Rule::in(array_keys($countries))],
+                'phone_number'     => 'required|regex:/[0-9]{10,11}/',
+                "city"             => 'nullable|string|max:255',
+                "state"            => 'nullable|string|max:255',
+                "zip_code"         => 'nullable|string|max:255',
+                "address"          => 'nullable|string|max:255',
+                'copy_of_id'       => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'addtional_file'   => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'proof_of_address' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'ib_id'            => 'bail|required|regex:/[0-9]{6}/',
+            ],
+            [
+                'ib_id.regex' => 'The IB ID has only 6 digits',
             ]
         );
     }

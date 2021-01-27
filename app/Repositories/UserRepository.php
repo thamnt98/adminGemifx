@@ -48,7 +48,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
         }
         $user = $this->find(
             $id,
-            ['first_name', 'last_name', 'phone_number', 'zip_code', 'city', 'state', 'address', 'country']
+            ['first_name', 'last_name', 'phone_number', 'zip_code', 'city', 'state', 'address', 'country', 'ib_id']
         )->toArray();
         $liveAccountData = [];
         foreach ($user as $key => $value) {
@@ -75,6 +75,10 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             if (!empty($liveAccountData)) {
                 $logins = LiveAccount::where('user_id', $id)->pluck('login')->toArray();
                 $input = $liveAccountData;
+                if(isset($liveAccountData['ib_id'])){
+                    LiveAccount::where('user_id', $id)->update(['ib_id' => $liveAccountData['ib_id']]);
+                    $input['agent'] = $liveAccountData['ib_id'];
+                }
                 foreach ($logins as $login) {
                     $input['login'] = $login;
                     MT4Connect::updateLiveAccount($input);

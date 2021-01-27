@@ -42,6 +42,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Login</th>
+                    <th scope="col">IB ID</th>
                     <th scope="col">Email</th>
                     <th scope="col">Full Name</th>
                     <th scope="col">Group</th>
@@ -54,6 +55,7 @@
                     <tr>
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $account->login }}</td>
+                        <td>{{ $account->ib_id }}</td>
                         <td>{{ $account->user->email }}</td>
                         <td>{{ $account->user->full_name }}</td>
                         <td>{{ $account->group }}</td>
