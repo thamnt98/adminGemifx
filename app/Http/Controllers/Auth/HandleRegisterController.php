@@ -26,6 +26,7 @@ class HandleRegisterController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         $data['password'] = Hash::make($data['password']);
+        $data['ib_id'] = rand(100000, 999999);
         $admin = $this->adminRepository->create($data);
         if ($admin) {
             return redirect()->route('login')->with('success', 'You registered successfully');
