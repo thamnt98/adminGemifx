@@ -25,6 +25,7 @@ class DetailController extends Controller
     public function main($id)
     {
         $user = $this->userRepository->find($id);
-        return view('admin.user.detail', compact('user'));
+        $isAdmin = $user->role == config('role.admin');
+        return view('admin.user.detail', compact('user', 'isAdmin'));
     }
 }

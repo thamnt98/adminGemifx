@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Group</label>
-                            <select class="form-control" name="group">
+                            <select class="form-control" name="group" @if(!$isAdmin) readonly="" @endif>
                                 <option value="">Select one group</option>
                                 @foreach(config('mt4.group') as $key => $group)
                                 @if(old('group', $account->group) == $key)
@@ -62,7 +62,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Leverage</label>
-                            <select class="form-control" name="leverage">
+                            <select class="form-control" name="leverage" @if(!$isAdmin) readonly="" @endif>
                                 <option value="">Select one leverage</option>
                                 @foreach(config('mt4.leverage') as $key => $leverage)
                                 @if(old('leverage', $account->leverage) == $key)
@@ -78,7 +78,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Phone number</label>
-                            <input class="form-control" type="text" name="phone"
+                            <input class="form-control" type="text" name="phone" @if(!$isAdmin) readonly="" @endif
                                    value="{{ old('phone', $account->phone_number) }}">
                             @if($errors->has('phone'))
                                 <span class="text-danger text-md-left">{{ $errors->first('phone') }}</span>
@@ -126,7 +126,9 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    @if($isAdmin)
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    @endif
                 </form>
             </div>
             <div class="tab-pane fade" id="withdrawal-md" role="tabpanel" aria-labelledby="withdrawal-tab-md"

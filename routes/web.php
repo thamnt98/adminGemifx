@@ -31,22 +31,22 @@ Route::group([
         'prefix' => 'user',
     ], function () {
         Route::get('/list', 'ListController@main')->name('user.list');
-        Route::get('/create', 'CreateController@main')->name('user.create');
-        Route::post('/create', 'StoreController@main')->name('user.store');
+        Route::get('/create', 'CreateController@main')->name('user.create')->middleware('role.admin');
+        Route::post('/create', 'StoreController@main')->name('user.store')->middleware('role.admin');
         Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
-        Route::post('/update/{id}', 'UpdateController@main')->name('user.update');
-        Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete');
+        Route::post('/update/{id}', 'UpdateController@main')->name('user.update')->middleware('role.admin');
+        Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete')->middleware('role.admin');
     });
     Route::group([
         'namespace' => 'Account',
         'prefix' => 'account',
     ], function () {
         Route::get('/live', 'LiveListController@main')->name('account.live');
-        Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete');
-        Route::get('/create/{id}', 'CreateLiveAccountController@main')->name('account.live.create');
-        Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open');
+        Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete')->middleware('role.admin');
+        Route::get('/create/{id}', 'CreateLiveAccountController@main')->name('account.live.create')->middleware('role.admin');
+        Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open')->middleware('role.admin');
         Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
-        Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update');
+        Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update')->middleware('role.admin');
     });
     Route::group([
         'namespace' => 'Deposit',

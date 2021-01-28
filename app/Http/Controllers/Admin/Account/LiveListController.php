@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Account;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LiveListController extends Controller
 {
@@ -25,6 +26,7 @@ class LiveListController extends Controller
     {
         $data = $request->except('_token');
         $accountList = $this->liveAccountRepository->getAccountListBySearch($data);
-        return view('admin.account.livelist', compact('accountList', 'data'));
+        $isAdmin = Auth::user()->role == config('role.admin');
+        return view('admin.account.livelist', compact('accountList', 'data', 'isAdmin'));
     }
 }

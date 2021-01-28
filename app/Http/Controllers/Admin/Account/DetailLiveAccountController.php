@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Account;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use App\Repositories\WithdrawalRepository;
+use Illuminate\Support\Facades\Auth;
 
 class DetailLiveAccountController extends Controller
 {
@@ -27,7 +28,8 @@ class DetailLiveAccountController extends Controller
     public function main($id)
     {
         $account = $this->liveAccountRepository->find($id);
+        $isAdmin = Auth::user()->role == config('role.admin');
         $withdrawals = $this->withdrawalRepository->getWithdrawalByLogin($account->login);
-        return view('admin.account.detaillive', compact('account', 'withdrawals'));
+        return view('admin.account.detaillive', compact('account', 'withdrawals', 'isAdmin'));
     }
 }

@@ -120,6 +120,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             'users.last_name',
             'users.first_name',
             'users.id',
+            'users.ib_id',
             'users.email',
             'users.phone_number',
             'users.copy_of_id',

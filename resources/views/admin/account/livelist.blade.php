@@ -15,7 +15,9 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <a style="margin-bottom: 40px" href="{{ route('account.live.create', 0) }}" class="btn btn-info">Thêm mới</a>
+        @if($isAdmin)
+            <a style="margin-bottom: 40px" href="{{ route('account.live.create', 0) }}" class="btn btn-info">Thêm mới</a>
+        @endif
         <div class="form-search row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -64,10 +66,12 @@
                             <a href="{{ route('account.live.detail', $account->id) }}"
                                class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i>
                             </a>
-                            <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-account "
-                               data-toggle="modal" data-login="{{  $account->login }}"
-                               data-name="{{ $account->user->full_name }}" data-target="#deleteAccount"><i
-                                    class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                            @if($isAdmin)
+                                <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-account "
+                                   data-toggle="modal" data-login="{{  $account->login }}"
+                                   data-name="{{ $account->user->full_name }}" data-target="#deleteAccount"><i
+                                        class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                            @endif
                         </td>
                     </tr>
 
@@ -75,7 +79,7 @@
                 </tbody>
             </table>
         </div>
-            {!! $accountList->appends(request()->input())->links() !!}
+        {!! $accountList->appends(request()->input())->links() !!}
     </div>
     <!-- Modal -->
     <div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
