@@ -44,12 +44,7 @@
                                 </span>
                             </div>
                             <input class="form-control" type="text" placeholder="{{ __('E-Mail Address') }}"
-                                name="email" value="{{ old('email') }}" required>
-                            @if($errors->has('email'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('email') }}
-                            </div>
-                            @endif
+                                name="email" value="{{ \Illuminate\Support\Facades\Session::get('email') }}" required readonly>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
