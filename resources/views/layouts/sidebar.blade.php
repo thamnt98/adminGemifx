@@ -10,7 +10,7 @@
             Dashboard
         </a>
     </li>
-    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+    @if(is_null(\Illuminate\Support\Facades\Auth::user()->admin_id))
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('agent.list') }}">
                 <i class="fa fa-user"></i>
@@ -45,10 +45,18 @@
         </li>
     @endif
     @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.staff'))
+        @if(is_null(\Illuminate\Support\Facades\Auth::user()->admin_id))
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="{{ route('agent.link') }}">
+                    <i class="fa fa-user"></i>
+                    Agent Link
+                </a>
+            </li>
+        @endif
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="{{ route('agent.link') }}">
+            <a class="c-sidebar-nav-link" href="{{ route('customer.link') }}">
                 <i class="fa fa-user"></i>
-                Agent Link
+                Customer Link
             </a>
         </li>
     @endif

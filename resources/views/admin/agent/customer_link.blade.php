@@ -6,10 +6,19 @@
             <div class="form-row">
                 <div class="col-md-3"></div>
                 <div class="form-group col-md-6">
+                    <label>IB Account</label>
+                    <input type="text" class="form-control"
+                           value="{{ $ibId }}" disabled>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-3"></div>
+                <div class="form-group col-md-6">
                     <label>Link Standard Account</label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" readonly id="register-link"
-                               value="https://ib.gemifx.com/register?admin_id={{ $adminId }}">
+                               value="https://accounts.gemifx.com/register?ib_id={{ $ibId }}">
                         <button type="button" onclick="myFunction()" class="btn btn-primary copy-link">Copy link</button>
                     </div>
                 </div>

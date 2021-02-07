@@ -29,12 +29,26 @@
                                     <i class="fa fa-user"></i>
                                 </span>
                             </div>
-                            <input class="form-control" type="text" placeholder="{{ __('Name') }}" name="name"
-                                value="{{ old('name') }}" required autofocus>
-                            @if($errors->has('name'))
+                            <input class="form-control" type="text" placeholder="{{ __('First name') }}" name="first_name"
+                                value="{{ old('first_name') }}" required autofocus>
+                            @if($errors->has('first_name'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('name') }}
+                                {{ $errors->first('first_name') }}
                             </div>
+                            @endif
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <input class="form-control" type="text" placeholder="{{ __('Last name') }}" name="last_name"
+                                   value="{{ old('last_name') }}" required autofocus>
+                            @if($errors->has('last_name'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('last_name') }}
+                                </div>
                             @endif
                         </div>
                         <div class="input-group mb-3">

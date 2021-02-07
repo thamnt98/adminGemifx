@@ -68,7 +68,8 @@ Route::group([
         'namespace' => 'Agent',
         'prefix' => 'agent',
     ], function () {
-        Route::get('/link', 'LinkController@main')->name('agent.link');
+        Route::get('/customer/link', 'LinkController@main')->name('customer.link');
+        Route::get('/link', 'AgentLinkController@main')->name('agent.link');
         Route::get('/list', 'ListController@main')->name('agent.list');
     });
 });

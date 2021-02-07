@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LinkController extends Controller
+class AgentLinkController extends Controller
 {
     public function main()
     {
-        $ibId = Auth::user()->ib_id;
-        return view('admin.agent.customer_link', compact('ibId'));
+        $adminId = Auth::user()->id;
+        return view('admin.agent.link', compact('adminId'));
     }
 }

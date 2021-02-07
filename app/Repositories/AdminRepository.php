@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use \Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
-use Prettus\Repository\Contracts\RepositoryInterface;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
+use Prettus\Repository\Contracts\RepositoryInterface;
+use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 
 /**
  * Class AdminRepository
@@ -28,6 +28,11 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
 
     public function getAgentList()
     {
-        return $this->where('role', config('role.staff'))->paginate(20, ['name', 'email', 'phone_number', 'ib_id']);
+        $query = $this->where('role', config('role.staff'));
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            $query = $query->where('admin_id', $user->id);
+        }
+        return $query->paginate(20, ['name', 'email', 'phone_number', 'ib_id']);
     }
 }
