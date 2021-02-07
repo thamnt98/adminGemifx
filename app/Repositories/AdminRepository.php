@@ -21,6 +21,11 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         return Admin::class;
     }
 
+    public function isActive($email)
+    {
+        return $this->where('email', $email)->first()->status;
+    }
+
     public function login($credentials)
     {
         return Auth::attempt($credentials);

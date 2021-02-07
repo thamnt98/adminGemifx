@@ -15,6 +15,7 @@ class AddAdminIdToAdminsTable extends Migration
     {
         Schema::table('admins', function (Blueprint $table) {
             $table->bigInteger('admin_id')->nullable();
+            $table->tinyInteger('status')->default(1);
         });
     }
 
@@ -27,6 +28,7 @@ class AddAdminIdToAdminsTable extends Migration
     {
         Schema::table('admins', function (Blueprint $table) {
             $table->dropColumn('admin_id');
+            $table->dropColumn('status');
         });
     }
 }

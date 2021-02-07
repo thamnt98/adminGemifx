@@ -58,6 +58,7 @@ class HandleRegisterController extends Controller
         try {
             DB::beginTransaction();
             $data['admin_id'] = Session::get('admin_id');
+            $data['status'] = 2;
             $this->adminRepository->create($data);
             Session::forget('email');
             Session::forget('otp');

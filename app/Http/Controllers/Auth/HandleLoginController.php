@@ -25,6 +25,10 @@ class HandleLoginController extends Controller
         if ($validateData->fails()) {
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
+        $isActive = $this->adminRepository->isActive($data['email']);
+        if($isActive == 2){
+            return back()->with('error', 'Your account is not active yet')->withInput();
+        }
         $login = $this->adminRepository->login($data);
         if ($login) {
             return redirect()->route('dashboard');
