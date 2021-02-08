@@ -32,11 +32,13 @@ class DeleteController extends Controller
         UserRepository $userRepository,
         LiveAccountRepository $liveAccountRepository,
         WithdrawalRepository $withdrawalRepository,
-        DepositRepository $depositRepository,
+        DepositRepository $depositRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->liveAccountRepository = $liveAccountRepository;
+        $this->withdrawalRepository = $withdrawalRepository;
+        $this->depositRepository = $depositRepository;
     }
 
     public function main($id)
@@ -46,10 +48,10 @@ class DeleteController extends Controller
             $this->userRepository->delete($id);
             $message = $this->liveAccountRepository->deleteLiveAccountByUserId($id);
             if (!empty($message)) {
-                $this->withdrawalRepository->where('user_id', $id)->delete();
-                $this->depositRepository->where('user_id', $id)->delete();
                 return redirect()->back()->with('error', $message);
             }
+            $this->withdrawalRepository->deleteWithdrawalByUserId($id);
+            $this->depositRepository->deleteDepositByUserId($id);
             DB::commit();
             return redirect()->back()->with('success', 'Bạn đã xóa thành công');
         } catch (Exception $e) {

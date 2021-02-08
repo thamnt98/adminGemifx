@@ -36,4 +36,9 @@ class DepositRepository extends EloquentBaseRepository implements RepositoryInte
         return $query->orderBy('orders.created_at', 'desc')->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_name', 'orders.status',
             'orders.type', 'orders.amount_money', 'orders.created_at']);
     }
+
+    public function deleteDepositByUserId($userId)
+    {
+        $this->where('user_id', $userId)->delete();
+    }
 }

@@ -42,4 +42,9 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
         }
         return $query->orderBy('withdrawal_funds.created_at', 'desc')->paginate(20, 'withdrawal_funds.*');
     }
+
+    public function deleteWithdrawalByUserId($userId)
+    {
+        $this->where('user_id', $userId)->delete();
+    }
 }
