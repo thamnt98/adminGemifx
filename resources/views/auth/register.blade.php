@@ -30,7 +30,7 @@
                                 </span>
                             </div>
                             <input class="form-control" type="text" placeholder="{{ __('First name') }}" name="first_name"
-                                value="{{ old('first_name') }}" required autofocus>
+                                value="{{ $data['first_name'] ?? '' }}" required autofocus>
                             @if($errors->has('first_name'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('first_name') }}
@@ -44,7 +44,7 @@
                                 </span>
                             </div>
                             <input class="form-control" type="text" placeholder="{{ __('Last name') }}" name="last_name"
-                                   value="{{ old('last_name') }}" required autofocus>
+                                   value="{{ $data['last_name'] ?? '' }}" required autofocus>
                             @if($errors->has('last_name'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('last_name') }}
@@ -67,7 +67,7 @@
                                 </span>
                             </div>
                             <input class="form-control" type="text" placeholder="{{ __('Phone number') }}"
-                                   name="phone_number" value="{{ old('phone_number') }}" required>
+                                   name="phone_number" value="{{ $data['phone_number'] ?? '' }}" required>
                             @if($errors->has('phone_number'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('phone_number') }}

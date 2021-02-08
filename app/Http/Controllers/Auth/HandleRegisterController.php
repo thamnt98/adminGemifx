@@ -50,7 +50,8 @@ class HandleRegisterController extends Controller
         }
         $validateData = $this->validateData($data);
         if ($validateData->fails()) {
-            return redirect()->back()->withErrors($validateData->errors())->withInput();
+            $errors = $validateData->errors();
+            return view('auth.register', compact('errors','data'));
         }
         $data['password'] = Hash::make($data['password']);
         $data['ib_id'] = rand(100000, 999999);
