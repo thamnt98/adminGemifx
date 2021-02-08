@@ -118,7 +118,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             $ibIds = [$user->ib_id];
             if(is_null($user->admin_id)){
                 $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
-                array_merge($ibIds, $ibIdsOfStaff);
+                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
             }
             $query = $query->whereIn('users.ib_id', $ibIds);
         }
