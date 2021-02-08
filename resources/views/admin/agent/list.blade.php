@@ -47,9 +47,14 @@
                                 <button type="button" class="btn btn-dark"
                                         disabled>Verified</button>
                             @else
+                                @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
                                 <a style="color:white" class="btn btn-success bold btn-active" data-toggle="modal"
                                    data-target="#active" data-id="{{ $agent->id }}"
                                    style="width:150px">Active</a>
+                                @else
+                                    <button type="button" class="btn btn-success"
+                                            disabled>Unverified</button>
+                                @endif
                             @endif
                         </th>
                     </tr>

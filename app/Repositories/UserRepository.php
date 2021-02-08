@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helper\MT4Connect;
+use App\Models\Admin;
 use App\Models\LiveAccount;
 use App\Models\User;
 use Exception;
@@ -114,7 +115,12 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
         }
         $user = Auth::user();
         if ($user->role == config('role.staff')) {
-            $query = $query->where('users.ib_id', $user->ib_id);
+            $ibIds = [$user->ib_id];
+            if(is_null($user->admin_id)){
+                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+                array_merge($ibIds, $ibIdsOfStaff);
+            }
+            $query = $query->whereIn('users.ib_id', $ibIds);
         }
         return $query->orderBy('users.created_at', 'desc')->paginate(20, [
             'users.last_name',
