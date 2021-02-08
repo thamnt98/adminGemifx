@@ -67,7 +67,7 @@ class HandleRegisterController extends Controller
             $data['application_type'] = 1;
             $this->userRepository->create($data);
             DB::commit();
-            return redirect()->route('login')->with('success', 'You registered successfully');
+            return redirect('/login')->with('success', 'You registered successfully');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong');
