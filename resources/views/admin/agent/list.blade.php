@@ -23,6 +23,7 @@
                     <th scope="col">Full Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone number</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,16 @@
                         <th scope="row">{{ $agent->name }}</th>
                         <th scope="row">{{ $agent->email }}</th>
                         <th scope="row">{{ $agent->phone_number }}</th>
+                        <th>
+                            @if($agent->status == 1)
+                                <button type="button" class="btn btn-dark"
+                                        disabled>Verified</button>
+                            @else
+                                <a style="color:white" class="btn btn-success bold btn-active" data-toggle="modal"
+                                   data-target="#active" data-id="{{ $agent->id }}"
+                                   style="width:150px">Active</a>
+                            @endif
+                        </th>
                     </tr>
                 @endforeach
                 </tbody>
@@ -40,5 +51,39 @@
         </div>
         {!! $agents->appends(request()->input())->links() !!}
     </div>
+    <div class="modal fade" id="active" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn kích hoạt người này thành IB quản lý không?</div>
+                <div class="modal-footer">
+                    <form method="post" id="active-agent">
+                        @csrf
+                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                        <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Active</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+@section('javascript')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/boostrap-datepicker.js') }}"></script>
+    <script>
+        $('.btn-active').on('click', function () {
+            let currentUrl = window.location.origin
+            let id = $(this).attr('data-id');
+            let redirectUrl = currentUrl + '/admin/agent/active/' + id;
+            $("#active-agent").attr('action', redirectUrl);
+        })
+    </script>
 @endsection
 

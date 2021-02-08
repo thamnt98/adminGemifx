@@ -71,5 +71,6 @@ Route::group([
         Route::get('/customer/link', 'LinkController@main')->name('customer.link');
         Route::get('/link', 'AgentLinkController@main')->name('agent.link');
         Route::get('/list', 'ListController@main')->name('agent.list');
+        Route::post('/active/{id}', 'ActiveController@main')->name('agent.active');
     });
 });
