@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
     <div class="container-fluid">
-        <header><h2>Agent Link</h2></header>
+        <header><h2>Customer Link</h2></header>
         <form>
             <div class="form-row">
                 <div class="col-md-3"></div>
