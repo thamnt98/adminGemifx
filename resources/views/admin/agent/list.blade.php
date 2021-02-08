@@ -23,6 +23,7 @@
                     <th scope="col">Full Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone number</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Status</th>
                 </tr>
                 </thead>
@@ -34,6 +35,13 @@
                         <th scope="row">{{ $agent->name }}</th>
                         <th scope="row">{{ $agent->email }}</th>
                         <th scope="row">{{ $agent->phone_number }}</th>
+                        <th scope="row">
+                            @if(is_null($agent->admin_id))
+                                Manager
+                            @else
+                                Staff
+                            @endif
+                        </th>
                         <th>
                             @if($agent->status == 1)
                                 <button type="button" class="btn btn-dark"
@@ -61,7 +69,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">Bạn có chắc chắn muốn kích hoạt người này thành IB quản lý không?</div>
+                <div class="modal-body">Bạn có chắc chắn muốn kích hoạt người này thành IB không?</div>
                 <div class="modal-footer">
                     <form method="post" id="active-agent">
                         @csrf
