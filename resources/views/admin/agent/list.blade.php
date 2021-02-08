@@ -43,17 +43,22 @@
                             @endif
                         </th>
                         <th>
-                            @if($agent->status == 1)
-                                <button type="button" class="btn btn-dark"
-                                        disabled>Verified</button>
-                            @else
-                                @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
-                                <a style="color:white" class="btn btn-success bold btn-active" data-toggle="modal"
-                                   data-target="#active" data-id="{{ $agent->id }}"
-                                   style="width:150px">Active</a>
+                            @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                                @if($agent->status == 1)
+                                    <a style="color:white" class="btn btn-dark bold btn-active" data-toggle="modal"
+                                       data-target="#active" data-id="{{ $agent->id }}" data-status="2"
+                                       style="width:150px">Verified</a>
                                 @else
-                                    <button type="button" class="btn btn-success"
-                                            disabled>Unverified</button>
+                                    <a style="color:white" class="btn btn-success bold btn-active" data-toggle="modal"
+                                       data-target="#active" data-id="{{ $agent->id }}" data-status="1"
+                                       style="width:150px">Unverified</a>
+                                @endif
+
+                            @else
+                                @if($agent->status == 1)
+                                    <button type="button" class="btn btn-dark" disabled>Verified</button>
+                                @else
+                                    <button type="button" class="btn btn-success" disabled>Unverified</button>
                                 @endif
                             @endif
                         </th>
@@ -74,12 +79,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">Bạn có chắc chắn muốn kích hoạt người này thành IB không?</div>
+                <div class="modal-body"></div>
                 <div class="modal-footer">
                     <form method="post" id="active-agent">
                         @csrf
-                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
-                        <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Active</a>
+                        <a href="#" class="btn btn-secondary" data-dismiss="modal">No</a>
+                        <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Yes</a>
                     </form>
                 </div>
             </div>
@@ -94,7 +99,14 @@
         $('.btn-active').on('click', function () {
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
-            let redirectUrl = currentUrl + '/admin/agent/active/' + id;
+            let status = $(this).attr('data-status');
+            if(status == 1){
+                $('.modal-body').html('Bạn có muốn kích hoạt người này không ? ')
+            }else
+            {
+                $('.modal-body').html('Bạn có muốn hủy kích hoạt người này không ? ')
+            }
+            let redirectUrl = currentUrl + '/admin/agent/active/' + id + '?status=' + status;
             $("#active-agent").attr('action', redirectUrl);
         })
     </script>

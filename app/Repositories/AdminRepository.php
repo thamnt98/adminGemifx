@@ -41,8 +41,8 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
     }
 
-    public function activeAgent($id)
+    public function activeAgent($id, $status)
     {
-        return $this->update(['status' => 1], $id);
+        return $this->update(['status' => $status], $id);
     }
 }
