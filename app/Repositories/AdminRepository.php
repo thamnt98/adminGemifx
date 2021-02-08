@@ -38,7 +38,7 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         if ($user->role == config('role.staff')) {
             $query = $query->where('admin_id', $user->id);
         }
-        return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status']);
+        return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
     }
 
     public function activeAgent($id)
