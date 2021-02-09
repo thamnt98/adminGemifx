@@ -135,4 +135,52 @@ class MT4Connect
             return "Cập nhật tài khoản thất bại";
         }
     }
+
+    public static function getOpenedTrades($logins){
+        try {
+            $fp = self::connect();
+            if (!$fp) {
+                return 'Không thể kết nối tới MT4';
+            }
+            $from = strtotime('2021-02-08 00:00:00');
+            $to = strtotime('2021-02-08 23:59:59');
+            $logins = ['2131836596', '2131851564' ];
+            $loginString = '';
+            foreach($logins as $login){
+                $loginString .= $login. ';';
+            }
+            $logins = (rtrim($loginString, ';'));
+            $cmd = 'action=gethistory&from=' .$from . '&to=' . $to  . '&login=' . $logins;
+            fwrite($fp, $cmd);
+            stream_set_timeout($fp, 1);
+            $result = '';
+            $info = stream_get_meta_data($fp);
+            while (!$info['timed_out'] && !feof($fp)) {
+                $str = @fgets($fp, 1024);
+                if (strpos($str, 'size')) {
+                    $size = explode('size', $str);
+                    $userAmount = $size[1];
+                    if($userAmount == "=0\n"){
+                        break;
+                    }
+                }
+                if (strpos($str, ';')) {
+                    $result .= $str;
+                    $info = stream_get_meta_data($fp);
+                }
+            }
+            $array = array();
+            if(!empty($result)){
+                $result = explode('&', $result);
+                fclose($fp);
+                $lines = explode("\n", $result[0]);
+                foreach ($lines as $line) {
+                    $array[] = explode(";", $line);
+                }
+            }
+            return $array;
+        } catch (\Exception $e) {
+            return "Cập nhật tài khoản thất bại";
+        }
+    }
 }

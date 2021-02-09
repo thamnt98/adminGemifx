@@ -73,4 +73,10 @@ Route::group([
         Route::get('/list', 'ListController@main')->name('agent.list');
         Route::post('/active/{id}', 'ActiveController@main')->name('agent.active');
     });
+    Route::group([
+        'namespace' => 'Report',
+        'prefix' => 'report',
+    ], function () {
+        Route::get('/trade', 'GetTradeListController@main')->name('report.trade');
+    });
 });

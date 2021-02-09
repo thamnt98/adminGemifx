@@ -102,4 +102,12 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
             'live_accounts.user_id',
         ]);
     }
+
+    public function getLoginsByLoggedAdmin(){
+        $user = Auth::user();
+        if($user->role == config('role.admin')){
+            $logins = $this->pluck('login');
+        }
+        return $logins;
+    }
 }

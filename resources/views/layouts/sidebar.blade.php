@@ -44,6 +44,12 @@
             </a>
         </li>
     @endif
+    <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('report.trade') }}">
+            <i class="fa fa-bar-chart" aria-hidden="true"></i>
+            Report
+        </a>
+    </li>
     @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.staff'))
         @if(is_null(\Illuminate\Support\Facades\Auth::user()->admin_id))
             <li class="c-sidebar-nav-item">
