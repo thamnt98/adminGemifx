@@ -80,6 +80,9 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
             if (isset($search['login']) && !is_null($search['login'])) {
                 $query = $query->where('login', 'like', '%' . $search['login'] . '%');
             }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
             if (isset($search['email']) && !is_null($search['email'])) {
                 $query = $query
                     ->join('users', 'live_accounts.user_id', '=', 'users.id')

@@ -106,6 +106,9 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             if (isset($search['email']) && !is_null($search['email'])) {
                 $query = $query->where('email', 'like', '%' . $search['email'] . '%');
             }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $query = $query->where('users.ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
             if (isset($search['login']) && !is_null($search['login'])) {
                 $query = $query
                     ->join('live_accounts', 'users.id', '=', 'live_accounts.user_id')
