@@ -102,6 +102,15 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
     public function getUserListBySearch($search)
     {
         $query = $this;
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            $ibIds = [$user->ib_id];
+            if(is_null($user->admin_id)){
+                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
+            }
+            $query = $query->whereIn('users.ib_id', $ibIds);
+        }
         if (!empty($search)) {
             if (isset($search['email']) && !is_null($search['email'])) {
                 $query = $query->where('email', 'like', '%' . $search['email'] . '%');
@@ -115,15 +124,6 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                     ->where('live_accounts.login', 'like', '%' . $search['login'] . '%')
                     ->distinct('live_accounts.user_id');
             }
-        }
-        $user = Auth::user();
-        if ($user->role == config('role.staff')) {
-            $ibIds = [$user->ib_id];
-            if(is_null($user->admin_id)){
-                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
-                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
-            }
-            $query = $query->whereIn('users.ib_id', $ibIds);
         }
         return $query->orderBy('users.created_at', 'desc')->paginate(20, [
             'users.last_name',

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helper\MT4Connect;
+use App\Models\Admin;
 use App\Models\LiveAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -76,6 +77,15 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
     public function getAccountListBySearch($search)
     {
         $query = $this;
+        $user = Auth::user();
+        if ($user->role == config('role.staff')) {
+            $ibIds = [$user->ib_id];
+            if(is_null($user->admin_id)){
+                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
+            }
+            $query = $query->whereIn('live_accounts.ib_id', $ibIds);
+        }
         if (!empty($search)) {
             if (isset($search['login']) && !is_null($search['login'])) {
                 $query = $query->where('login', 'like', '%' . $search['login'] . '%');
@@ -89,10 +99,6 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
                     ->where('users.email', 'like', '%' . $search['email'] . '%');
             }
         }
-        $user = Auth::user();
-        if ($user->role == config('role.staff')) {
-            $query = $query->where('live_accounts.ib_id', $user->ib_id);
-        }
         return $query->orderBy('live_accounts.created_at', 'desc')->paginate(20, [
             'live_accounts.id',
             'live_accounts.login',
@@ -103,11 +109,19 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         ]);
     }
 
-    public function getLoginsByLoggedAdmin(){
+    public function getLoginsByLoggedAdmin()
+    {
+        $query = $this;
         $user = Auth::user();
-        if($user->role == config('role.admin')){
-            $logins = $this->pluck('login');
+        if ($user->role == config('role.staff')) {
+            $ibIds = [$user->ib_id];
+            if (is_null($user->admin_id)) {
+                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
+            }
+            $query = $query->whereIn('ib_id', $ibIds);
+
         }
-        return $logins;
+        return $query->pluck('login')->toArray();
     }
 }

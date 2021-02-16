@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Report;
 use App\Helper\MT4Connect;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
+use Illuminate\Http\Request;
 
 class GetTradeListController extends Controller
 {
@@ -21,10 +22,17 @@ class GetTradeListController extends Controller
         $this->liveAccountRepository = $liveAccountRepository;
     }
 
-    public function main()
+    public function main(Request $request)
     {
-        $logins = $this->liveAccountRepository->getLoginsByLoggedAdmin();
-        $trades = $this->MT4Connect->getOpenedTrades($logins);
-        dd($trades);
+        $closeTime = $request->close_time;
+        $trades = [];
+        if(!is_null($closeTime)){
+            $data =  explode('-', $closeTime);
+            $data['from'] = trim($data[0]);
+            $data['to'] = trim($data[1]);
+            $logins = $this->liveAccountRepository->getLoginsByLoggedAdmin();
+            $trades = $this->MT4Connect->getOpenedTrades($logins, $data);
+        }
+        return view('admin.report.list', compact('closeTime', 'trades'));
     }
 }

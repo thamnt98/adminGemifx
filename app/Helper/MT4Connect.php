@@ -136,14 +136,17 @@ class MT4Connect
         }
     }
 
-    public static function getOpenedTrades($logins){
+    public static function getOpenedTrades($logins, $data){
+        if(empty($logins)){
+            return [];
+        }
         try {
             $fp = self::connect();
             if (!$fp) {
                 return 'Không thể kết nối tới MT4';
             }
-            $from = strtotime('2021-02-08 00:00:00');
-            $to = strtotime('2021-02-08 23:59:59');
+            $from = strtotime($data['from'] . ' 00:00:00');
+            $to = strtotime($data['to'] . ' 23:59:59');
             $logins = ['2131836596', '2131851564' ];
             $loginString = '';
             foreach($logins as $login){
@@ -180,7 +183,7 @@ class MT4Connect
             }
             return $array;
         } catch (\Exception $e) {
-            return "Cập nhật tài khoản thất bại";
+            return "Hệ thống đang bị lỗi. Vui lòng thử lại sau ";
         }
     }
 }
