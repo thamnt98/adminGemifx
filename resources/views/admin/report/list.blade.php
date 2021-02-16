@@ -46,8 +46,13 @@
                     <th>Volume</th>
                     <th>Open time</th>
                     <th>Close time</th>
+                    <th>Comment</th>
                     <th>Commision</th>
                     <th>Agent Commision</th>
+                    <th>Cmd</th>
+                    <th>SL</th>
+                    <th>Tp</th>
+                    <th>Swap</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,8 +68,13 @@
                         <td>{{ $trade[6] }}</td>
                         <td>{{ $trade[7] }}</td>
                         <td>{{ $trade[8] }}</td>
+                        <td>{{ $trade[9] }}</td>
                         <td>{{ $trade[10] }}</td>
                         <td>{{ $trade[11] }}</td>
+                        <td>{{ $trade[12] }}</td>
+                        <td>{{ $trade[13] }}</td>
+                        <td>{{ $trade[14] }}</td>
+                        <td>{{ $trade[15] }}</td>
                     </tr>
                 @endforeach
                 </tbody>
