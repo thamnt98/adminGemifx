@@ -25,6 +25,9 @@
                     <th scope="col">Phone number</th>
                     <th scope="col">Role</th>
                     <th scope="col">Status</th>
+                    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                        <th></th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -62,6 +65,13 @@
                                 @endif
                             @endif
                         </th>
+                        @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                            <th>
+                                <a href="{{ route('agent.detail', $agent->id) }}"
+                                   class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i>
+                                </a>
+                            </th>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

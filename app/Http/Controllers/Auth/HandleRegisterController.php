@@ -59,6 +59,10 @@ class HandleRegisterController extends Controller
         try {
             DB::beginTransaction();
             $data['admin_id'] = Session::get('admin_id');
+            $data['commission'] = 2;
+            if(is_null($data['admin_id'])){
+                $data['staff_commission'] = 1;
+            }
             $data['status'] = 2;
             $this->adminRepository->create($data);
             Session::forget('email');
