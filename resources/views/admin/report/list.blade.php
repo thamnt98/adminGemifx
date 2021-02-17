@@ -1,6 +1,8 @@
 @extends('layouts.base')
 @section('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -33,26 +35,20 @@
             <div class="col-md-1"></div>
         </div>
         <div class="table-responsive" style="margin-top: 70px">
-            <table class="table table-striped" data-pagination="true">
+            <table id="example" class="table table-striped table-bordered" style="width:100%" data-search="false">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th>Login</th>
                     <th>Order</th>
+                    <th>Type</th>
                     <th>Symbol</th>
+                    <th>Lots</th>
                     <th>Open price</th>
                     <th>Close price</th>
-                    <th>Profit</th>
-                    <th>Volume</th>
                     <th>Open time</th>
                     <th>Close time</th>
-                    <th>Comment</th>
-                    <th>Commision</th>
-                    <th>Agent Commision</th>
-                    <th>Cmd</th>
-                    <th>SL</th>
-                    <th>Tp</th>
-                    <th>Swap</th>
+                    <th>Profit</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,20 +57,14 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $trade[0] }}</td>
                         <td>{{ $trade[1] }}</td>
+                        <td>{{ config('mt4.cmd')[$trade[12]] }}</td>
                         <td>{{ $trade[2] }}</td>
+                        <td>{{ round($trade[6]/100, 2) }}</td>
                         <td>{{ $trade[3] }}</td>
                         <td>{{ $trade[4] }}</td>
+                        <td>{{ date('Y-m-d H:i:s', $trade[7]) }}</td>
+                        <td>{{ date('Y-m-d H:i:s', $trade[8]) }}</td>
                         <td>{{ $trade[5] }}</td>
-                        <td>{{ $trade[6] }}</td>
-                        <td>{{ $trade[7] }}</td>
-                        <td>{{ $trade[8] }}</td>
-                        <td>{{ $trade[9] }}</td>
-                        <td>{{ $trade[10] }}</td>
-                        <td>{{ $trade[11] }}</td>
-                        <td>{{ $trade[12] }}</td>
-                        <td>{{ $trade[13] }}</td>
-                        <td>{{ $trade[14] }}</td>
-                        <td>{{ $trade[15] }}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -83,10 +73,23 @@
     </div>
 @endsection
 @section('javascript')
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}" ></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $('input[name="close_time"]').daterangepicker();
+        $(document).ready(function() {
+            $('#example').DataTable(
+                {
+                    searching:false,
+                    columnDefs : [
+                        { targets: 0, sortable: false},
+                    ],
+                    order: [[ 1, "asc" ]]
+                }
+            );
+        } );
     </script>
 @endsection

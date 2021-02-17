@@ -15,5 +15,15 @@ return [
         '200' => '1:200',
         '300' => '1:300',
         '500' => '1:500',
+    ],
+    'cmd'=> [
+        0 => 'buy',
+        1 => 'sell',
+        2 => 'buy limit',
+        3 => 'sell limit',
+        4 => 'buy stop',
+        5 => 'sell stop',
+        6 => 'balance',
+        7 => 'credit'
     ]
 ];
