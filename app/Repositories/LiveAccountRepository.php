@@ -118,7 +118,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
             if (is_null($user->admin_id)) {
                 $ibIds = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
                 $logins = $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray();
-                $result = array_merge($result, array_fill_keys($logins, $user->staff_commission));
+                $result += array_fill_keys($logins, $user->staff_commission);
             }
         }else{
             $logins = $this->pluck('login')->toArray();
