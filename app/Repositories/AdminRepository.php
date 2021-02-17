@@ -49,4 +49,8 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
     public function getAgentDetail($id){
         return $this->find($id);
     }
+
+    public function updateAgent($id, $data){
+        return $this->update($data, $id);
+    }
 }

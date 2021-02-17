@@ -12,7 +12,6 @@ use App\Repositories\LiveAccountRepository;
 class UpdateLiveAccountController extends Controller
 {
 
-
     /**
      * @var LiveAccountRepository
      */

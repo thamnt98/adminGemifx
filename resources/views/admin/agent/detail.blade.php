@@ -57,6 +57,25 @@
                     @endif
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('commission', $agent->commission) }}" name="commission">
+                    @if($errors->has('commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('commission') }}</span>
+                    @endif
+                </div>
+                @if(is_null($agent->admin_id))
+                    <div class="form-group col-md-6">
+                        <label>Staff Commisison ($/lots)</label>
+                        <input class="form-control" type="text" value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
+                        @if($errors->has('staff_commission'))
+                            <span class="text-danger text-md-left">{{ $errors->first('staff_commission') }}</span>
+                        @endif
+                    </div>
+                @endif
+            </div>
+            <button type="submit" class="btn btn-primary " style="margin-top: 20px">Cập nhật</button>
         </form>
     </div>
 @endsection
