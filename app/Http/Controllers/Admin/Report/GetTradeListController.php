@@ -25,14 +25,22 @@ class GetTradeListController extends Controller
     public function main(Request $request)
     {
         $closeTime = $request->close_time;
+        $lots = 0;
         $trades = [];
-        if(!is_null($closeTime)){
-            $data =  explode('-', $closeTime);
+        if (is_null($closeTime)) {
+            $data['from'] = date('Y-m-01');
+            $data['to'] = date('Y-m-d');
+        } else {
+            $data = explode('-', $closeTime);
             $data['from'] = trim($data[0]);
             $data['to'] = trim($data[1]);
-            $logins = $this->liveAccountRepository->getLoginsByLoggedAdmin();
-            $trades = $this->MT4Connect->getOpenedTrades($logins, $data);
         }
-        return view('admin.report.list', compact('closeTime', 'trades'));
+        $logins = $this->liveAccountRepository->getLoginsByLoggedAdmin();
+        if (!empty($logins)) {
+            $result = $this->MT4Connect->getOpenedTrades($logins, $data);
+            $trades = $result[0];
+            $lots = $result[1];
+        }
+        return view('admin.report.list', compact('closeTime', 'trades', 'lots'));
     }
 }

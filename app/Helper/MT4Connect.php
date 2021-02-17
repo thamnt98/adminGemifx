@@ -137,9 +137,6 @@ class MT4Connect
     }
 
     public static function getOpenedTrades($logins, $data){
-        if(empty($logins)){
-            return [];
-        }
         try {
             $fp = self::connect();
             if (!$fp) {
@@ -173,15 +170,19 @@ class MT4Connect
                 }
             }
             $array = array();
+            $lots = 0;
             if(!empty($result)){
                 $result = explode('&', $result);
                 fclose($fp);
                 $lines = explode("\n", $result[0]);
                 foreach ($lines as $line) {
-                    $array[] = explode(";", $line);
+                    $line = $array[] = explode(";", $line);
+                    if($line[8] - $line[7] > 180){
+                        $lots += round($line[6]/100, 2);
+                    }
                 }
             }
-            return $array;
+            return [$array, $lots];
         } catch (\Exception $e) {
             return "Hệ thống đang bị lỗi. Vui lòng thử lại sau ";
         }

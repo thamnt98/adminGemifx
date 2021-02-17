@@ -34,8 +34,15 @@
             </div>
             <div class="col-md-1"></div>
         </div>
-        <div class="table-responsive" style="margin-top: 70px">
-            <table id="example" class="table table-striped table-bordered" style="width:100%" data-search="false">
+            <div class="table-responsive" style="margin-top: 70px">
+            <table id="example" class="table table-striped" style="width:100%" data-search="false">
+                <div>
+                    <b>Lots: {{ $lots  }} </b>
+                </div>
+                <div>
+                    <b>Commision: </b>
+                </div>
+                <br>
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -79,7 +86,14 @@
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $('input[name="close_time"]').daterangepicker();
+        $('input[name="close_time"]').daterangepicker(
+            {
+                startDate:  moment().clone().startOf('month').format('YYYY/MM/DD'),
+                locale: {
+                    format: 'YYYY/MM/DD'
+                }
+            }
+        );
         $(document).ready(function() {
             $('#example').DataTable(
                 {
