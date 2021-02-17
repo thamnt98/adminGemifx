@@ -111,17 +111,19 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function getLoginsByLoggedAdmin()
     {
-        $query = $this;
         $user = Auth::user();
         if ($user->role == config('role.staff')) {
-            $ibIds = [$user->ib_id];
+            $logins = $this->where('ib_id', $user->ib_id)->pluck('login')->toArray();
+            $result = array_fill_keys($logins, $user->commission);
             if (is_null($user->admin_id)) {
-                $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
-                $ibIds = array_merge($ibIds, $ibIdsOfStaff);
+                $ibIds = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+                $logins = $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray();
+                $result = array_merge($result, array_fill_keys($logins, $user->staff_commission));
             }
-            $query = $query->whereIn('ib_id', $ibIds);
-
+        }else{
+            $logins = $this->pluck('login')->toArray();
+            $result = array_fill_keys($logins, $user->staff_commission);
         }
-        return $query->pluck('login')->toArray();
+        return $result;
     }
 }

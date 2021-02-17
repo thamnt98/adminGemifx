@@ -40,7 +40,7 @@
                     <b>Lots: {{ $lots  }} </b>
                 </div>
                 <div>
-                    <b>Commision: </b>
+                    <b>Commision: {{ $commission }} </b>
                 </div>
                 <br>
                 <thead>

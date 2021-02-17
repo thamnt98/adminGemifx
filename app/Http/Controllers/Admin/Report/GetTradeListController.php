@@ -26,6 +26,7 @@ class GetTradeListController extends Controller
     {
         $closeTime = $request->close_time;
         $lots = 0;
+        $commission = 0;
         $trades = [];
         if (is_null($closeTime)) {
             $data['from'] = date('Y-m-01');
@@ -40,7 +41,8 @@ class GetTradeListController extends Controller
             $result = $this->MT4Connect->getOpenedTrades($logins, $data);
             $trades = $result[0];
             $lots = $result[1];
+            $commission = $result[2];
         }
-        return view('admin.report.list', compact('closeTime', 'trades', 'lots'));
+        return view('admin.report.list', compact('closeTime', 'trades', 'lots', 'commission'));
     }
 }

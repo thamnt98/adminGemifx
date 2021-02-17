@@ -136,7 +136,7 @@ class MT4Connect
         }
     }
 
-    public static function getOpenedTrades($logins, $data){
+    public static function getOpenedTrades($loginArray, $data){
         try {
             $fp = self::connect();
             if (!$fp) {
@@ -144,7 +144,7 @@ class MT4Connect
             }
             $from = strtotime($data['from'] . ' 00:00:00');
             $to = strtotime($data['to'] . ' 23:59:59');
-            $logins = ['2131836596', '2131851564' ];
+            $logins = array_keys($loginArray);
             $loginString = '';
             foreach($logins as $login){
                 $loginString .= $login. ';';
@@ -171,6 +171,7 @@ class MT4Connect
             }
             $array = array();
             $lots = 0;
+            $commission = 0;
             if(!empty($result)){
                 $result = explode('&', $result);
                 fclose($fp);
@@ -179,10 +180,11 @@ class MT4Connect
                     $line = $array[] = explode(";", $line);
                     if($line[8] - $line[7] > 180){
                         $lots += round($line[6]/100, 2);
+                        $commission += round($line[6]/100 * $loginArray[$line[0]], 2);
                     }
                 }
             }
-            return [$array, $lots];
+            return [$array, $lots, $commission];
         } catch (\Exception $e) {
             return "Hệ thống đang bị lỗi. Vui lòng thử lại sau ";
         }
