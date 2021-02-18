@@ -207,10 +207,9 @@ class MT4Connect
 
     public function transferCommission()
     {
-
         $admins = Admin::where('role', config('role.staff'))->get();
-        $from = strtotime('2021-02-17 00:00:00');
-        $to = strtotime('2021-02-18 23:59:59');
+        $to = strtotime('now');
+        $from = strtotime('-5 minutes');
         foreach ($admins as $key => $admin) {
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = self::getOpenedTrades($logins, $from, $to);
