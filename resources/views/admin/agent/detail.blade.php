@@ -45,8 +45,8 @@
                 <div class="form-group col-md-6">
                     <label>Role</label>
                     <select class="form-control" name="role" id="role">
-                        <option value="manager" @if(old('role') == 'manager' || is_null($agent->admin_id)) selected @endif>Manager</option>
-                        <option value="staff" @if(old('role') == 'staff' || !is_null($agent->admin_id)) selected @endif>Staff</option>
+                        <option value="manager" @if(old('role', $agent->role) == 'manager') selected @endif>Manager</option>
+                        <option value="staff" @if(old('role', $agent->role) == 'staff') selected @endif>Staff</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">

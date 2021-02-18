@@ -24,6 +24,11 @@ class DetailController extends Controller
     public function main($id)
     {
         $agent = $this->adminRepository->getAgentDetail($id);
+        if (is_null($agent->admin_id)) {
+            $agent->role = 'manager';
+        } else {
+            $agent->role = 'staff';
+        }
         return view('admin.agent.detail', compact('agent'));
     }
 }
