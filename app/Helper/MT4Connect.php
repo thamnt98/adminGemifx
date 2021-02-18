@@ -1,9 +1,26 @@
 <?php
 
 namespace App\Helper;
+use App\Models\Admin;
+use App\Models\LiveAccount;
+use App\Models\User;
+use App\Repositories\LiveAccountRepository;
+use Exception;
 
 class MT4Connect
 {
+    /**
+     * @var LiveAccountRepository
+     */
+    private $liveAccountRepository;
+
+    /**
+     * MT4Connect constructor.
+     */
+    public function __construct(LiveAccountRepository  $liveAccountRepository)
+    {
+        $this->liveAccountRepository = $liveAccountRepository;
+    }
 
     public static function connect()
     {
@@ -40,7 +57,7 @@ class MT4Connect
             }
             fclose($fp);
             return $message;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "Xóa tài khoản thất bại";
         }
     }
@@ -72,7 +89,7 @@ class MT4Connect
             }
             fclose($fp);
             return $message;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "Xóa tài khoản thất bại";
         }
     }
@@ -103,7 +120,7 @@ class MT4Connect
             $result = explode('&', $result);
             $data['login'] = explode('=', $result[1])[1];
             return $data['login'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "Xóa tài khoản thất bại";
         }
     }
@@ -131,19 +148,17 @@ class MT4Connect
                 }
             }
             fclose($fp);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "Cập nhật tài khoản thất bại";
         }
     }
 
-    public static function getOpenedTrades($loginArray, $data){
+    public static function getOpenedTrades($loginArray, $from, $to){
         try {
             $fp = self::connect();
             if (!$fp) {
                 return 'Không thể kết nối tới MT4';
             }
-            $from = strtotime($data['from'] . ' 00:00:00');
-            $to = strtotime($data['to'] . ' 23:59:59');
             $logins = array_keys($loginArray);
             $loginString = '';
             foreach($logins as $login){
@@ -185,8 +200,53 @@ class MT4Connect
                 }
             }
             return [$array, $lots, $commission];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return "Hệ thống đang bị lỗi. Vui lòng thử lại sau ";
+        }
+    }
+
+    public function transferCommission()
+    {
+
+        $admins = Admin::where('role', config('role.staff'))->get();
+        $from = strtotime('2021-02-17 00:00:00');
+        $to = strtotime('2021-02-18 23:59:59');
+        foreach ($admins as $key => $admin) {
+            $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
+            $result = self::getOpenedTrades($logins, $from, $to);
+            $commission = $result[2];
+            if($commission){
+                $userId = User::where('email', $admin->email)->pluck('id');
+                $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
+                if (!empty($account)) {
+                    self::changeBalance($account[0], $commission);
+                }
+            }
+        }
+    }
+
+    public function changeBalance($login, $value)
+    {
+        try {
+            $fp = self::connect();
+            if (!$fp) {
+                return 'Không thể kết nối tới MT4';
+            }
+            $cmd = 'action=changebalance&login=' . $login . '&value=' . $value . '&comment=transfer commission';
+            fwrite($fp, $cmd);
+            stream_set_timeout($fp, 1);
+            $result = '';
+            $info = stream_get_meta_data($fp);
+            while (!$info['timed_out'] && !feof($fp)) {
+                $str = @fgets($fp, 1024);
+                if (strpos($str, 'login')) {
+                    $result .= $str;
+                    $info = stream_get_meta_data($fp);
+                }
+            }
+            fclose($fp);
+        } catch (Exception $e) {
+            return "Lỗi hệ thống";
         }
     }
 }

@@ -55,7 +55,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
             $data['user_id'] = $user->id;
             $this->create($data);
             return [
-                'login'    => $data['login'],
+                'login' => $data['login'],
                 'password' => $data['password'],
             ];
         }
@@ -80,7 +80,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         $user = Auth::user();
         if ($user->role == config('role.staff')) {
             $ibIds = [$user->ib_id];
-            if(is_null($user->admin_id)){
+            if (is_null($user->admin_id)) {
                 $ibIdsOfStaff = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
                 $ibIds = array_merge($ibIds, $ibIdsOfStaff);
             }
@@ -109,20 +109,19 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         ]);
     }
 
-    public function getLoginsByLoggedAdmin()
+    public function getLoginsByAdmin($admin)
     {
-        $user = Auth::user();
-        if ($user->role == config('role.staff')) {
-            $logins = $this->where('ib_id', $user->ib_id)->pluck('login')->toArray();
-            $result = array_fill_keys($logins, $user->commission);
-            if (is_null($user->admin_id)) {
-                $ibIds = Admin::where('admin_id', $user->id)->pluck('ib_id')->toArray();
+        if ($admin->role == config('role.staff')) {
+            $logins = $this->where('ib_id', $admin->ib_id)->pluck('login')->toArray();
+            $result = array_fill_keys($logins, $admin->commission);
+            if (is_null($admin->admin_id)) {
+                $ibIds = Admin::where('admin_id', $admin->id)->pluck('ib_id')->toArray();
                 $logins = $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray();
-                $result += array_fill_keys($logins, $user->staff_commission);
+                $result += array_fill_keys($logins, $admin->staff_commission);
             }
         }else{
             $logins = $this->pluck('login')->toArray();
-            $result = array_fill_keys($logins, $user->staff_commission);
+            $result = array_fill_keys($logins, $admin->staff_commission);
         }
         return $result;
     }

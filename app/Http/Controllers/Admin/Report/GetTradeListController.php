@@ -6,6 +6,7 @@ use App\Helper\MT4Connect;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GetTradeListController extends Controller
 {
@@ -36,9 +37,11 @@ class GetTradeListController extends Controller
             $data['from'] = trim($data[0]);
             $data['to'] = trim($data[1]);
         }
-        $logins = $this->liveAccountRepository->getLoginsByLoggedAdmin();
+        $logins = $this->liveAccountRepository->getLoginsByAdmin(Auth::user());
         if (!empty($logins)) {
-            $result = $this->MT4Connect->getOpenedTrades($logins, $data);
+            $from = strtotime($data['from'] . ' 00:00:00');
+            $to = strtotime($data['to'] . ' 23:59:59');
+            $result = $this->MT4Connect->getOpenedTrades($logins, $from, $to);
             $trades = $result[0];
             $lots = $result[1];
             $commission = $result[2];
