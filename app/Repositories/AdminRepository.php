@@ -51,6 +51,16 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
     }
 
     public function updateAgent($id, $data){
+        $user = $this->where('id', $id)->first();
+        $adminId = $user->admin_id;
+        if (is_null($adminId) && $data['role'] == 'staff') {
+            $data['admin_id'] = 1;
+            $this->where('admin_id', $user->id)->update(['admin_id' => $data['admin_id']]);
+        }
+        if (!is_null($adminId) && $data['role'] == 'manager') {
+            $data['admin_id'] = null;
+        }
+        unset($data['role']);
         return $this->update($data, $id);
     }
 }

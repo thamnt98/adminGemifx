@@ -44,7 +44,10 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Role</label>
-                    <input class="form-control" type="text" value="@if(is_null($agent->admin_id)) Manager @else Staff @endif" disabled>
+                    <select class="form-control" name="role" id="role">
+                        <option value="manager" @if(old('role') == 'manager' || is_null($agent->admin_id)) selected @endif>Manager</option>
+                        <option value="staff" @if(old('role') == 'staff' || !is_null($agent->admin_id)) selected @endif>Staff</option>
+                    </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label>Status</label>
@@ -65,17 +68,32 @@
                         <span class="text-danger text-md-left">{{ $errors->first('commission') }}</span>
                     @endif
                 </div>
-                @if(is_null($agent->admin_id))
-                    <div class="form-group col-md-6">
-                        <label>Staff Commisison ($/lots)</label>
-                        <input class="form-control" type="text" value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
-                        @if($errors->has('staff_commission'))
-                            <span class="text-danger text-md-left">{{ $errors->first('staff_commission') }}</span>
-                        @endif
-                    </div>
-                @endif
+                <div class="staff-commission form-group col-md-6">
+                    <label>Staff Commisison ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
+                    @if($errors->has('staff_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('staff_commission') }}</span>
+                    @endif
+                </div>
             </div>
             <button type="submit" class="btn btn-primary " style="margin-top: 20px">Cập nhật</button>
         </form>
     </div>
+@endsection
+@section('javascript')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script>
+        if ($('#role').val() == 'manager') {
+            $('.staff-commission').removeClass('hidden');
+        } else {
+            $('.staff-commission').addClass('hidden');
+        }
+        $('#role').on('change', function () {
+            if ($('#role').val() == 'manager') {
+                $('.staff-commission').removeClass('hidden');
+            } else {
+                $('.staff-commission').addClass('hidden');
+            }
+        })
+    </script>
 @endsection

@@ -49,7 +49,7 @@ class UpdateController extends Controller
                 'name' => ['required', 'max:255'],
                 'phone_number' => 'required|regex:/[0-9]{10,11}/',
                 'commission' => 'required|min:0',
-                'staff_commission' => 'required|min:0|lt:commission',
+                'staff_commission' => 'required_if:role,manager|min:0|lt:commission',
             ]
         );
     }
