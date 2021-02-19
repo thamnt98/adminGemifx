@@ -30,7 +30,7 @@ class GetTradeListController extends Controller
         $lots = 0;
         $commission = 0;
         $trades = [];
-        if (!isset($closeTime)) {
+        if (is_null($closeTime)) {
             $data['from'] = date('Y-m-01');
             $data['to'] = date('Y-m-d');
         } else {
