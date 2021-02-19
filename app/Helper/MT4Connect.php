@@ -217,7 +217,7 @@ class MT4Connect
             if($commission){
                 $userId = User::where('email', $admin->email)->pluck('id');
                 $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
-                if (!empty($account)) {
+                if (count($account)) {
                     self::changeBalance($account[0], $commission);
                 }
             }
