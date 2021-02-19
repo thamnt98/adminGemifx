@@ -24,9 +24,13 @@
                 <form method="get" action="{{ route('report.trade') }}">
                     @csrf
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-5">
                             <label for="dates">Close time</label>
                             <input type="text" class="form-control" name="close_time" value="{{ $closeTime }}" id="dates"/>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="">IB ID</label>
+                            <input type="text" class="form-control" name="ib_id" value="{{ $ibId }}" />
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>

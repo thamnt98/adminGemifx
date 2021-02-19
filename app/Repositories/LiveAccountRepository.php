@@ -109,8 +109,13 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         ]);
     }
 
-    public function getLoginsByAdmin($admin)
+    public function getLoginsByAdmin($admin, $search = null)
     {
+        if ($search) {
+            $admin = Admin::where('ib_id', trim($search))->first();
+            if (!$admin)
+                return [];
+        }
         if ($admin->role == config('role.staff')) {
             $logins = $this->where('ib_id', $admin->ib_id)->pluck('login')->toArray();
             $result = array_fill_keys($logins, $admin->commission);
@@ -119,7 +124,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
                 $logins = $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray();
                 $result += array_fill_keys($logins, $admin->staff_commission);
             }
-        }else{
+        } else {
             $logins = $this->pluck('login')->toArray();
             $result = array_fill_keys($logins, $admin->staff_commission);
         }
