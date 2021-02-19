@@ -92,7 +92,7 @@
     <script>
         $('input[name="close_time"]').daterangepicker(
             {
-                startDate:  moment().clone().startOf('month').format('YYYY/MM/DD'),
+                // startDate:  moment().clone().startOf('month').format('YYYY/MM/DD'),
                 locale: {
                     format: 'YYYY/MM/DD'
                 }
