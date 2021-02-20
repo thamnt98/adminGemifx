@@ -73,8 +73,8 @@
                         <td>{{ round($trade[6]/100, 2) }}</td>
                         <td>{{ $trade[3] }}</td>
                         <td>{{ $trade[4] }}</td>
-                        <td>{{ $trade[7] }}</td>
-                        <td>{{ $trade[8] }}</td>
+                        <td>{{ date('Y-m-d H:i:s', $trade[7]) }}</td>
+                        <td>{{ date('Y-m-d H:i:s', $trade[8]) }}</td>
                         <td>{{ $trade[5] }}</td>
                     </tr>
                 @endforeach
