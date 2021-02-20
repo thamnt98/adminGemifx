@@ -194,6 +194,10 @@ class MT4Connect
                 foreach ($lines as $line) {
                     $line = $array[] = explode(";", $line);
                     if($line[8] - $line[7] > 180){
+                        $openTime = new DateTime($line[7], new DateTimeZone('EET'));
+                        $line[7] = $openTime->format('Y-m-d H:i:s');
+                        $closeTime = new DateTime($line[7], new DateTimeZone('EET'));
+                        $line[8] = $closeTime->format('Y-m-d H:i:s');
                         $lots += round($line[6]/100, 2);
                         $commission += round($line[6]/100 * $loginArray[$line[0]], 2);
                     }
