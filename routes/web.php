@@ -30,6 +30,8 @@ Route::group([
 ], function () {
     Route::get('/logout', 'LogoutController@main')->name('logout');
     Route::get('/dashboard', 'DashboardController@main')->name('dashboard');
+    Route::get('/profile', 'ProfileController@main')->name('profile');
+    Route::post('/profile', 'UpdateProfileController@main')->name('profile.update');
     Route::get('/', 'DashboardController@main')->name('home');
     Route::group([
         'namespace' => 'User',

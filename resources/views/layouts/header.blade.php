@@ -17,7 +17,7 @@
                 <div class="dropdown-menu dropdown-menu-right pt-0">
                     <div class="dropdown-header bg-light py-2"><strong>Account</strong>
                     </div>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ route('profile') }}">
                         <i class="fa fa-user"></i>Profile
                     </a>
                     <a class="dropdown-item" href="{{ route('logout') }}">
