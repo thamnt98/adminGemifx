@@ -19,6 +19,9 @@ Route::get('/register', 'Auth\RegisterController@main')->name('register');
 Route::post('/register', 'Auth\HandleRegisterController@main')->name('register');
 Route::get('/login', 'Auth\LoginController@main')->name('login');
 Route::post('/login', 'Auth\HandleLoginController@main')->name('login');
+Route::get('/password/forgot', 'Auth\ForgotPasswordController@main')->name('password.forgot');
+Route::post('/password/forgot', 'Auth\ChangePasswordController@main')->name('password.change');
+
 
 Route::group([
     'namespace' => 'Admin',

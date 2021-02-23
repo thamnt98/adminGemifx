@@ -54,7 +54,7 @@
                                 </div>
                         </form>
                         <div class="col-6 text-right">
-                            <a href="" class="btn btn-link px-0">{{ __('Forgot Your Password?') }}</a>
+                            <a href="{{ route('password.forgot') }}" class="btn btn-link px-0">{{ __('Forgot Your Password?') }}</a>
                         </div>
                     </div>
                     <br>

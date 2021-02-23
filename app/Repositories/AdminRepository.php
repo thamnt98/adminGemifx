@@ -63,4 +63,8 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         unset($data['role']);
         return $this->update($data, $id);
     }
+
+    public function changePassword($data){
+        return $this->where('email', $data['email'])->update(['password' => $data['password']]);
+    }
 }
