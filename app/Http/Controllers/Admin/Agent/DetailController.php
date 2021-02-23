@@ -29,6 +29,7 @@ class DetailController extends Controller
         } else {
             $agent->role = 'staff';
         }
-        return view('admin.agent.detail', compact('agent'));
+        $managers = $this->adminRepository->getManagerList();
+        return view('admin.agent.detail', compact('agent', 'managers'));
     }
 }

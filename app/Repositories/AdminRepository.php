@@ -41,6 +41,10 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
     }
 
+    public function getManagerList(){
+        return $this->whereNull('admin_id')->where('role', config('role.staff'))->get(['id', 'name']);
+    }
+
     public function activeAgent($id, $status)
     {
         return $this->update(['status' => $status], $id);
@@ -52,12 +56,10 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
 
     public function updateAgent($id, $data){
         $user = $this->where('id', $id)->first();
-        $adminId = $user->admin_id;
-        if (is_null($adminId) && $data['role'] == 'staff') {
-            $data['admin_id'] = 1;
+        if ($data['role'] == 'staff') {
             $this->where('admin_id', $user->id)->update(['admin_id' => $data['admin_id']]);
         }
-        if (!is_null($adminId) && $data['role'] == 'manager') {
+        if ($data['role'] == 'manager') {
             $data['admin_id'] = null;
         }
         unset($data['role']);

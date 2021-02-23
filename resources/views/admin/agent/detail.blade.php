@@ -35,7 +35,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label>Phone number</label>
-                    <input class="form-control" type="text" value="{{ old('phone_number', $agent->phone_number) }}" name="phone_number">
+                    <input class="form-control" type="text" value="{{ old('phone_number', $agent->phone_number) }}"
+                           name="phone_number">
                     @if($errors->has('phone_number'))
                         <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
                     @endif
@@ -45,7 +46,8 @@
                 <div class="form-group col-md-6">
                     <label>Role</label>
                     <select class="form-control" name="role" id="role">
-                        <option value="manager" @if(old('role', $agent->role) == 'manager') selected @endif>Manager</option>
+                        <option value="manager" @if(old('role', $agent->role) == 'manager') selected @endif>Manager
+                        </option>
                         <option value="staff" @if(old('role', $agent->role) == 'staff') selected @endif>Staff</option>
                     </select>
                 </div>
@@ -61,18 +63,31 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Commsion ($/lots)</label>
-                    <input class="form-control" type="text" value="{{ old('commission', $agent->commission) }}" name="commission">
-                    @if($errors->has('commission'))
-                        <span class="text-danger text-md-left">{{ $errors->first('commission') }}</span>
-                    @endif
-                </div>
                 <div class="staff-commission form-group col-md-6">
                     <label>Staff Commisison ($/lots)</label>
-                    <input class="form-control" type="text" value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
+                    <input class="form-control" type="text"
+                           value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
                     @if($errors->has('staff_commission'))
                         <span class="text-danger text-md-left">{{ $errors->first('staff_commission') }}</span>
+                    @endif
+                </div>
+                <div class="belong-manager form-group col-md-6">
+                    <label>Manager</label>
+                    <select class="form-control" name="admin_id">
+                        @if($agent->admin_id == 1))
+                        <option value="1">Select one manager</option>
+                        @endif
+                        @foreach($managers as $manager)
+                            <option value="{{ $manager->id }}" @if(old('admin_id', $agent->admin_id) == $manager->id) selected @endif>{{ $manager->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('commission', $agent->commission) }}"
+                           name="commission">
+                    @if($errors->has('commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('commission') }}</span>
                     @endif
                 </div>
             </div>
@@ -85,14 +100,18 @@
     <script>
         if ($('#role').val() == 'manager') {
             $('.staff-commission').removeClass('hidden');
+            $('.belong-manager').addClass('hidden');
         } else {
             $('.staff-commission').addClass('hidden');
+            $('.belong-manager').removeClass('hidden');
         }
         $('#role').on('change', function () {
             if ($('#role').val() == 'manager') {
                 $('.staff-commission').removeClass('hidden');
+                $('.belong-manager').addClass('hidden');
             } else {
                 $('.staff-commission').addClass('hidden');
+                $('.belong-manager').removeClass('hidden');
             }
         })
     </script>
