@@ -14,7 +14,27 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <div class="table-responsive">
+        <div class="form-search row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <form method="get" action="{{ route('agent.list') }}">
+                    @csrf
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input class="form-control" type="text" name="email" value="{{ $search['email'] ?? '' }}"
+                                   style="height: 40px" placeholder="Email">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input class="form-control" type="text" name="ib_id" value="{{ $search['ib_id'] ?? '' }}"
+                                   style="height: 40px" placeholder="IB ID">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="table-responsive" style="margin-top: 70px">
             <table class="table table-striped" data-pagination="true">
                 <thead>
                 <tr>
@@ -110,10 +130,9 @@
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
             let status = $(this).attr('data-status');
-            if(status == 1){
+            if (status == 1) {
                 $('.modal-body').html('Bạn có muốn kích hoạt người này không ? ')
-            }else
-            {
+            } else {
                 $('.modal-body').html('Bạn có muốn hủy kích hoạt người này không ? ')
             }
             let redirectUrl = currentUrl + '/admin/agent/active/' + id + '?status=' + status;

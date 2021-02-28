@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AdminRepository;
+use Illuminate\Http\Request;
 
 class ListController extends Controller
 {
@@ -22,9 +23,10 @@ class ListController extends Controller
         $this->adminRepository = $adminRepository;
     }
 
-    public function main()
+    public function main(Request $request)
     {
-        $agents = $this->adminRepository->getAgentList();
-        return view('admin.agent.list', compact('agents'));
+        $search = $request->except('_token');
+        $agents = $this->adminRepository->getAgentList($search);
+        return view('admin.agent.list', compact('agents', 'search'));
     }
 }

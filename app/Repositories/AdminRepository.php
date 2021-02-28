@@ -31,12 +31,20 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         return Auth::attempt($credentials);
     }
 
-    public function getAgentList()
+    public function getAgentList($search)
     {
         $query = $this->where('role', config('role.staff'));
         $user = Auth::user();
         if ($user->role == config('role.staff')) {
             $query = $query->where('admin_id', $user->id);
+        }
+        if (!empty($search)) {
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
+            }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
         }
         return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
     }
