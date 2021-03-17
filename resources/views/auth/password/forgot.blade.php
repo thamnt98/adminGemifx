@@ -22,20 +22,8 @@
                         <div class="card-body">
                             <h1>Forgot password</h1>
                             <br>
-                            <form method="POST" action="{{ route('password.change') }}">
+                            <form method="POST" action="{{ route('password.forgot') }}">
                                 @csrf
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                    </div>
-                                    <input class="form-control" type="text" placeholder="{{ __('E-Mail Address') }}"
-                                           name="email" value="{{ old('email') }}" required autofocus>
-                                    <div class="invalid-feedback">
-                                        {{ $errors->first('email') }}
-                                    </div>
-                                </div>
                                 <div class="input-group mb-4">
                                     <div class="input-group-prepend">
                                     <span class="input-group-text">
