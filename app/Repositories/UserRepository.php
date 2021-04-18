@@ -137,5 +137,16 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             'users.country',
         ]);
     }
+
+    public function updateUsersByNewIbId($oldIbId, $newIbId)
+    {
+            $this->where('ib_id', $oldIbId)->update(['ib_id' => $newIbId]);
+            LiveAccount::where('ib_id', $oldIbId)->update(['ib_id' => $newIbId]);
+            $logins = LiveAccount::where('ib_id', $newIbId)->pluck('login')->toArray();
+            $input['agent'] = $newIbId;
+            foreach ($logins as $login) {
+                $input['login'] = $login;
+                MT4Connect::updateLiveAccount($input);
+            }
+    }
 }
-//904453

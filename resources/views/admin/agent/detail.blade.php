@@ -18,7 +18,10 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>IB ID</label>
-                    <input class="form-control" type="text" value="{{ $agent->ib_id }}" disabled>
+                    <input class="form-control" type="text" value="{{ old('ib_id', $agent->ib_id) }}" name="ib_id">
+                    @if($errors->has('ib_id'))
+                        <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
+                    @endif
                 </div>
                 <div class="form-group col-md-6">
                     <label>Full name</label>

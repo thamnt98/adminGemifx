@@ -53,7 +53,15 @@
             </div>
             <div class="form-group col-md-3">
                 <label>IB ID</label>
-                <input class="form-control" type="text" name="ib_id" value="{{ old('ib_id', $ibId) }}" required @if(!is_null($ibId)) readonly @endif>
+                <select class="form-control" name="ib_id" required>
+                    @foreach($ibIds as $email => $ibId)
+                        @if(old('ib_id') == $ibId)
+                            <option value="{{ $ibId }}" selected>{{ $ibId }} - {{ $email}}</option>
+                        @else
+                            <option value="{{ $ibId }}">{{ $ibId }} - {{ $email}}</option>
+                        @endif
+                    @endforeach
+                </select>
                 @if($errors->has('ib_id'))
                     <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
                 @endif

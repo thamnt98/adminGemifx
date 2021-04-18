@@ -48,11 +48,12 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         $data['address'] = $user->address;
         $data['country'] = $user->country;
         $data['password'] = Str::random(7);
-        $data['agent'] = $data['ib_id'];
+        $data['agent'] = $user->ib_id;
         $data['login'] = MT4Connect::openLiveAccount($data);
         if (strlen($data['login']) == 10) {
             $data['phone_number'] = $user->phone_number;
             $data['user_id'] = $user->id;
+            $data['ib_id'] = $user->ib_id;
             $this->create($data);
             return [
                 'login' => $data['login'],
