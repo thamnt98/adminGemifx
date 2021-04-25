@@ -107,7 +107,7 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
                 $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
             }
         }
-        $query = $query->orderBy('status', 'desc')->orderBy('created_at', 'desc');
+        $query = $query->orderBy('created_at', 'desc');
         return $query->paginate(20);
     }
     /**
@@ -131,7 +131,7 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         } else {
             $query = $query->where('admin_id', $admin->id);
         }
-        $query = $query->orderBy('status', 'desc')->orderBy('created_at', 'desc');
+        $query = $query->orderBy('created_at', 'desc');
         return $query->paginate(20);
     }
 
