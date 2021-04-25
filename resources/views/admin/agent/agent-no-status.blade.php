@@ -29,97 +29,34 @@
         .form-search {
             margin-top: 20px;
         }
-
-        .a_no_active {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            color: black;
-        }
         .c-main{
             padding-top: 0px;
         }
         .header-breadcrumb{
             font-size: 16px;
         }
+
     </style>
     <div class="container-fluid">
         <div class="header-breadcrumb">
-            {{ Breadcrumbs::render('agent-list') }}
+            {{ Breadcrumbs::render('agent-status', $admin) }}
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="header-agent">
-                    <div class="row">
-                        <div class="@if ($admin->role == config('role.admin')) col-md-4
-                        @else col-md-6 @endif">
-                            <div class="total-agent">
-                                <div class="small-box bg-2nd margin-less">
-                                    <div class="inner">
-                                        <div>
-                                            <p>Total agent</p>
-                                            <h3>{{ $totalAgents }}</h3>
-                                        </div>
-                                        <div>
-                                            <img class="agent_img" src="{{ asset('/images/count_agent_icon.png') }}"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @if ($admin->role == config('role.admin'))
-                            <div class="col-md-4">
-                                <div class="total-manager">
-                                    <div class="small-box bg-2nd margin-less">
-                                        <div class="inner">
-                                            <div>
-                                                <p>Total manager</p>
-                                                <h3>{{ $agentManagers }}</h3>
-                                            </div>
-                                            <div>
-                                                <img class="agent_img" src="{{ asset('/images/summary.png') }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        <div class="@if ($admin->role == config('role.admin')) col-md-4
-                        @else col-md-6 @endif">
-                            <div class="agent-inactive">
-                                <div class="small-box bg-2nd margin-less">
-                                    <div class="inner">
-                                        <a href="{{ route('agent.list-status-noactive', $admin->id) }}" class="a_no_active">
-                                            <div>
-                                                <p>Total agent no active</p>
-                                                <h3>{{ $agentNoActives }}</h3>
-                                            </div>
-                                            <div>
-                                                <img class="agent_img" src="{{ asset('/images/status_inactive.png') }}"
-                                                     alt="">
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 @if ($message = Session::get('error'))
-                    <div class="alert alert-danger alert-block" style="margin-top: 20px">
+                    <div class="alert alert-danger alert-block">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{{ $message }}</strong>
                     </div>
                 @endif
                 @if ($message = Session::get('success'))
-                    <div class="alert alert-success alert-block" style="margin-top: 20px">
+                    <div class="alert alert-success alert-block">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>{{ $message }}</strong>
                     </div>
                 @endif
                 <div class="form-search">
-                    <form method="get" action="{{ route('agent.list') }}">
+                    <form method="get" action="{{ route('agent.list-status-noactive', $admin->id) }}">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-4">
@@ -131,15 +68,17 @@
                                        style="height: 40px" placeholder="IB ID">
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>
                             </div>
 
 
                         </div>
                     </form>
                 </div>
+                <div class="h-title">
+                    <h3>List of not activated agents</h3>
+                </div>
                 <div class="table-responsive" style="margin-top: 30px">
-                    <h3 style="margin-bottom: 20px">Manager agent</h3>
                     <table class="table table-striped" data-pagination="true">
                         <thead>
                         <tr>
@@ -148,9 +87,6 @@
                             <th scope="col">Full Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone number</th>
-                            @if ($admin->role == config('role.admin'))
-                                <th scope="col">Count staff</th>
-                            @endif
                             <th scope="col">Role</th>
                             <th scope="col">Status</th>
                             @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
@@ -159,24 +95,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($data as $key => $agent)
+                        @foreach ($agents as $key => $agent)
                             <tr>
                                 <th scope="row">
                                     {{++$key}}
                                 </th>
-                                <th scope="row">{{ $agent['ib_id'] }}</th>
-                                <th scope="row">{{ $agent['name'] }}</th>
-                                <th scope="row">{{ $agent['email'] }}</th>
-                                <th scope="row">{{ $agent['phone_number'] }}</th>
-                                @if ($admin->role == config('role.admin'))
-                                    @if ($agent['count'] > 0)
-                                        <th scope="row"><a
-                                                href="{{ route('agent.manager-staff', $agent['id']) }}">{{ $agent['count'] }}</a>
-                                        </th>
-                                    @else
-                                        <th scope="row">{{ $agent['count'] }}</th>
-                                    @endif
-                                @endif
+                                <th scope="row">{{ $agent->ib_id }}</th>
+                                <th scope="row">{{ $agent->name }}</th>
+                                <th scope="row">{{ $agent->email }}</th>
+                                <th scope="row">{{ $agent->phone_number }}</th>
                                 <th scope="row">
                                     @if (is_null($agent['admin_id']))
                                         Manager
@@ -186,20 +113,20 @@
                                 </th>
                                 <th>
                                     @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
-                                        @if ($agent['status'] == 1)
+                                        @if ($agent->status == 1)
                                             <a style="color:white" class="btn btn-dark bold btn-active"
                                                data-toggle="modal" data-target="#active"
-                                               data-id="{{ $agent['id'] }}" data-status="2"
+                                               data-id="{{ $agent->id }}" data-status="2"
                                                style="width:150px">Verified</a>
                                         @else
                                             <a style="color:white" class="btn btn-success bold btn-active"
                                                data-toggle="modal" data-target="#active"
-                                               data-id="{{ $agent['id'] }}" data-status="1"
+                                               data-id="{{ $agent->id }}" data-status="1"
                                                style="width:150px">Unverified</a>
                                         @endif
 
                                     @else
-                                        @if ($agent['status'] == 1)
+                                        @if ($agent->status == 1)
                                             <button type="button" class="btn btn-dark" disabled>Verified</button>
                                         @else
                                             <button type="button" class="btn btn-success" disabled>Unverified</button>
@@ -208,7 +135,7 @@
                                 </th>
                                 @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
                                     <th>
-                                        <a href="{{ route('agent.detail', $agent['id']) }}"
+                                        <a href="{{ route('agent.detail', $agent->id) }}"
                                            class="btn btn-sm btn-success bold uppercase" title="Edit"><i
                                                 class="fa fa-edit"></i>
                                         </a>

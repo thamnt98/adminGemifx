@@ -13,6 +13,7 @@ use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
  */
 class AdminRepository extends EloquentBaseRepository implements RepositoryInterface
 {
+    const STATUS_NO_ACTIVE = 2;
     /**
      * @inheritDoc
      */
@@ -31,6 +32,16 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         return Auth::attempt($credentials);
     }
 
+    public function findAgent($agent_id)
+    {
+        return $this->where('id', $agent_id)->first();
+    }
+
+    /**
+     * list agent and agent manager
+     * @param array $search
+     * @return mixed
+     */
     public function getAgentList($search)
     {
         $query = $this->where('role', config('role.staff'));
@@ -76,5 +87,139 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
 
     public function changePassword($data){
         return $this->where('email', $data['email'])->update(['password' => $data['password']]);
+    }
+
+    /**
+     * get list agent of manager
+     * @param int agent_id id of agent
+     */
+    public function getListAgentOfManager($search, $agent_id)
+    {
+        $query = $this->where('admin_id', $agent_id)
+            ->where(function ($q) {
+                $q->where('role', config('role.staff'));
+            });
+        if (!empty($search)) {
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
+            }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
+        }
+        $query = $query->orderBy('status', 'desc')->orderBy('created_at', 'desc');
+        return $query->paginate(20);
+    }
+    /**
+     * list agent admin
+     * @return mixed
+     */
+    public function listAgentAdmin($search)
+    {
+        $query = $this->where('role', config('role.staff'));
+        if (!empty($search)) {
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
+            }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
+        }
+        $admin = Auth::user();
+        if ($admin->role == config('role.admin')) {
+            $query = $query->where('admin_id', null)->orWhere('admin_id', $admin->id);
+        } else {
+            $query = $query->where('admin_id', $admin->id);
+        }
+        $query = $query->orderBy('status', 'desc')->orderBy('created_at', 'desc');
+        return $query->paginate(20);
+    }
+
+    /**
+     * count agent manager
+     * @param int admin_id id of admin
+     * @return count staff of manager
+     */
+    public function countAgentManager($admin_id = null)
+    {
+        $agentManagers = $this->where('admin_id', $admin_id)
+            ->where(function ($q) {
+                $q->where('role', config('role.staff'));
+            })
+            ->get();
+        return count($agentManagers);
+    }
+
+    /**
+     * count agent no active
+     * @param int admin_id id of admin
+     * @return count agent no active
+     */
+    public function countStatusNoActive($admin_id = null)
+    {
+        $admin = Auth::user();
+        if ($admin->role == config('role.admin')) {
+            $agentNoActive = $this->where('status', self::STATUS_NO_ACTIVE)
+                ->where(function ($q) {
+                    $q->where('role', config('role.staff'));
+                })
+                ->get();
+        } else {
+            $agentNoActive = $this->where('admin_id', $admin_id)
+                ->where(function ($q) {
+                    $q->where('status', self::STATUS_NO_ACTIVE);
+                    $q->where('role', config('role.staff'));
+                })
+                ->get();
+        }
+        return count($agentNoActive);
+    }
+
+    /**
+     * Total agent
+     */
+    public function totalAgent()
+    {
+        $admin = Auth::user();
+        if ($admin->role == config('role.admin')) {
+            $totalAgents = $this->where('role', config('role.staff'))->get();
+        } else {
+            $totalAgents = $this->where('role', config('role.staff'))
+                ->where(function ($q) use ($admin) {
+                    $q->where('admin_id', $admin->id);
+                })
+                ->get();
+        }
+        return count($totalAgents);
+    }
+
+    /**
+     * list status no active
+     */
+    public function listStatusNoActive($search)
+    {
+        $admin = Auth::user();
+        if ($admin->role == config('role.admin')) {
+            $agentNoActive = $this->where('status', self::STATUS_NO_ACTIVE)
+                ->where(function ($q) {
+                    $q->where('role', config('role.staff'));
+                });
+        } else {
+            $agentNoActive = $this->where('admin_id', $admin->id)
+                ->where(function ($q) {
+                    $q->where('status', self::STATUS_NO_ACTIVE);
+                    $q->where('role', config('role.staff'));
+                });
+        }
+        if (!empty($search)) {
+            if (isset($search['email']) && !is_null($search['email'])) {
+                $agentNoActive = $agentNoActive->where('email', 'like', '%' . $search['email'] . '%');
+            }
+            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
+                $agentNoActive = $agentNoActive->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
+            }
+        }
+        $agentNoActive = $agentNoActive->orderBy('created_at', 'desc');
+        return $agentNoActive->paginate(20);
     }
 }

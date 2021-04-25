@@ -81,6 +81,8 @@ Route::group([
         Route::get('/detail/{id}', 'DetailController@main')->name('agent.detail');
         Route::post('/detail/{id}', 'UpdateController@main')->name('agent.update');
         Route::post('/active/{id}', 'ActiveController@main')->name('agent.active');
+        Route::get('/link-manager-agent/{id}', 'ListController@listStaffManager')->name('agent.manager-staff');
+        Route::get('/list-status-noactive/{id}', 'ListController@listStaffNoActive')->name('agent.list-status-noactive');
     });
     Route::group([
         'namespace' => 'Report',
