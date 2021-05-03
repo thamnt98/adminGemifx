@@ -43,6 +43,12 @@
                 Withdrawal
             </a>
         </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('email.marketing') }}">
+                <i class="fa fa-envelope"></i>
+                Email marketing
+            </a>
+        </li>
     @endif
     <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('report.trade') }}">

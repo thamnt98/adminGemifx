@@ -149,4 +149,18 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                 MT4Connect::updateLiveAccount($input);
             }
     }
+
+    public function getCustomersHasMT4AccountOrNo(){
+        $customers = $this->get(['id', 'email']);
+        $customersOpenedMT4 = $customersNoOpenedMT4 = [];
+        foreach($customers as $customer){
+            if(count($customer->liveAccounts) == 0){
+                array_push($customersNoOpenedMT4, $customer);
+            }else{
+                array_push($customersOpenedMT4, $customer);
+            }
+        }
+        return ['yes' =>$customersOpenedMT4,
+            'no' => $customersNoOpenedMT4];
+    }
 }

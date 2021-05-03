@@ -11,7 +11,7 @@ class SendOtpViaMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected  $otp;
+    public  $otp;
 
     /**
      * Create a new message instance.

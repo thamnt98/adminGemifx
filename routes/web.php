@@ -90,4 +90,6 @@ Route::group([
     ], function () {
         Route::get('/trade', 'GetTradeListController@main')->name('report.trade');
     });
+    Route::get('/email/marketing', 'Email\EmailController@main')->name('email.marketing');
+    Route::post('/email/marketing', 'Email\SendEmailMarketingController@main')->name('email.marketing.send');
 });
