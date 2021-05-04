@@ -20,7 +20,7 @@ class SendEmailMarketingController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         try {
-            Mail::to($data['customers'])->send(new EmailMarketing($data['template_email'], $data['title']));
+            Mail::bcc($data['customers'])->queue(new EmailMarketing($data['template_email'], $data['title']));
             return redirect()->back()->with('success', 'Gửi email thành công');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gửi email thất bại');
