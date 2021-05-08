@@ -211,7 +211,7 @@ class MT4Connect
     {
         $admins = Admin::where('role', config('role.staff'))->get();
         $to = strtotime('now');
-        $from = strtotime('-5 minutes');
+        $from = strtotime('-1 week');
         foreach ($admins as $key => $admin) {
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = self::getOpenedTrades($logins, $from, $to);
