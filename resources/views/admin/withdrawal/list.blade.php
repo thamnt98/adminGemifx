@@ -67,7 +67,7 @@
                     <th>Bank Account</th>
                     <th>Bank Name</th>
                     <th>Account Name</th>
-                    <th>Amount Money</th>
+                    <th>Amount Money USD</th>
                     <th>Withdrawal Currency</th>
                     <th>Transaction Date</th>
                     <th>Note</th>
@@ -84,7 +84,14 @@
                         <td>{{ $withdrawal->bank_account }}</td>
                         <td>{{ $withdrawal->bank_name }}</td>
                         <td>{{ $withdrawal->account_name }}</td>
-                        <td>{{ number_format($withdrawal->amount) }}</td>
+                        @if ($withdrawal->status == 1)
+                            <td>{{number_format($withdrawal->amount)}}</td>
+                        @else
+                            <td><input type="number" name="amount" class="form-control" value={{number_format($withdrawal->amount)}} @if ($withdrawal->status == 1)
+                                    disabled
+                                    @endif></td>
+                        @endif
+
                         <td>{{ $withdrawal->withdrawal_currency }}</td>
                         <td>{{ $withdrawal->created_at }}</td>
                         <th>{{ $withdrawal->note }}</th>
@@ -121,6 +128,7 @@
                         @csrf
                         <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
                         <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
+                        <div class="input-withdrawal"></div>
                     </form>
                 </div>
             </div>
@@ -132,10 +140,15 @@
     <script src="{{ asset('js/boostrap-datepicker.js') }}"></script>
     <script>
         $('.btn-approve').on('click', function () {
+            let input_value = $(this).parent().parent().find('.form-control').val();
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
             let redirectUrl = currentUrl + '/admin/withdrawal/approve/' + id;
             $("#approve-order").attr('action', redirectUrl);
+            $('#approve-order').find('.input-withdrawal').empty();
+            let input = '<input type="hidden" name="amount" value ="'+input_value+'">'
+            $('#approve-order').find('.input-withdrawal').append(input);
+
         })
         $.fn.datepicker.defaults.format = "yyyy/mm/dd";
     </script>

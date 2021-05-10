@@ -47,4 +47,19 @@ class WithdrawalRepository extends EloquentBaseRepository implements RepositoryI
     {
         $this->where('user_id', $userId)->delete();
     }
+
+    /**
+     * find withdrawalfun
+     * @param int $id
+     * @return mix
+     */
+    public function findWithDrawalFun($id)
+    {
+        $result = $this->where('id', $id)->first();
+        if($result){
+            return $result;
+        }
+        return null;
+    }
+
 }

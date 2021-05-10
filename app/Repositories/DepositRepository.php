@@ -12,6 +12,7 @@ use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
  */
 class DepositRepository extends EloquentBaseRepository implements RepositoryInterface
 {
+    const VN_TO_USD = 23000;
     /**
      * @inheritDoc
      */
@@ -34,11 +35,34 @@ class DepositRepository extends EloquentBaseRepository implements RepositoryInte
             $query = $query->whereDate('orders.created_at', '<=', $search['end_date']);
         }
         return $query->orderBy('orders.created_at', 'desc')->paginate(20, ['orders.id', 'orders.user_id', 'orders.bank_name', 'orders.status',
-            'orders.type', 'orders.amount_money', 'orders.created_at']);
+            'orders.type', 'orders.amount_money', 'orders.created_at', 'orders.login', 'orders.usd']);
     }
 
     public function deleteDepositByUserId($userId)
     {
         $this->where('user_id', $userId)->delete();
+    }
+
+    /**
+     * find orders
+     * @param int $id
+     * @return mix
+     */
+    public function findOrders($id)
+    {
+        $order = $this->where('id', $id)->first();
+        if($order){
+            return $order;
+        }
+        return null;
+    }
+
+    /**
+     * change money
+     */
+    public function changeMoneyUsd($money)
+    {
+        $money = $money/(self::VN_TO_USD);
+        return round($money, 2);
     }
 }

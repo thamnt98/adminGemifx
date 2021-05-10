@@ -60,10 +60,12 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th>Login</th>
                     <th>Email</th>
                     <th>Name</th>
                     <th>Amount Money</th>
-                    <th>Type</th>
+                    <th>Usd match</th>
+{{--                    <th>Type</th>--}}
                     <th>Transaction Date</th>
                     <th>Bank Name</th>
                     <th>Status</th>
@@ -73,10 +75,25 @@
                 @foreach($orders as $key => $order)
                     <tr>
                         <th scope="row">{{ $key + 1 }}</th>
+                        <td>{{$order->login}}</td>
                         <td>{{ $order->user->email }}</td>
                         <td>{{ $order->user->full_name }}</td>
                         <td>{{ number_format($order->amount_money) }}</td>
-                        <td>{{ config('deposit.type_text')[$order->type] }}</td>
+                        @if ($order->status == 1)
+                            <td>
+                                @if ($order->usd == null)
+                                    {{round(($order->amount_money)/23000, 2)}}
+                                @else
+                                    {{number_format($order->usd)}}
+                                @endif
+                            </td>
+                        @else
+                            <td><input type="number" class="form-control" value= @if ($order->usd == null)
+                                {{round(($order->amount_money)/23000, 2)}}
+                                @else
+                                {{number_format($order->usd)}}
+                                @endif maxlength="6" @if ($order->status == 1) disabled @endif></td>
+                        @endif
                         <td>{{ $order->created_at }}</td>
                         <td>{{ $order->bank_name }}</td>
                         <td>
@@ -112,6 +129,7 @@
                         @csrf
                         <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
                         <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
+                        <div class="input-deposite"></div>
                     </form>
                 </div>
             </div>
@@ -123,10 +141,14 @@
     <script src="{{ asset('js/boostrap-datepicker.js') }}"></script>
     <script>
         $('.btn-approve').on('click', function () {
+            let input_value = $(this).parent().parent().find('.form-control').val();
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
             let redirectUrl = currentUrl + '/admin/deposit/approve/' + id;
             $("#approve-order").attr('action', redirectUrl);
+            $('#approve-order').find('.input-deposite').empty();
+            let input = '<input type="hidden" name="usd" value ="'+input_value+'">'
+            $('#approve-order').find('.input-deposite').append(input);
         })
         $.fn.datepicker.defaults.format = "yyyy/mm/dd";
     </script>

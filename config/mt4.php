@@ -25,5 +25,8 @@ return [
         5 => 'sell stop',
         6 => 'balance',
         7 => 'credit'
+    ],
+    'payment' => [
+        '2' => 'e-Banking',
     ]
 ];

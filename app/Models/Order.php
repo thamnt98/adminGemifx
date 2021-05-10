@@ -17,7 +17,9 @@ class Order extends Model
         'sign',
         'created_at',
         'updated_at',
-        'type'
+        'type',
+        'login',
+        'usd'
     ];
 
     public function user()

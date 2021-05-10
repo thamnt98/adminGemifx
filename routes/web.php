@@ -54,6 +54,11 @@ Route::group([
         Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open')->middleware('role.admin');
         Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
         Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update')->middleware('role.admin');
+        Route::get('/create-withdrawal', 'LiveListController@createWithdrawal')->name('account.create_withdrawal')->middleware('role.admin');
+        Route::post('/create-withdrawal', 'LiveListController@createWithdrawalPost')->name('account.create.withdrawal')->middleware('role.admin');
+        Route::get('/create-deposit', 'LiveListController@createDeposit')->name('account.create_deposit')->middleware('role.admin');
+        Route::post('/create-deposit', 'LiveListController@createDepositPost')->name('account.create.deposit')->middleware('role.admin');
+        Route::post('/get-list-login', 'LiveListController@listLogin')->name('account.list.login')->middleware('role.admin');
     });
     Route::group([
         'namespace' => 'Deposit',

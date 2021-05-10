@@ -131,4 +131,20 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         }
         return $result;
     }
+
+    /**
+     * list live account
+     * @param int customer_id
+     * @return mix
+     */
+    public function getListLogin($customer_id)
+    {
+        $result = [];
+        $logins = $this->where('user_id', $customer_id)->get();
+        foreach($logins as $login){
+            $result[$login->login] = $login->login;
+        }
+        return $result;
+    }
+
 }
