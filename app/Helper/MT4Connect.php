@@ -226,6 +226,49 @@ class MT4Connect
         }
     }
 
+    public static function reportByLogin($logins, $from, $to)
+    {
+        try {
+            $fp = self::connect();
+            if (!$fp) {
+                return 'Không thể kết nối tới MT4';
+            }
+            $logins = implode(";", $logins);
+            $cmd = 'action=gethistory&from=' . $from . '&to=' . $to . '&login=' . $logins;
+            fwrite($fp, $cmd);
+            stream_set_timeout($fp, 1);
+            $result = '';
+            $info = stream_get_meta_data($fp);
+            while (!$info['timed_out'] && !feof($fp)) {
+                $str = @fgets($fp, 1024);
+                if (strpos($str, 'size')) {
+                    $size = explode('size', $str);
+                    $userAmount = $size[1];
+                    if ($userAmount == "=0\n") {
+                        break;
+                    }
+                }
+                if (strpos($str, ';')) {
+                    $result .= $str;
+                    $info = stream_get_meta_data($fp);
+                }
+            }
+            $array = [];
+            if (!empty($result)) {
+                $result = explode('&', $result);
+                fclose($fp);
+                $lines = explode("\n", $result[0]);
+                foreach ($lines as $line) {
+                    $array[] = explode(";", $line);
+                }
+            }
+            return $array;
+        } catch (Exception $e) {
+            return "Hệ thống đang bị lỗi. Vui lòng thử lại sau ";
+        }
+    }
+
+
     public function changeBalance($login, $value)
     {
         try {

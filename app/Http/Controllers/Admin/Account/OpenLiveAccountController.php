@@ -45,7 +45,7 @@ class OpenLiveAccountController extends Controller
                 return redirect()->back()->with('error', $result);
             }
             $result['leverage'] = $data['leverage'];
-            Mail::to($user->email)->send(new OpenLiveAccountSuccess($user, $result));
+//            Mail::to($user->email)->send(new OpenLiveAccountSuccess($user, $result));
             DB::commit();
             return redirect()->back()->with('success', 'Bạn đã mở tài khoản thành công');
         } catch (\Exception $e) {
