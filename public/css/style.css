@@ -15981,11 +15981,11 @@ button.bg-gray-900:focus {
   }
 }
 
-@media (max-width: 991.98px) {
+/* @media (max-width: 991.98px) {
   .d-md-down-none {
     display: none !important;
   }
-}
+} */
 
 @media (max-width: 1199.98px) {
   .d-lg-down-none {
@@ -22277,4 +22277,7 @@ i {
 
 .hidden{
     display:none
+}
+.header-agent .total-agent, .header-agent .agent-inactive, .header-agent .total-manager{
+  margin-top: 30px;
 }

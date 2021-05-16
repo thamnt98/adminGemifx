@@ -51,8 +51,8 @@
             <div class="card-body">
                 <div class="header-agent">
                     <div class="row">
-                        <div class="@if ($admin->role == config('role.admin')) col-md-4
-                        @else col-md-6 @endif">
+                        <div class="@if ($admin->role == config('role.admin'))col-md-4 col-sm-12 col-xs-12
+                        @else col-md-6 col-xs-6 col-sm-6 @endif">
                             <div class="total-agent">
                                 <div class="small-box bg-2nd margin-less">
                                     <div class="inner">
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         @if ($admin->role == config('role.admin'))
-                            <div class="col-md-4">
+                            <div class="col-md-4 col-sm-12 col-xs-12">
                                 <div class="total-manager">
                                     <div class="small-box bg-2nd margin-less">
                                         <div class="inner">
@@ -85,8 +85,8 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="@if ($admin->role == config('role.admin')) col-md-4
-                        @else col-md-6 @endif">
+                        <div class="@if ($admin->role == config('role.admin'))col-md-4 col-sm-12 col-xs-12
+                        @else col-md-6 col-xs-6 col-sm-6 @endif">
                             <div class="agent-inactive">
                                 <div class="small-box bg-2nd margin-less">
                                     <div class="inner">
