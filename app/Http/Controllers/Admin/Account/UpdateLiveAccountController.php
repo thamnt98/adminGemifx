@@ -56,6 +56,10 @@ class UpdateLiveAccountController extends Controller
                 'group' => ['required', Rule::in($groups)],
                 'leverage' => ['required', Rule::in($leverages)],
                 'phone' => 'required|regex:/[0-9]{10,11}/',
+                'ib_id'            => 'bail|required|regex:/[0-9]{6}/',
+            ],
+            [
+                'ib_id.regex' => 'The IB ID has only 6 digits',
             ]
         );
     }
