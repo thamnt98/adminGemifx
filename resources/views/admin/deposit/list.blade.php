@@ -91,7 +91,7 @@
                             <td><input type="number" class="form-control" value= @if ($order->usd == null)
                                 {{round(($order->amount_money)/23000, 2)}}
                                 @else
-                                {{number_format($order->usd)}}
+                                {{$order->usd}}
                                 @endif maxlength="6" @if ($order->status == 1) disabled @endif></td>
                         @endif
                         <td>{{ $order->created_at }}</td>

@@ -63,7 +63,6 @@
                     <th scope="col">#</th>
                     <th>Login</th>
                     <th>Email</th>
-                    <th>Name</th>
                     <th>Bank Account</th>
                     <th>Bank Name</th>
                     <th>Account Name</th>
@@ -80,16 +79,13 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $withdrawal->login }}</td>
                         <td>{{ $withdrawal->user->email }}</td>
-                        <td>{{ $withdrawal->user->full_name }}</td>
                         <td>{{ $withdrawal->bank_account }}</td>
                         <td>{{ $withdrawal->bank_name }}</td>
                         <td>{{ $withdrawal->account_name }}</td>
                         @if ($withdrawal->status == 1)
                             <td>{{number_format($withdrawal->amount)}}</td>
                         @else
-                            <td><input type="number" name="amount" class="form-control" value={{number_format($withdrawal->amount)}} @if ($withdrawal->status == 1)
-                                    disabled
-                                    @endif></td>
+                            <td style="width:150px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
                         @endif
 
                         <td>{{ $withdrawal->withdrawal_currency }}</td>
