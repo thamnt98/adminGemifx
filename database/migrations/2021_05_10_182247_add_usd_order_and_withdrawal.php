@@ -21,12 +21,16 @@ class AddUsdOrderAndWithdrawal extends Migration
             $table->string('currency', 20)->nullable()->change();
             $table->float('available_balance')->nullable()->change();
             $table->string('bank_account', 191)->nullable()->change();
+            $table->string('bank_address', 255)->nullable()->change();
             $table->string('bank_name', 191)->nullable()->change();
             $table->float('balance')->nullable()->change();
             $table->string('account_holder', 191)->nullable()->change();
             $table->string('bank_branch_name', 191)->nullable()->change();
             $table->string('note', 191)->nullable()->change();
-
+            $table->string('swift_code', 191)->nullable()->change();
+            $table->string('iban', 20)->nullable()->change();
+            $table->string('account_name', 255)->nullable()->change();
+            $table->string('withdrawal_currency', 20)->nullable()->change();
         });
 
     }

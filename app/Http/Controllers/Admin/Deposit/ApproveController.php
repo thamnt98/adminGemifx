@@ -36,10 +36,7 @@ class ApproveController extends Controller
                 throw new Exception('Find order fail');
             }
             $login = $order->login;
-            $changeBalance = $this->mt4->changeBalance($login, $usd);
-            if(!$changeBalance){
-                throw new Exception('change balance fail');
-            }
+            $changeBalance = $this->mt4->changeBalance($login, $usd, ' Deposit to NL');
             $code = self::getResult($changeBalance);
             if ($code == '1') {
                 $result = $this->depositRepository->update(['status' => config('deposit.status.yes'), 'usd' => $usd], $id);

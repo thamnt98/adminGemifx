@@ -108,7 +108,7 @@ class LiveListController extends Controller
                 'status' => self::SUCCESS
             ];
             $balance = $this->depositRepository->changeMoneyUsd($data_save['amount_money']);
-            $changeBalance = $this->mt4->changeBalance($data_save['login'], $balance);
+            $changeBalance = $this->mt4->changeBalance($data_save['login'], $balance, ' Deposit to NL');
             $code = self::getResult($changeBalance);
             if ($code == '1') {
                 DB::beginTransaction();
@@ -143,6 +143,10 @@ class LiveListController extends Controller
             if ($validateData->fails()) {
                 return redirect()->back()->withErrors($validateData->errors())->withInput()->with(['listLogin' => $listLogin]);
             }
+            $equity = $this->mt4->getEquityBalanceByLogin($data['login']);
+            if ($data['amount'] > $equity) {
+                return redirect()->back()->with('error', 'Số tiền trong tài khoản chỉ còn ' . $equity . '$');
+            }
             $data_save = [
                 'user_id' => $data['customer'],
                 'login' => $data['login'],
@@ -150,10 +154,7 @@ class LiveListController extends Controller
                 'withdrawal_type' => $data['withdrawal_type'],
                 'status' => self::SUCCESS
             ];
-            $changeBalance = $this->mt4->changeBalance($data_save['login'], self::SUB_MONEY.$data_save['amount']);
-            if (!$changeBalance) {
-                throw new Exception('change balance fail');
-            }
+            $changeBalance = $this->mt4->changeBalance($data_save['login'], self::SUB_MONEY . $data_save['amount'], 'Withdrawal to Bank');
             $code = self::getResult($changeBalance);
             if ($code == '1') {
                 DB::beginTransaction();
@@ -163,6 +164,7 @@ class LiveListController extends Controller
             }
             return redirect()->back()->with('error', 'Approve thất bại');
         } catch (Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             return redirect()->back()->with('error', 'Approve thất bại');
         }

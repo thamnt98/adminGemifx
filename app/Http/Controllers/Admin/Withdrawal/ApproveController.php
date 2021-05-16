@@ -39,10 +39,7 @@ class ApproveController extends Controller
                 return new Exception('find withdrawal fail');
             }
             $login = $withdrawal->login;
-            $changeBalance = $this->mt4->changeBalance($login, self::SUBTRACT.$amount);
-            if(!$changeBalance){
-                return new Exception('Change balance fail');
-            }
+            $changeBalance = $this->mt4->changeBalance($login, self::SUBTRACT.$amount, 'Withdrawal to Bank');
             $code = self::getResult($changeBalance);
             if($code == '1'){
                 DB::beginTransaction();

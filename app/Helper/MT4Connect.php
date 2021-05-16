@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helper;
+
 use App\Models\Admin;
 use App\Models\LiveAccount;
 use App\Models\User;
@@ -155,7 +156,8 @@ class MT4Connect
         }
     }
 
-    public static function getOpenedTrades($loginArray, $from, $to){
+    public static function getOpenedTrades($loginArray, $from, $to)
+    {
         try {
             $fp = self::connect();
             if (!$fp) {
@@ -163,11 +165,11 @@ class MT4Connect
             }
             $logins = array_keys($loginArray);
             $loginString = '';
-            foreach($logins as $login){
-                $loginString .= $login. ';';
+            foreach ($logins as $login) {
+                $loginString .= $login . ';';
             }
             $logins = (rtrim($loginString, ';'));
-            $cmd = 'action=gethistory&from=' .$from . '&to=' . $to  . '&login=' . $logins;
+            $cmd = 'action=gethistory&from=' . $from . '&to=' . $to  . '&login=' . $logins;
             fwrite($fp, $cmd);
             stream_set_timeout($fp, 1);
             $result = '';
@@ -177,7 +179,7 @@ class MT4Connect
                 if (strpos($str, 'size')) {
                     $size = explode('size', $str);
                     $userAmount = $size[1];
-                    if($userAmount == "=0\n"){
+                    if ($userAmount == "=0\n") {
                         break;
                     }
                 }
@@ -189,15 +191,15 @@ class MT4Connect
             $array = array();
             $lots = 0;
             $commission = 0;
-            if(!empty($result)){
+            if (!empty($result)) {
                 $result = explode('&', $result);
                 fclose($fp);
                 $lines = explode("\n", $result[0]);
                 foreach ($lines as $line) {
                     $line = $array[] = explode(";", $line);
-                    if($line[8] - $line[7] > 180){
-                        $lots += round($line[6]/100, 2);
-                        $commission += round($line[6]/100 * $loginArray[$line[0]], 2);
+                    if ($line[8] - $line[7] > 180) {
+                        $lots += round($line[6] / 100, 2);
+                        $commission += round($line[6] / 100 * $loginArray[$line[0]], 2);
                     }
                 }
             }
@@ -216,11 +218,11 @@ class MT4Connect
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = self::getOpenedTrades($logins, $from, $to);
             $commission = $result[2];
-            if($commission){
+            if ($commission) {
                 $userId = User::where('email', $admin->email)->pluck('id');
                 $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
                 if (count($account)) {
-                    self::changeBalance($account[0], $commission);
+                    self::changeBalance($account[0], $commission, 'transfer commission', false);
                 }
             }
         }
@@ -269,14 +271,14 @@ class MT4Connect
     }
 
 
-    public function changeBalance($login, $value)
+    public function changeBalance($login, $value, $comment, $isReturn = true)
     {
         try {
             $fp = self::connect();
             if (!$fp) {
                 return 'Không thể kết nối tới MT4';
             }
-            $cmd = 'action=changebalance&login=' . $login . '&value=' . $value . '&comment=transfer commission';
+            $cmd = 'action=changebalance&login=' . $login . '&value=' . $value . '&comment=' . $comment;
             fwrite($fp, $cmd);
             stream_set_timeout($fp, 1);
             $result = '';
@@ -289,6 +291,37 @@ class MT4Connect
                 }
             }
             fclose($fp);
+            if ($isReturn) {
+                return $result;
+            }
+        } catch (Exception $e) {
+            return "Lỗi hệ thống";
+        }
+    }
+
+    public function getEquityBalanceByLogin($login)
+    {
+        try {
+            $fp = self::connect();
+            if (!$fp) {
+                return 'Không thể kết nối tới MT4';
+            }
+            $cmd = 'action=getaccountinfoex&login=' . $login;
+            fwrite($fp, $cmd);
+            stream_set_timeout($fp, 1);
+            $result = '';
+            $info = stream_get_meta_data($fp);
+            while (!$info['timed_out'] && !feof($fp)) {
+                $str = @fgets($fp, 1024);
+                if (strpos($str, 'login')) {
+                    $result .= $str;
+                    $info = stream_get_meta_data($fp);
+                }
+            }
+            $result = explode('&', $result);
+            $equity =  (explode('=', $result[28])[1]);
+            fclose($fp);
+            return $equity;
         } catch (Exception $e) {
             return "Lỗi hệ thống";
         }
