@@ -66,7 +66,7 @@
                     <th>Bank Account</th>
                     <th>Bank Name</th>
                     <th>Account Name</th>
-                    <th>Amount Money USD</th>
+                    <th style="min-width: 200px">Amount Money USD</th>
                     <th>Withdrawal Currency</th>
                     <th>Transaction Date</th>
                     <th>Note</th>
@@ -85,7 +85,7 @@
                         @if ($withdrawal->status == 1)
                             <td>{{number_format($withdrawal->amount)}}</td>
                         @else
-                            <td style="width:150px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
+                            <td style="min-width:200px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
                         @endif
 
                         <td>{{ $withdrawal->withdrawal_currency }}</td>
