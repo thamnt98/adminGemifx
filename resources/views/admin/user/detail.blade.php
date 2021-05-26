@@ -207,37 +207,61 @@
                 style="margin:40px">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th>Amount Money</th>
-                                <th>Type</th>
-                                <th>Transaction Date</th>
-                                <th>Bank Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($user->orders as $key => $order)
-                                <tr>
-                                    <th scope="row">{{ $key + 1 }}</th>
-                                    <td>{{ number_format($order->amount_money) }}</td>
-                                    <td>{{ config('deposit.type_text')[$order->type] }}</td>
-                                    <td>{{ $order->created_at }}</td>
-                                    <td>{{ $order->bank_name }}</td>
-                                    <td>
-                                        @if($order->status == config('deposit.status.yes'))
-                                        <button type="button" class="btn btn-dark"
-                                            disabled>{{ config('deposit.status_text')[$order->status] }}</button>
-                                        @else
-                                        <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
-                                            data-target="#approve" data-id="{{ $order->id }}"
-                                            style="width:150px">{{ config('deposit.status_text')[$order->status] }}</a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                    <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th>Login</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Amount Money</th>
+                    <th>Usd match</th>
+{{--                    <th>Type</th>--}}
+                    <th>Transaction Date</th>
+                    <th>Bank Name</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($user->orders as $key => $order)
+                    <tr>
+                        <th scope="row">{{ $key + 1 }}</th>
+                        <td>{{$order->login}}</td>
+                        <td>{{ $order->user->email }}</td>
+                        <td>{{ $order->user->full_name }}</td>
+                        <td>{{ number_format($order->amount_money) }}</td>
+                        @if ($order->status != config('deposit.status.pending'))
+                            <td>
+                                @if ($order->usd == null)
+                                    {{round(($order->amount_money)/23000, 2)}}
+                                @else
+                                    {{number_format($order->usd)}}
+                                @endif
+                            </td>
+                        @else
+                            <td><input type="number" class="form-control" value= @if ($order->usd == null)
+                                {{round(($order->amount_money)/23000, 2)}}
+                                @else
+                                {{$order->usd}}
+                                @endif maxlength="6" @if ($order->status == 1) disabled @endif></td>
+                        @endif
+                        <td>{{ $order->created_at }}</td>
+                        <td>{{ $order->bank_name }}</td>
+                        <td>
+                            @if($order->status == config('deposit.status.yes'))
+                                <button type="button" class="btn btn-dark"
+                                        disabled>{{ config('deposit.status_text')[$order->status] }}</button>
+                            @elseif($order->status == config('deposit.status.no'))
+                                <button type="button" class="btn btn-danger"
+                                        disabled>{{ config('deposit.status_text')[$order->status] }}</button>
+                            @else
+                                <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
+                                   data-target="#approve" data-id="{{ $order->id }}"
+                                   style="width:150px">{{ config('deposit.status_text')[$order->status] }}</a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
                     </table>
                 </div>
             </div>
