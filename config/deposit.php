@@ -10,10 +10,13 @@ return [
     ],
     'status' => [
         'yes' => 1,
-        'no' => 2
+        'pending' => 2,
+        'no' => 3
+
     ],
     'status_text' => [
         1 => 'Approved',
-        2 => 'Processing'
+        2 => 'Processing',
+        3 => 'Rejected'
     ]
 ];

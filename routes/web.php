@@ -67,6 +67,7 @@ Route::group([
     ], function () {
         Route::get('/list', 'ListController@main')->name('deposit.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve');
+        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject');
     });
     Route::group([
         'namespace' => 'Withdrawal',
@@ -75,6 +76,7 @@ Route::group([
     ], function () {
         Route::get('/list', 'ListController@main')->name('withdrawal.list');
         Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve');
+        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject');
     });
     Route::group([
         'namespace' => 'Agent',

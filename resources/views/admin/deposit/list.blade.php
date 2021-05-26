@@ -79,7 +79,7 @@
                         <td>{{ $order->user->email }}</td>
                         <td>{{ $order->user->full_name }}</td>
                         <td>{{ number_format($order->amount_money) }}</td>
-                        @if ($order->status == 1)
+                        @if ($order->status != config('deposit.status.pending'))
                             <td>
                                 @if ($order->usd == null)
                                     {{round(($order->amount_money)/23000, 2)}}
@@ -99,6 +99,9 @@
                         <td>
                             @if($order->status == config('deposit.status.yes'))
                                 <button type="button" class="btn btn-dark"
+                                        disabled>{{ config('deposit.status_text')[$order->status] }}</button>
+                            @elseif($order->status == config('deposit.status.no'))
+                                <button type="button" class="btn btn-danger"
                                         disabled>{{ config('deposit.status_text')[$order->status] }}</button>
                             @else
                                 <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
@@ -123,11 +126,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">Bạn có chắc chắn xác nhận không ?</div>
+                <div class="modal-body">Bạn muốn reject hay approve ?</div>
                 <div class="modal-footer">
                     <form method="post" id="approve-order">
                         @csrf
-                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                        <a href="#" class="btn btn-secondary btn-reject" data-dismiss="modal" >Reject</a>
                         <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
                         <div class="input-deposite"></div>
                     </form>
@@ -144,6 +147,7 @@
             let input_value = $(this).parent().parent().find('.form-control').val();
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
+            $('.btn-reject').attr('data-id', id);
             let redirectUrl = currentUrl + '/admin/deposit/approve/' + id;
             $("#approve-order").attr('action', redirectUrl);
             $('#approve-order').find('.input-deposite').empty();
@@ -151,5 +155,14 @@
             $('#approve-order').find('.input-deposite').append(input);
         })
         $.fn.datepicker.defaults.format = "yyyy/mm/dd";
+
+        $('.btn-reject').on('click', function () {
+            let currentUrl = window.location.origin
+            let id = $(this).attr('data-id');
+            let redirectUrl = currentUrl + '/admin/deposit/reject/' + id;
+            $("#approve-order").attr('action', redirectUrl);
+            $('#approve-order').submit();
+        })
+
     </script>
 @endsection
