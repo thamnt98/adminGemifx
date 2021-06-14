@@ -48,22 +48,27 @@
                     @endif
                 </div>
                 <div class="form-group col-md-6">
-                    <label>Customer</label>
+                    <label>Users</label>
                     <div class="example">
-                        <select id="example-enableCollapsibleOptGroups-enableClickableOptGroups-enableFiltering-includeSelectAllOption"  class="form-control" multiple="multiple" name="customers[]">
+                        <select id="example-enableCollapsibleOptGroups-enableClickableOptGroups-enableFiltering-includeSelectAllOption"  class="form-control" multiple="multiple" name="users[]">
+                            <optgroup label="Agent Account">
+                                @foreach($users['agents'] as $c1)
+                                    <option value="{{ $c1->email }}">{{ $c1->email }}</option>
+                                @endforeach
+                            </optgroup>
                             <optgroup label="Opened MT4 Account">
-                                @foreach($customers['yes'] as $c1)
+                                @foreach($users['yes'] as $c2)
                                     <option value="{{ $c1->email }}">{{ $c1->email }}</option>
                                 @endforeach
                             </optgroup>
                             <optgroup label="No MT4 Account">
-                                @foreach($customers['no'] as $c2)
+                                @foreach($users['no'] as $c3)
                                     <option value="{{ $c2->email }}">{{ $c2->email }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
-                        @if($errors->has('customers'))
-                            <span class="text-danger text-md-left">{{ $errors->first('customers') }}</span>
+                        @if($errors->has('users'))
+                            <span class="text-danger text-md-left">{{ $errors->first('users') }}</span>
                         @endif
                     </div>
                 </div>

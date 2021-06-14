@@ -42,22 +42,14 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
      * @param array $search
      * @return mixed
      */
-    public function getAgentList($search)
+    public function getAgentList()
     {
         $query = $this->where('role', config('role.staff'));
         $user = Auth::user();
         if ($user->role == config('role.staff')) {
             $query = $query->where('admin_id', $user->id);
         }
-        if (!empty($search)) {
-            if (isset($search['email']) && !is_null($search['email'])) {
-                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
-            }
-            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
-                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
-            }
-        }
-        return $query->paginate(20, ['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
+        return $query->get(['id', 'name', 'email', 'phone_number', 'ib_id', 'status', 'admin_id']);
     }
 
     public function getManagerList(){
@@ -110,24 +102,20 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
         $query = $query->orderBy('created_at', 'desc');
         return $query->paginate(20);
     }
+
+    
     /**
      * list agent admin
      * @return mixed
      */
     public function listAgentAdmin($search)
     {
-        $query = $this->where('role', config('role.staff'));
-        if (!empty($search)) {
-            if (isset($search['email']) && !is_null($search['email'])) {
-                $query = $query->where('email', 'like', '%' . $search['email'] . '%');
-            }
-            if (isset($search['ib_id']) && !is_null($search['ib_id'])) {
-                $query = $query->where('ib_id', 'like', '%' . $search['ib_id'] . '%');
-            }
-        }
+        $query = $this->searchAgent($search);
         $admin = Auth::user();
         if ($admin->role == config('role.admin')) {
-            $query = $query->where('admin_id', null)->orWhere('admin_id', $admin->id);
+            if (empty($search)) {
+                $query = $query->where('admin_id', null);
+            }
         } else {
             $query = $query->where('admin_id', $admin->id);
         }
