@@ -58,12 +58,12 @@
                             </optgroup>
                             <optgroup label="Opened MT4 Account">
                                 @foreach($users['yes'] as $c2)
-                                    <option value="{{ $c1->email }}">{{ $c2->email }}</option>
+                                    <option value="{{ $c2->email }}">{{ $c2->email }}</option>
                                 @endforeach
                             </optgroup>
                             <optgroup label="No MT4 Account">
                                 @foreach($users['no'] as $c3)
-                                    <option value="{{ $c2->email }}">{{ $c3->email }}</option>
+                                    <option value="{{ $c3->email }}">{{ $c3->email }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
