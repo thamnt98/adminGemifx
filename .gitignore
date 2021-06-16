@@ -4,7 +4,7 @@
 /storage/*.key
 /vendor
 /app/Mail/templates.json
-/resources/views/vendor/maileclipse
+/resources/views/vendor/maileclipse/templates
 .env
 .env.backup
 .phpunit.result.cache

@@ -1,13 +1,5 @@
-[
-    {
-        "template_name": "Email Marketing",
-        "template_slug": "emailMarketing",
-        "template_description": "Email Marketing",
-        "template_type": "html",
-        "template_view_name": "airmail",
-        "template_skeleton": "confirm"
-    },
-    {
+{
+    "1": {
         "template_name": "hihi",
         "template_slug": "hihi",
         "template_description": "hihi",
@@ -15,4 +7,4 @@
         "template_view_name": "airmail",
         "template_skeleton": "ping"
     }
-]
+}
