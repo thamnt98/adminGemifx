@@ -45,12 +45,11 @@
                         <div class="form-group col-md-6">
                             <label>Group</label>
                             <select class="form-control" name="group" @if(!$isAdmin) readonly="" @endif>
-                                <option value="">Select one group</option>
-                                @foreach(config('mt4.group') as $key => $group)
-                                @if(old('group', $account->group) == $key)
-                                <option value="{{$key}}" selected>{{$group}}</option>
+                                @foreach($groups as $group)
+                                @if(old('group', $account->group) == $group)
+                                <option value="{{$group}}" selected>{{$group}}</option>
                                 @else
-                                <option value="{{$key}}">{{$group}}</option>
+                                <option value="{{$group}}">{{$group}}</option>
                                 @endif
                                 @endforeach
                             </select>

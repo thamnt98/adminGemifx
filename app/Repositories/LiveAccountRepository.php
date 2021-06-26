@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helper\MT4Connect;
+use App\Helper\MT5Helper;
 use App\Models\Admin;
 use App\Models\LiveAccount;
 use Illuminate\Support\Facades\Auth;
@@ -40,39 +41,57 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function openLiveAccount($user, $data)
     {
-        $data['name'] = $user->full_name;
-        $data['phone'] = 'xxxxxx' . substr($user['phone'], -4);
-        $data['zipcode'] = $user->zip_code;
-        $data['city'] = $user->city;
-        $data['state'] = $user->state;
-        $data['address'] = $user->address;
-        $data['country'] = $user->country;
-        $data['password'] = Str::random(7);
-        $data['agent'] = $user->ib_id;
-        $data['login'] = MT4Connect::openLiveAccount($data);
-        if (strlen($data['login']) == 10) {
-            $data['phone_number'] = $user->phone_number;
-            $data['user_id'] = $user->id;
-            $data['ib_id'] = $user->ib_id;
-            $this->create($data);
-            return [
-                'login' => $data['login'],
-                'password' => $data['password'],
-            ];
+        $params = [
+            "Account" => 0,
+            "ManagerIndex" => 101,
+            "Agent" => $user->ib_id ?? 0,
+            "First" =>  $user->first_name,
+            "Last" => $user->last_name,
+            "Group" => $data['group'],
+            "Email" => $user->email,
+            "Leverage" =>   $data['leverage'],
+            "Country" =>  $user->country ?? '',
+            'State' => $user->state ?? '',
+            'City' => $user->city ?? '',
+            'ZipCode' => $user->zip_code ?? '',
+            'Address' => $user->address ?? ''
+        ];
+        $result = MT5Helper::openAccount($params);
+        if ($result['ERR_MSG'] != null || $result['Account'] == 0) {
+            return [];
         }
-        return $data['login'];
+        $data['phone_number'] = $user->phone_number;
+        $data['user_id'] = $user->id;
+        $data['ib_id'] = $user->ib_id;
+        $data['login'] = $result['Account'];
+        LiveAccount::create($data);
+        $data['password'] = $result['Pwd_Master'];
+        return $data;
     }
 
     public function updateLiveAccount($id, $data)
     {
-        $data['login'] = $this->find($id)->login;
-        $result = MT4Connect::updateLiveAccount($data);
-        if (is_null($result)) {
+        $account = $this->find($id);
+        $data['login'] = $account->login;
+        if($data['group'] != $account->group){
+            $param =[
+                'Account' => $data['login'],
+                'Group' => $data['group']
+            ];
+            $result = MT5Helper::updateAccount('CHANGE_GROUP', $param);
+            if(!$result['Result']) return false;
+        }
+        if($data['leverage'] != $account->leverage){
+            $param =[
+                'Account' => $data['login'],
+                'Leverage' => $data['leverage']
+            ];
+            $result = MT5Helper::updateAccount('CHANGE_LEVERAGE', $param);
+            if(!$result['Result']) return false;
+        }
             $data['phone_number'] = $data['phone'];
             $this->update($data, $id);
-            return null;
-        }
-        return $result;
+        return true;
     }
 
     public function getAccountListBySearch($search)

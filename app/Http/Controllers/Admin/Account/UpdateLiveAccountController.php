@@ -35,7 +35,7 @@ class UpdateLiveAccountController extends Controller
         try {
             DB::beginTransaction();
             $result = $this->liveAccountRepository->updateLiveAccount($id, $data);
-            if (!is_null($result)) {
+            if (!($result)) {
                 return redirect()->back()->with('error', $result);
             }
             DB::commit();
@@ -48,12 +48,11 @@ class UpdateLiveAccountController extends Controller
 
     public function validateData($data)
     {
-        $groups = array_keys(config('mt4.group'));
         $leverages = array_keys(config('mt4.leverage'));
         return Validator::make(
             $data,
             [
-                'group' => ['required', Rule::in($groups)],
+                'group' => ['required'],
                 'leverage' => ['required', Rule::in($leverages)],
                 'phone' => 'required|regex:/[0-9]{10,11}/',
                 'ib_id'            => 'bail|required|regex:/[0-9]{6}/',

@@ -41,11 +41,10 @@ class OpenLiveAccountController extends Controller
             DB::beginTransaction();
             $user = $this->userRepository->find($data['customer']);
             $result = $this->liveAccountRepository->openLiveAccount($user, $data);
-            if (!is_array($result)) {
-                return redirect()->back()->with('error', $result);
+            if (empty($result)) {
+                return redirect()->back()->with('error', "Mở thất bại");
             }
-            $result['leverage'] = $data['leverage'];
-//            Mail::to($user->email)->send(new OpenLiveAccountSuccess($user, $result));
+            Mail::to($user->email)->send(new OpenLiveAccountSuccess($user, $result));
             DB::commit();
             return redirect()->back()->with('success', 'Bạn đã mở tài khoản thành công');
         } catch (\Exception $e) {
@@ -57,13 +56,12 @@ class OpenLiveAccountController extends Controller
 
     public function validateData($data)
     {
-        $groups = array_keys(config('mt4.group'));
         $leverages = array_keys(config('mt4.leverage'));
         return Validator::make(
             $data,
             [
                 'customer' => 'required',
-                'group' => ['required', Rule::in($groups)],
+                'group' => ['required'],
                 'leverage' => ['required', Rule::in($leverages)],
             ]
         );

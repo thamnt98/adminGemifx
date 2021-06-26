@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Account;
 
+use App\Helper\MT5Helper;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use App\Repositories\WithdrawalRepository;
@@ -15,14 +16,16 @@ class DetailLiveAccountController extends Controller
      */
     private $liveAccountRepository;
     private $withdrawalRepository;
+    private $mT5Helper;
 
     /**
      * LiveListController constructor.
      */
-    public function __construct(LiveAccountRepository $liveAccountRepository, WithdrawalRepository $withdrawalRepository)
+    public function __construct(LiveAccountRepository $liveAccountRepository, WithdrawalRepository $withdrawalRepository, MT5Helper $mT5Helper)
     {
         $this->liveAccountRepository = $liveAccountRepository;
         $this->withdrawalRepository = $withdrawalRepository;
+        $this->mT5Helper = $mT5Helper;
     }
 
     public function main($id)
@@ -30,6 +33,7 @@ class DetailLiveAccountController extends Controller
         $account = $this->liveAccountRepository->find($id);
         $isAdmin = Auth::user()->role == config('role.admin');
         $withdrawals = $this->withdrawalRepository->getWithdrawalByLogin($account->login);
-        return view('admin.account.detaillive', compact('account', 'withdrawals', 'isAdmin'));
+        $groups = $this->mT5Helper->getGroups();
+        return view('admin.account.detaillive', compact('account', 'withdrawals', 'isAdmin', 'groups'));
     }
 }
