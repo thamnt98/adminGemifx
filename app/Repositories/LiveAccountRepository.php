@@ -75,19 +75,17 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         $data['login'] = $account->login;
         if($data['group'] != $account->group){
             $param =[
-                'Account' => $data['login'],
                 'Group' => $data['group']
             ];
-            $result = MT5Helper::updateAccount('CHANGE_GROUP', $param);
-            if(!$result['Result']) return false;
+            $result = MT5Helper::updateAccount('CHANGE_GROUP', $data['login'], $param);
+            if(!$result->Result) return false;
         }
         if($data['leverage'] != $account->leverage){
             $param =[
-                'Account' => $data['login'],
                 'Leverage' => $data['leverage']
             ];
-            $result = MT5Helper::updateAccount('CHANGE_LEVERAGE', $param);
-            if(!$result['Result']) return false;
+            $result = MT5Helper::updateAccount('CHANGE_LEVERAGE', $data['login'], $param);
+            if(!$result->Result) return false;
         }
             $data['phone_number'] = $data['phone'];
             $this->update($data, $id);

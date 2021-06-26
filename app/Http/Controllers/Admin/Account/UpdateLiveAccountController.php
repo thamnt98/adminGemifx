@@ -41,6 +41,7 @@ class UpdateLiveAccountController extends Controller
             DB::commit();
             return redirect()->back()->with('success', 'Bạn đã cập nhật tài khoản thành công');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             return redirect()->back()->with('error', 'Cập nhật thất bại');
         }

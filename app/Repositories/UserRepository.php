@@ -80,10 +80,6 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                     LiveAccount::where('user_id', $id)->update(['ib_id' => $liveAccountData['ib_id']]);
                     $input['agent'] = $liveAccountData['ib_id'];
                 }
-                foreach ($logins as $login) {
-                    $input['login'] = $login;
-                    MT4Connect::updateLiveAccount($input);
-                }
             }
             DB::commit();
         } catch (Exception $e) {

@@ -8,21 +8,21 @@ class MT5Helper
 {
     protected static $mt5Url = 'http://79.143.176.19:17014/ManagerAPIFOREX/';
 
-    protected $session = '';
+    protected static $session = '';
 
 
-    private function connectMT5(){
+    private static function connectMT5(){
         $endpoint = self::$mt5Url . 'LOGIN_SESSION?Email=startingmt5broker@gmail.com&Password=rasa8r&Source=1';
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
-        $this->session =  $result->Session;
+        self::$session =  $result->Session;
     }
 
     public function getGroups()
     {
         $this->connectMT5();
-        $endpoint = self::$mt5Url . 'GET_GROUPS?Session=' .$this->session. '&ManagerIndex=101';
+        $endpoint = self::$mt5Url . 'GET_GROUPS?Session=' .self::$session. '&ManagerIndex=101';
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
@@ -31,6 +31,7 @@ class MT5Helper
 
     public static function openAccount($data)
     {
+        self::connectMT5();
         $endpoint = self::$mt5Url . 'ADD_MT_USER';
         $client = new Client([
             'headers' => [
@@ -38,6 +39,8 @@ class MT5Helper
                 'debug' => true
             ]
         ]);
+        $data['Session'] = self::$session;
+        $data['ManagerIndex'] = 101;
         $body = json_encode($data);
         $response = $client->request('POST', $endpoint, ['body' => $body]);
         $result = json_decode($response->getBody(), true);
@@ -52,16 +55,10 @@ class MT5Helper
         return $result;
     }
 
-    public function changeMasterPassword($data){
-        $endpoint = self::$mt5Url . 'CHANGE_MASTER_PASSWORD?Session=' .$this->session.  '&ManagerIndex=101&Account=' . $data['login'] . '&Password=' . $data['password'];
-        $client = new Client();
-        $response = $client->request('GET', $endpoint);
-        $result = json_decode($response->getBody());
-        return $result;
-    }
 
-    public static function updateAccount($type, $data){
-        $endpoint = self::$mt5Url . $type;
+    public static function updateAccount($type, $login, $data){
+        self::connectMT5();
+        $endpoint = self::$mt5Url . $type . '?Session=' .self::$session. '&ManagerIndex=101&Account=' . $login;
         foreach ($data as $key => $value){
             $endpoint = $endpoint. '&' . $key . '=' . $value;
         }

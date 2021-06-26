@@ -48,7 +48,6 @@ class OpenLiveAccountController extends Controller
             DB::commit();
             return redirect()->back()->with('success', 'Bạn đã mở tài khoản thành công');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return redirect()->back()->with('error', 'Mở thất bại');
         }

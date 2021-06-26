@@ -189,13 +189,6 @@
                                     <a href="{{ route('account.live.detail', $liveAccount->id) }}"
                                         class="btn btn-sm btn-success bold uppercase" title="Edit"><i
                                             class="fa fa-edit"></i> </a>
-                                    @if($isAdmin)
-                                        <a style="color:white"
-                                           class="btn btn-sm btn-danger bold uppercase btn-delete-account "
-                                           data-toggle="modal" data-login="{{  $liveAccount->login }}"
-                                           data-name="{{ $user->full_name }}" data-target="#deleteAccount"><i
-                                                class="fa fa-trash-o" aria-hidden="true"></i> </a>
-                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -268,28 +261,6 @@
         </div>
     </section>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Xoá tài khoản</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <form method="post" id="delete-account" action="">
-                    @csrf
-                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
-                    <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Xóa</a>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -314,14 +285,6 @@
 @section('javascript')
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>
-    $('.btn-delete-account').on('click', function () {
-        let currentUrl = window.location.origin
-        let login = $(this).attr('data-login');
-        let name = $(this).attr('data-name');
-        $('.modal-body').html("Bạn có muốn xóa tài khoản này của khách hàng " + name + " không ?");
-        let redirectUrl = currentUrl + '/admin/account/delete/' + login;
-        $("#delete-account").attr('action', redirectUrl);
-    })
 
     $('.btn-approve').on('click', function () {
         let currentUrl = window.location.origin
