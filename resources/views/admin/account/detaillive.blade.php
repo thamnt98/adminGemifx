@@ -134,46 +134,55 @@
                 style="margin:40px">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th>Login</th>
-                                <th>Bank Account</th>
-                                <th>Bank Name</th>
-                                <th>Account Name</th>
-                                <th>Amount Money</th>
-                                <th>Withdrawal Currency</th>
-                                <th>Transaction Date</th>
-                                <th>Note</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($withdrawals as $key => $withdrawal)
-                            <tr class="text-center">
-                                <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $withdrawal->login }}</td>
-                                <td>{{ $withdrawal->bank_account }}</td>
-                                <td>{{ $withdrawal->bank_name }}</td>
-                                <td>{{ $withdrawal->account_name }}</td>
-                                <td>{{ number_format($withdrawal->amount) }}</td>
-                                <td>{{ $withdrawal->withdrawal_currency }}</td>
-                                <td>{{ $withdrawal->created_at }}</td>
-                                <th>{{ $withdrawal->note }}</th>
-                                <td>
-                                    @if($withdrawal->status == config('deposit.status.yes'))
-                                    <button type="button" class="btn btn-dark"
+                    <thead>
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th>Login</th>
+                    <th>Email</th>
+                    <th>Bank Account</th>
+                    <th>Bank Name</th>
+                    <th>Account Name</th>
+                    <th style="min-width: 200px">Amount Money USD</th>
+                    <th>Withdrawal Currency</th>
+                    <th>Transaction Date</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($withdrawals as $key => $withdrawal)
+                    <tr class="text-center">
+                        <th scope="row">{{ $key + 1 }}</th>
+                        <td>{{ $withdrawal->login }}</td>
+                        <td>{{ $withdrawal->user->email }}</td>
+                        <td>{{ $withdrawal->bank_account }}</td>
+                        <td>{{ $withdrawal->bank_name }}</td>
+                        <td>{{ $withdrawal->account_name }}</td>
+                        @if ($withdrawal->status != config('deposit.status.pending'))
+                            <td>{{number_format($withdrawal->amount)}}</td>
+                        @else
+                            <td style="min-width:200px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
+                        @endif
+
+                        <td>{{ $withdrawal->withdrawal_currency }}</td>
+                        <td>{{ $withdrawal->created_at }}</td>
+                        <th>{{ $withdrawal->note }}</th>
+                        <td>
+                            @if($withdrawal->status == config('deposit.status.yes'))
+                                <button type="button" class="btn btn-dark"
                                         disabled>{{ config('deposit.status_text')[$withdrawal->status] }}</button>
-                                    @else
-                                    <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
-                                        data-target="#approve" data-id="{{ $withdrawal->id }}"
-                                        style="width:150px">{{ config('deposit.status_text')[$withdrawal->status] }}</a>
-                                    @endif
-                                </td>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                            @elseif($withdrawal->status == config('deposit.status.no'))
+                                <button type="button" class="btn btn-danger"
+                                        disabled>{{ config('deposit.status_text')[$withdrawal->status] }}</button>
+                            @else
+                                <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
+                                   data-target="#approve" data-id="{{ $withdrawal->id }}"
+                                   style="width:150px">{{ config('deposit.status_text')[$withdrawal->status] }}</a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
                     </table>
                 </div>
             </div>

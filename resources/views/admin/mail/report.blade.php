@@ -146,22 +146,24 @@
                 <td>Ticket</td>
                 <td>Type</td>
                 <td>Size</td>
+                <td>Symbol</td>
                 <td>Price</td>
                 <td>S / L</td>
                 <td>T / P</td>
-                <td>Time</td>
+                <td>Close Time</td>
                 <td colspan="3">Comment</td>
             </tr>
             @foreach($orders as $trade)
                 <tr>
                     <td>{{ date('Y-m-d H:i:s', $trade[7]) }}</td>
                     <td>{{ $trade[1] }}</td>
-                    <td>{{ $trade[12] }}</td>
-                    <td>{{ $trade[6] }}</td>
+                    <td>{{ config('mt4.cmd')[$trade[12]] }}</td>
+                    <td>{{ $trade[6]/100 }}</td>
+                    <td>{{ $trade[2] }}</td>
                     <td>{{ $trade[3] }}</td>
                     <td>{{ $trade[13] }}</td>
                     <td>{{ $trade[14] }}</td>
-                    <td>{{ $trade[8] }}</td>
+                    <td>{{ date('Y-m-d H:i:s', $trade[8]) }}</td>
                     <td>{{ $trade[9] }}</td>
                 </tr>
             @endforeach

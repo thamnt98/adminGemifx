@@ -66,7 +66,7 @@
                     <th>Bank Account</th>
                     <th>Bank Name</th>
                     <th>Account Name</th>
-                    <th>Amount Money USD</th>
+                    <th style="min-width: 200px">Amount Money USD</th>
                     <th>Withdrawal Currency</th>
                     <th>Transaction Date</th>
                     <th>Note</th>
@@ -82,10 +82,10 @@
                         <td>{{ $withdrawal->bank_account }}</td>
                         <td>{{ $withdrawal->bank_name }}</td>
                         <td>{{ $withdrawal->account_name }}</td>
-                        @if ($withdrawal->status == 1)
+                        @if ($withdrawal->status != config('deposit.status.pending'))
                             <td>{{number_format($withdrawal->amount)}}</td>
                         @else
-                            <td style="width:150px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
+                            <td style="min-width:200px"><input type="number" name="amount" class="form-control" value={{$withdrawal->amount}}></td>
                         @endif
 
                         <td>{{ $withdrawal->withdrawal_currency }}</td>
@@ -94,6 +94,9 @@
                         <td>
                             @if($withdrawal->status == config('deposit.status.yes'))
                                 <button type="button" class="btn btn-dark"
+                                        disabled>{{ config('deposit.status_text')[$withdrawal->status] }}</button>
+                            @elseif($withdrawal->status == config('deposit.status.no'))
+                                <button type="button" class="btn btn-danger"
                                         disabled>{{ config('deposit.status_text')[$withdrawal->status] }}</button>
                             @else
                                 <a style="color:white" class="btn btn-success bold btn-approve" data-toggle="modal"
@@ -118,11 +121,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">Bạn có chắc chắn xác nhận không ?</div>
+                <div class="modal-body">Bạn muốn reject hay approve ?</div>
                 <div class="modal-footer">
                     <form method="post" id="approve-order">
                         @csrf
-                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                        <a href="#" class="btn btn-secondary btn-reject" data-dismiss="modal" >Reject</a>
                         <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
                         <div class="input-withdrawal"></div>
                     </form>
@@ -139,6 +142,7 @@
             let input_value = $(this).parent().parent().find('.form-control').val();
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
+            $('.btn-reject').attr('data-id', id);
             let redirectUrl = currentUrl + '/admin/withdrawal/approve/' + id;
             $("#approve-order").attr('action', redirectUrl);
             $('#approve-order').find('.input-withdrawal').empty();
@@ -147,5 +151,13 @@
 
         })
         $.fn.datepicker.defaults.format = "yyyy/mm/dd";
+
+        $('.btn-reject').on('click', function () {
+            let currentUrl = window.location.origin
+            let id = $(this).attr('data-id');
+            let redirectUrl = currentUrl + '/admin/withdrawal/reject/' + id;
+            $("#approve-order").attr('action', redirectUrl);
+            $('#approve-order').submit();
+        })
     </script>
 @endsection
