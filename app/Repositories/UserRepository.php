@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helper\MT4Connect;
 use App\Models\Admin;
 use App\Models\LiveAccount;
 use App\Models\User;
@@ -132,18 +131,6 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             'users.address',
             'users.country',
         ]);
-    }
-
-    public function updateUsersByNewIbId($oldIbId, $newIbId)
-    {
-            $this->where('ib_id', $oldIbId)->update(['ib_id' => $newIbId]);
-            LiveAccount::where('ib_id', $oldIbId)->update(['ib_id' => $newIbId]);
-            $logins = LiveAccount::where('ib_id', $newIbId)->pluck('login')->toArray();
-            $input['agent'] = $newIbId;
-            foreach ($logins as $login) {
-                $input['login'] = $login;
-                MT4Connect::updateLiveAccount($input);
-            }
     }
 
     public function getCustomersHasMT4AccountOrNo(){

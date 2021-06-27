@@ -38,9 +38,6 @@ class UpdateController extends Controller
         }
         try {
             $ibId = Admin::find($id)->ib_id;
-            if($data['ib_id'] != $ibId){
-                $this->userRepository->updateUsersByNewIbId($ibId, $data['ib_id']);
-            }
             $this->adminRepository->updateAgent($id, $data);
             return redirect()->back()->with('success', 'Bạn đã cập nhật thành công');
         } catch (\Exception $e) {

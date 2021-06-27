@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Account;
 
+use App\Helper\MT5Helper;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Http\Request;
@@ -27,19 +28,19 @@ class LiveListController extends Controller
     private $liveAccountRepository;
     private $userRepository;
     private $depositRepository;
-    private $mt4;
+    private $mT5Helper;
     private $withdrawalRepository;
 
     /**
      * LiveListController constructor.
      */
-    public function __construct(LiveAccountRepository $liveAccountRepository, UserRepository $userRepository, DepositRepository $depositRepository, MT4Connect $mt4, WithdrawalRepository $withdrawalRepository)
+    public function __construct(LiveAccountRepository $liveAccountRepository, UserRepository $userRepository, DepositRepository $depositRepository, MT5Helper $mT5Helper, WithdrawalRepository $withdrawalRepository)
     {
         $this->liveAccountRepository = $liveAccountRepository;
         $this->userRepository = $userRepository;
         $this->depositRepository = $depositRepository;
         $this->withdrawalRepository = $withdrawalRepository;
-        $this->mt4 = $mt4;
+        $this->mT5Helper = $mT5Helper;
     }
 
     public function main(Request  $request)
@@ -108,9 +109,13 @@ class LiveListController extends Controller
                 'status' => self::SUCCESS
             ];
             $balance = $this->depositRepository->changeMoneyUsd($data_save['amount_money']);
-            $changeBalance = $this->mt4->changeBalance($data_save['login'], $balance, ' Deposit to NL');
-            $code = self::getResult($changeBalance);
-            if ($code == '1') {
+            $data = [
+                'Account' => $data_save['login'],
+                'Amount' => $balance,
+                'Comment' => 'Deposit to N'
+            ];
+            $result = $this->mT5Helper->makeDeposit($data);
+            if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $order = $this->depositRepository->create($data_save);
                 DB::commit();
@@ -154,9 +159,13 @@ class LiveListController extends Controller
                 'withdrawal_type' => $data['withdrawal_type'],
                 'status' => self::SUCCESS
             ];
-            $changeBalance = $this->mt4->changeBalance($data_save['login'], self::SUB_MONEY . $data_save['amount'], 'Withdrawal to Bank');
-            $code = self::getResult($changeBalance);
-            if ($code == '1') {
+            $data = [
+                'Account' => $data_save['login'],
+                'Amount' => $data_save['amount'],
+                'Comment' => 'Withdrawal to Bank'
+            ];
+            $result = $this->mT5Helper->makeWithdrawal($data);
+            if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $withdrawal = $this->withdrawalRepository->create($data_save);
                 DB::commit();
