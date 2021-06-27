@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Admin;
+use App\Models\AdminCommission;
 use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
@@ -77,7 +78,16 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
             $data['admin_id'] = null;
         }
         unset($data['role']);
-        return $this->update($data, $id);
+        $this->update($data, $id);
+        $commission = [
+            'us_stock_commission' => $data['us_stock_commission'],
+            'forex_commission' => $data['forex_commission'],
+            'other_commission' => $data['other_commission'],
+            'staff_us_stock_commission' => $data['staff_us_stock_commission'],
+            'staff_forex_commission' => $data['staff_forex_commission'],
+            'staff_other_commission' => $data['staff_other_commission'],
+        ];
+        AdminCommission::where('admin_id', $id)->update($commission);
     }
 
     public function changePassword($data)

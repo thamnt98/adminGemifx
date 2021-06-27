@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Agent;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminCommission;
 use App\Repositories\AdminRepository;
 
 class DetailController extends Controller
@@ -24,12 +25,13 @@ class DetailController extends Controller
     public function main($id)
     {
         $agent = $this->adminRepository->getAgentDetail($id);
+        $commission = AdminCommission::where('admin_id', $id)->first();
         if (is_null($agent->admin_id)) {
             $agent->role = 'manager';
         } else {
             $agent->role = 'staff';
         }
         $managers = $this->adminRepository->getManagerList();
-        return view('admin.agent.detail', compact('agent', 'managers'));
+        return view('admin.agent.detail', compact('agent', 'managers', 'commission'));
     }
 }

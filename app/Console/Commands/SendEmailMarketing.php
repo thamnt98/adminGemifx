@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helper\MT4Connect;
+use App\Helper\MT5Helper;
 use App\Mail\SendReportEmail;
 use App\Models\LiveAccount;
 use App\Models\User;
@@ -52,13 +53,27 @@ class SendEmailMarketing extends Command
                 $userNoMT4Account[] = [$user->email];
             }
         }
-        $to = strtotime('now');
-        $from = strtotime('-1 week');
+        $to = date('Y-m-d H:i:s', strtotime('now'));
+        $from = date('Y-m-d H:i:s', strtotime('-1 week'));
         foreach($userHasMT4Account as $email => $value){
             $name = $value[0];
             $logins = $value[1];
-            $orders = MT4Connect::reportByLogin($logins, $from, $to);
+            $data = [
+                'StartTm' => $from,
+                'EndTm' => $to,
+            ];
+            $orders = [];
+            foreach($logins as $key => $login){
+//                $data['Account'] = $login;
+                $data['Account'] = '281422371';
+                $orders = array_merge($orders,  MT5Helper::getClosedAll($data));
+            }
+            dd($orders);
+            $orders = array_values($orders);
             $logins = implode(" | ", $logins);
+            foreach($orders as $order){
+                dd($order);
+            }
             Mail::to($email)->send(new SendReportEmail($orders, $logins, $name));
         }
     }

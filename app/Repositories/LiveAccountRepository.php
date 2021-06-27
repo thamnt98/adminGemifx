@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Helper\MT4Connect;
 use App\Helper\MT5Helper;
 use App\Models\Admin;
+use App\Models\AdminCommission;
 use App\Models\LiveAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -129,6 +130,12 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function getLoginsByAdmin($admin, $search = null)
     {
+        if(is_null($admin->admin_id)) {
+            $staffCommission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission', 'staff_us_stock_commission', 'staff_forex_commission', 'staff_other_commission']);
+        }
+        $commission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission']);
+        $commission = array_values($commission->first()->toArray());
+        $staffCommission = array_values($staffCommission->first()  ->toArray());
         if ($search) {
             $admin = Admin::where('ib_id', trim($search))->first();
             if (!$admin)
@@ -136,15 +143,15 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         }
         if ($admin->role == config('role.staff')) {
             $logins = $this->where('ib_id', $admin->ib_id)->pluck('login')->toArray();
-            $result = array_fill_keys($logins, $admin->commission);
+            $result = array_fill_keys($logins, $commission);
             if (is_null($admin->admin_id)) {
                 $ibIds = Admin::where('admin_id', $admin->id)->pluck('ib_id')->toArray();
-                $logins = $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray();
-                $result += array_fill_keys($logins, $admin->staff_commission);
+                $logins = array_merge($logins, $this->whereIn('ib_id', $ibIds)->pluck('login')->toArray());
+                $result += array_fill_keys($logins, $staffCommission);
             }
         } else {
             $logins = $this->pluck('login')->toArray();
-            $result = array_fill_keys($logins, $admin->staff_commission);
+            $result = array_fill_keys($logins, $staffCommission);
         }
         return $result;
     }

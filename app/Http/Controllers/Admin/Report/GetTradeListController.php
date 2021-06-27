@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Helper\MT4Connect;
+use App\Helper\MT5Helper;
 use App\Http\Controllers\Controller;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Http\Request;
@@ -11,15 +12,15 @@ use Illuminate\Support\Facades\Auth;
 class GetTradeListController extends Controller
 {
 
-    protected $MT4Connect;
+    protected $mT5Helper;
     protected $liveAccountRepository;
 
     /**
      * GetTradeListController constructor.
      */
-    public function __construct(MT4Connect $MT4Connect, LiveAccountRepository $liveAccountRepository)
+    public function __construct(MT5Helper $mT5Helper, LiveAccountRepository $liveAccountRepository)
     {
-        $this->MT4Connect = $MT4Connect;
+        $this->mT5Helper = $mT5Helper;
         $this->liveAccountRepository = $liveAccountRepository;
     }
 
@@ -39,9 +40,9 @@ class GetTradeListController extends Controller
         }
         $logins = $this->liveAccountRepository->getLoginsByAdmin(Auth::user(), $ibId);
         if (!empty($logins)) {
-            $from = strtotime($data['from'] . ' 00:00:00');
-            $to = strtotime($data['to'] . ' 23:59:59');
-            $result = $this->MT4Connect->getOpenedTrades($logins, $from, $to);
+            $data['startTm'] = date('Y-m-d H:i:s', strtotime($data['from'] . ' 00:00:00'));
+            $data['EndTm']  = date('Y-m-d H:i:s', strtotime($data['to'] . ' 23:59:59'));
+            $result = $this->mT5Helper->getOpenedTrades($logins, $data);
             $trades = $result[0];
             $lots = $result[1];
             $commission = $result[2];

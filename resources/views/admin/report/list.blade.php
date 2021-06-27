@@ -66,16 +66,16 @@
                 @foreach($trades as $key => $trade)
                     <tr>
                         <th scope="row">{{ $key + 1 }}</th>
-                        <td>{{ $trade[0] }}</td>
-                        <td>{{ $trade[1] }}</td>
-                        <td>{{ config('mt4.cmd')[$trade[12]] }}</td>
-                        <td>{{ $trade[2] }}</td>
-                        <td>{{ round($trade[6]/100, 2) }}</td>
-                        <td>{{ $trade[3] }}</td>
-                        <td>{{ $trade[4] }}</td>
-                        <td>{{ date('Y-m-d H:i:s', $trade[7]) }}</td>
-                        <td>{{ date('Y-m-d H:i:s', $trade[8]) }}</td>
-                        <td>{{ $trade[5] }}</td>
+                        <td>{{ $trade->MT4Account }}</td>
+                        <td>{{ $trade->Ticket }}</td>
+                        <td>{{ $trade->oBSFlag == 0 ? 'Sell' : 'Buy' }}</td>
+                        <td>{{ $trade->Symbol }}</td>
+                        <td>{{ $trade->Lot }}</td>
+                        <td>{{ $trade->Open_Price }}</td>
+                        <td>{{ $trade->Close_Price }}</td>
+                        <td>{{ $trade->Open_Time }}</td>
+                        <td>{{ $trade->Close_Time }}</td>
+                        <td>{{ $trade->Profit }}</td>
                     </tr>
                 @endforeach
                 </tbody>

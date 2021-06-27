@@ -66,14 +66,6 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="staff-commission form-group col-md-6">
-                    <label>Staff Commisison ($/lots)</label>
-                    <input class="form-control" type="text"
-                           value="{{ old('staff_commission', $agent->staff_commission) }}" name="staff_commission">
-                    @if($errors->has('staff_commission'))
-                        <span class="text-danger text-md-left">{{ $errors->first('staff_commission') }}</span>
-                    @endif
-                </div>
                 <div class="belong-manager form-group col-md-6">
                     <label>Manager</label>
                     <select class="form-control" name="admin_id">
@@ -85,12 +77,56 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Commsion ($/lots)</label>
-                    <input class="form-control" type="text" value="{{ old('commission', $agent->commission) }}"
-                           name="commission">
-                    @if($errors->has('commission'))
-                        <span class="text-danger text-md-left">{{ $errors->first('commission') }}</span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>US Stock Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('us_stock_commission', $commission->us_stock_commission) }}"
+                           name="us_stock_commission">
+                    @if($errors->has('us_stock_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('us_stock_commission') }}</span>
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Forex Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('forex_commission', $commission->forex_commission) }}"
+                           name="forex_commission">
+                    @if($errors->has('forex_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('forex_commission') }}</span>
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Other Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('other_commission', $commission->other_commission) }}"
+                           name="other_commission">
+                    @if($errors->has('other_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('other_commission') }}</span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-row staff-commission">
+                <div class="form-group col-md-4">
+                    <label>Staff US Stock Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('staff_us_stock_commission', $commission->staff_us_stock_commission) }}"
+                           name="staff_us_stock_commission">
+                    @if($errors->has('staff_us_stock_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('staff_us_stock_commission') }}</span>
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Staff Forex Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('staff_forex_commission', $commission->staff_forex_commission) }}"
+                           name="staff_forex_commission">
+                    @if($errors->has('staff_forex_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('staff_forex_commission') }}</span>
+                    @endif
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Staff Other Commsion ($/lots)</label>
+                    <input class="form-control" type="text" value="{{ old('staff_other_commission', $commission->staff_other_commission) }}"
+                           name="staff_other_commission">
+                    @if($errors->has('staff_other_commission'))
+                        <span class="text-danger text-md-left">{{ $errors->first('staff_other_commission') }}</span>
                     @endif
                 </div>
             </div>

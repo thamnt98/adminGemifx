@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendOtpViaMail;
+use App\Models\AdminCommission;
 use App\Repositories\AdminRepository;
 use App\Repositories\UserRepository;
 use Exception;
@@ -59,17 +60,23 @@ class HandleRegisterController extends Controller
         try {
             DB::beginTransaction();
             $data['admin_id'] = Session::get('admin_id');
-            $data['commission'] = 2;
-            if(is_null($data['admin_id'])){
-                $data['staff_commission'] = 1;
-            }
             $data['status'] = 2;
-            $this->adminRepository->create($data);
+            $admin = $this->adminRepository->create($data);
             Session::forget('email');
             Session::forget('otp');
             Session::forget('otp_valid');
             $data['application_type'] = 1;
             $this->userRepository->create($data);
+            $adminCommission['admin_id'] = $admin->id;
+            $adminCommission['us_stock_commission'] = '0.1';
+            $adminCommission['forex_commission'] = '3';
+            $adminCommission['other_commission'] = '4';
+            if(is_null($data['admin_id'])){
+                $adminCommission['staff_us_stock_commission'] = '0.33';
+                $adminCommission['staff_forex_commission'] = '1';
+                $adminCommission['staff_other_commission'] = '1.33';
+            }
+            AdminCommission::insert($adminCommission);
             DB::commit();
             return redirect('/login')->with('success', 'You registered successfully');
         } catch (Exception $e) {
