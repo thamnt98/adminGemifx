@@ -24,7 +24,8 @@ class EmailController extends Controller
     }
 
     public function main(){
-        $path = '/home/gemimnhr/ib.gemifx.com/app/Mail/templates.json';
+        $path = public_path('../app/Mail/templates.json');
+//        $path = '/home/gemimnhr/ib.gemifx.com/app/Mail/templates.json';
         $templates = file_get_contents($path);
         $templates = json_decode($templates);
         $users = $this->userRepository->getCustomersHasMT4AccountOrNo();

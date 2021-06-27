@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Withdrawal;
 
+use App\Helper\MT5Helper;
 use App\Http\Controllers\Controller;
 use App\Repositories\WithdrawalRepository;
 use App\Helper\MT4Connect;
@@ -18,16 +19,16 @@ class ApproveController extends Controller
      * @var WithdrawalRepository
      */
     private $withdrawalRepository;
-    private $mt4;
+    private $mT5Helpert;
 
     /**
      * ListController constructor.
      * @param UserRepository $userRepository
      */
-    public function __construct(WithdrawalRepository $withdrawalRepository, MT4Connect $mt4)
+    public function __construct(WithdrawalRepository $withdrawalRepository, MT5Helper $mT5Helpert)
     {
         $this->withdrawalRepository = $withdrawalRepository;
-        $this->mt4 = $mt4;
+        $this->mT5Helpert = $mT5Helpert;
     }
 
     public function main($id, Request $request)
@@ -39,9 +40,13 @@ class ApproveController extends Controller
                 return new Exception('find withdrawal fail');
             }
             $login = $withdrawal->login;
-            $changeBalance = $this->mt4->changeBalance($login, self::SUBTRACT.$amount, 'Withdrawal to Bank');
-            $code = self::getResult($changeBalance);
-            if($code == '1'){
+            $data = [
+                'Account' => $login,
+                'Amount' => $amount,
+                'Comment' => 'Withdrawal to Bank'
+            ];
+            $result = $this->mT5Helpert->makeWithdrawal($data);
+            if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $this->withdrawalRepository->update(['status' => config('deposit.status.yes'), 'amount' => $amount], $id);
                 DB::commit();
@@ -54,10 +59,4 @@ class ApproveController extends Controller
         }
     }
 
-    public static function getResult($result)
-    {
-        $result = explode('&', $result);
-        $resultCode = explode('=', $result[0])[1];
-        return $resultCode;
-    }
 }

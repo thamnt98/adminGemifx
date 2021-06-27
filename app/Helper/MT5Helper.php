@@ -47,13 +47,13 @@ class MT5Helper
         return $result;
     }
 
-    public function getAccountInfo($login){
-        $endpoint = self::$mt5Url . 'GET_USER_INFO?Session=' .$this->session. '&ManagerIndex=101&Account=' . $login;
-        $client = new Client();
-        $response = $client->request('GET', $endpoint);
-        $result = json_decode($response->getBody());
-        return $result;
-    }
+//    public function getAccountInfo($login){
+//        $endpoint = self::$mt5Url . 'GET_USER_INFO?Session=' .$this->session. '&ManagerIndex=101&Account=' . $login;
+//        $client = new Client();
+//        $response = $client->request('GET', $endpoint);
+//        $result = json_decode($response->getBody());
+//        return $result;
+//    }
 
 
     public static function updateAccount($type, $login, $data){
@@ -61,6 +61,30 @@ class MT5Helper
         $endpoint = self::$mt5Url . $type . '?Session=' .self::$session. '&ManagerIndex=101&Account=' . $login;
         foreach ($data as $key => $value){
             $endpoint = $endpoint. '&' . $key . '=' . $value;
+        }
+        $client = new Client();
+        $response = $client->request('GET', $endpoint);
+        $result = json_decode($response->getBody());
+        return $result;
+    }
+
+    public function makeDeposit($data){
+        self::connectMT5();
+        $endpoint = self::$mt5Url . 'MAKE_DEPOIST_BALANCE?Session=' .self::$session. '&ManagerIndex=101';
+        foreach ($data as $key => $value){
+            $endpoint = $endpoint. '&' . $key .  '=' . $value;
+        }
+        $client = new Client();
+        $response = $client->request('GET', $endpoint);
+        $result = json_decode($response->getBody());
+        return $result;
+    }
+
+    public function makeWithdrawal($data){
+        self::connectMT5();
+        $endpoint = self::$mt5Url . 'MAKE_WITHDRAW_BALANCE?Session=' .self::$session. '&ManagerIndex=101';
+        foreach ($data as $key => $value){
+            $endpoint = $endpoint. '&' . $key .  '=' . $value;
         }
         $client = new Client();
         $response = $client->request('GET', $endpoint);

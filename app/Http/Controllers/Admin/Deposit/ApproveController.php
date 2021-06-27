@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Deposit;
 
+use App\Helper\MT5Helper;
 use App\Http\Controllers\Controller;
 use App\Repositories\DepositRepository;
 use Exception;
@@ -15,16 +16,16 @@ class ApproveController extends Controller
      * @var DepositRepository
      */
     private $depositRepository;
-    private $mt4;
+    private $mT5Helper;
 
     /**
      * ListController constructor.
      * @param UserRepository $userRepository
      */
-    public function __construct(DepositRepository $depositRepository, MT4Connect $mt4)
+    public function __construct(DepositRepository $depositRepository, MT5Helper $mT5Helper)
     {
         $this->depositRepository = $depositRepository;
-        $this->mt4 = $mt4;
+        $this->mT5Helper = $mT5Helper;
     }
 
     public function main($id, Request $request)
@@ -36,22 +37,20 @@ class ApproveController extends Controller
                 throw new Exception('Find order fail');
             }
             $login = $order->login;
-            $changeBalance = $this->mt4->changeBalance($login, $usd, ' Deposit to NL');
-            $code = self::getResult($changeBalance);
-            if ($code == '1') {
-                $result = $this->depositRepository->update(['status' => config('deposit.status.yes'), 'usd' => $usd], $id);
+            $data = [
+                'Account' => $login,
+                'Amount' => $usd,
+                'Comment' => 'Deposit to NL'
+            ];
+            $result = $this->mT5Helper->makeDeposit($data);
+            if (is_null($result->ERR_MSG)) {
+                $this->depositRepository->update(['status' => config('deposit.status.yes'), 'usd' => $usd], $id);
                 return redirect()->back()->with('success', 'Bạn đã approve thành công');
             }
             return redirect()->back()->with('error', 'Approve thất bại');
         }catch(Exception $e){
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Approve thất bại');
         }
-    }
-
-    public static function getResult($result)
-    {
-        $result = explode('&', $result);
-        $resultCode = explode('=', $result[0])[1];
-        return $resultCode;
     }
 }
