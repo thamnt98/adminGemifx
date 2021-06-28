@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helper\MT4Connect;
+use App\Helper\MT5Helper;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Console\Command;
 
@@ -21,23 +22,16 @@ class TransferCommisionToIbCommand extends Command
      * @var string
      */
     protected $description = 'Transfer commission to IB after order closed';
-    /**
-     * @var MT4Connect
-     */
-    private $MT4Connect;
-    /**
-     * @var LiveAccountRepository
-     */
-    private $liveAccountRepository;
+
+    protected $mT5Helper;
+    protected $liveAccountRepository;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * GetTradeListController constructor.
      */
-    public function __construct(MT4Connect $MT4Connect, LiveAccountRepository $liveAccountRepository)
+    public function __construct(MT5Helper $mT5Helper, LiveAccountRepository $liveAccountRepository)
     {
-        $this->MT4Connect = $MT4Connect;
+        $this->mT5Helper = $mT5Helper;
         $this->liveAccountRepository = $liveAccountRepository;
         parent::__construct();
     }
@@ -49,6 +43,6 @@ class TransferCommisionToIbCommand extends Command
      */
     public function handle()
     {
-        return $this->MT4Connect->transferCommission();
+        return $this->mT5Helper->transferCommission();
     }
 }
