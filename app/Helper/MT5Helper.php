@@ -21,7 +21,7 @@ class MT5Helper
     /**
      * MT4Connect constructor.
      */
-    
+
     private function __construct(LiveAccountRepository  $liveAccountRepository)
     {
         $this->liveAccountRepository = $liveAccountRepository;
@@ -58,9 +58,9 @@ class MT5Helper
         return $result;
     }
 
-    public function getGroups()
+    public static function getGroups()
     {
-        $this->connectMT5();
+        self::connectMT5();
         $endpoint = self::$mt5Url . 'GET_GROUPS?Session=' . self::$session . '&ManagerIndex=101';
         $client = new Client();
         $response = $client->request('GET', $endpoint);
@@ -77,7 +77,15 @@ class MT5Helper
         self::$session = $result->Session;
     }
 
-    public function makeDeposit($data)
+    public static function getAccountInfo($login){
+        $endpoint = self::$mt5Url . 'GET_USER_INFO?Session=' . self::$session. '&ManagerIndex=101&Account=' . $login;
+        $client = new Client();
+        $response = $client->request('GET', $endpoint);
+        $result = json_decode($response->getBody());
+        return $result;
+    }
+
+    public static function makeDeposit($data)
     {
         self::connectMT5();
         $endpoint = self::$mt5Url . 'MAKE_DEPOIST_BALANCE?Session=' . self::$session . '&ManagerIndex=101';
@@ -90,7 +98,7 @@ class MT5Helper
         return $result;
     }
 
-    public function makeWithdrawal($data)
+    public static function makeWithdrawal($data)
     {
         self::connectMT5();
         $endpoint = self::$mt5Url . 'MAKE_WITHDRAW_BALANCE?Session=' . self::$session . '&ManagerIndex=101';
@@ -103,7 +111,7 @@ class MT5Helper
         return $result;
     }
 
-    public function getOpenedTrades($logins, $data)
+    public static function getOpenedTrades($logins, $data)
     {
         $lots = 0;
         $commission = 0;

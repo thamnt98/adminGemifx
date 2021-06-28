@@ -19,16 +19,14 @@ class ApproveController extends Controller
      * @var WithdrawalRepository
      */
     private $withdrawalRepository;
-    private $mT5Helpert;
 
     /**
      * ListController constructor.
      * @param UserRepository $userRepository
      */
-    public function __construct(WithdrawalRepository $withdrawalRepository, MT5Helper $mT5Helpert)
+    public function __construct(WithdrawalRepository $withdrawalRepository)
     {
         $this->withdrawalRepository = $withdrawalRepository;
-        $this->mT5Helpert = $mT5Helpert;
     }
 
     public function main($id, Request $request)
@@ -45,7 +43,7 @@ class ApproveController extends Controller
                 'Amount' => $amount,
                 'Comment' => 'Withdrawal to Bank'
             ];
-            $result = $this->mT5Helpert->makeWithdrawal($data);
+            $result = MT5Helper::makeWithdrawal($data);
             if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $this->withdrawalRepository->update(['status' => config('deposit.status.yes'), 'amount' => $amount], $id);

@@ -12,15 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class GetTradeListController extends Controller
 {
 
-    protected $mT5Helper;
     protected $liveAccountRepository;
 
     /**
      * GetTradeListController constructor.
      */
-    public function __construct(MT5Helper $mT5Helper, LiveAccountRepository $liveAccountRepository)
+    public function __construct(LiveAccountRepository $liveAccountRepository)
     {
-        $this->mT5Helper = $mT5Helper;
         $this->liveAccountRepository = $liveAccountRepository;
     }
 
@@ -42,7 +40,7 @@ class GetTradeListController extends Controller
         if (!empty($logins)) {
             $data['startTm'] = date('Y-m-d H:i:s', strtotime($data['from'] . ' 00:00:00'));
             $data['EndTm']  = date('Y-m-d H:i:s', strtotime($data['to'] . ' 23:59:59'));
-            $result = $this->mT5Helper->getOpenedTrades($logins, $data);
+            $result = MT5Helper::getOpenedTrades($logins, $data);
             $trades = $result[0];
             $lots = $result[1];
             $commission = $result[2];

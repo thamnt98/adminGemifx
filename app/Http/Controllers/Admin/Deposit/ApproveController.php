@@ -16,16 +16,14 @@ class ApproveController extends Controller
      * @var DepositRepository
      */
     private $depositRepository;
-    private $mT5Helper;
 
     /**
      * ListController constructor.
      * @param UserRepository $userRepository
      */
-    public function __construct(DepositRepository $depositRepository, MT5Helper $mT5Helper)
+    public function __construct(DepositRepository $depositRepository)
     {
         $this->depositRepository = $depositRepository;
-        $this->mT5Helper = $mT5Helper;
     }
 
     public function main($id, Request $request)
@@ -42,7 +40,7 @@ class ApproveController extends Controller
                 'Amount' => $usd,
                 'Comment' => 'Deposit to NL'
             ];
-            $result = $this->mT5Helper->makeDeposit($data);
+            $result = MT5Helper::makeDeposit($data);
             if (is_null($result->ERR_MSG)) {
                 $this->depositRepository->update(['status' => config('deposit.status.yes'), 'usd' => $usd], $id);
                 return redirect()->back()->with('success', 'Bạn đã approve thành công');

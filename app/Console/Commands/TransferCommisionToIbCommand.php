@@ -28,6 +28,8 @@ class TransferCommisionToIbCommand extends Command
 
     /**
      * GetTradeListController constructor.
+     * @param MT5Helper $mT5Helper
+     * @param LiveAccountRepository $liveAccountRepository
      */
     public function __construct(MT5Helper $mT5Helper, LiveAccountRepository $liveAccountRepository)
     {

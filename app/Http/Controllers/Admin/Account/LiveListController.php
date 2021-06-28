@@ -28,19 +28,17 @@ class LiveListController extends Controller
     private $liveAccountRepository;
     private $userRepository;
     private $depositRepository;
-    private $mT5Helper;
     private $withdrawalRepository;
 
     /**
      * LiveListController constructor.
      */
-    public function __construct(LiveAccountRepository $liveAccountRepository, UserRepository $userRepository, DepositRepository $depositRepository, MT5Helper $mT5Helper, WithdrawalRepository $withdrawalRepository)
+    public function __construct(LiveAccountRepository $liveAccountRepository, UserRepository $userRepository, DepositRepository $depositRepository, WithdrawalRepository $withdrawalRepository)
     {
         $this->liveAccountRepository = $liveAccountRepository;
         $this->userRepository = $userRepository;
         $this->depositRepository = $depositRepository;
         $this->withdrawalRepository = $withdrawalRepository;
-        $this->mT5Helper = $mT5Helper;
     }
 
     public function main(Request  $request)
@@ -114,7 +112,7 @@ class LiveListController extends Controller
                 'Amount' => $balance,
                 'Comment' => 'Deposit to N'
             ];
-            $result = $this->mT5Helper->makeDeposit($data);
+            $result = MT5Helper::makeDeposit($data);
             if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $order = $this->depositRepository->create($data_save);
@@ -148,7 +146,8 @@ class LiveListController extends Controller
             if ($validateData->fails()) {
                 return redirect()->back()->withErrors($validateData->errors())->withInput()->with(['listLogin' => $listLogin]);
             }
-            $equity = $this->mt4->getEquityBalanceByLogin($data['login']);
+
+            $equity = MT5Helper::getAccountInfo($data['login'])->Equity;
             if ($data['amount'] > $equity) {
                 return redirect()->back()->with('error', 'Số tiền trong tài khoản chỉ còn ' . $equity . '$');
             }
@@ -164,7 +163,7 @@ class LiveListController extends Controller
                 'Amount' => $data_save['amount'],
                 'Comment' => 'Withdrawal to Bank'
             ];
-            $result = $this->mT5Helper->makeWithdrawal($data);
+            $result = MT5Helper::makeWithdrawal($data);
             if (is_null($result->ERR_MSG)) {
                 DB::beginTransaction();
                 $withdrawal = $this->withdrawalRepository->create($data_save);

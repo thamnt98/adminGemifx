@@ -12,21 +12,19 @@ class CreateLiveAccountController extends Controller
 {
 
     private $userRepository;
-    private $mT5Helper;
 
     /**
      * LiveListController constructor.
      */
-    public function __construct(UserRepository $userRepository, MT5Helper $mT5Helper)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->mT5Helper = $mT5Helper;
     }
 
     public function main($id)
     {
         $users = $this->userRepository->getUserBySelect(['email', 'phone_number', 'id']);
-        $groups = $this->mT5Helper->getGroups();
+        $groups = MT5Helper::getGroups();
         return view('admin.account.createlive', compact('users', 'id', 'groups'));
     }
 }
