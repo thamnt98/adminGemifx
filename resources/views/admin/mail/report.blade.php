@@ -143,28 +143,28 @@
             </tr>
             <tr align="center" bgcolor="#C0C0C0">
                 <td nowrap="" align="left">&nbsp;&nbsp;&nbsp;Open Time</td>
-                <td>Ticket</td>
-                <td>Type</td>
-                <td>Size</td>
-                <td>Symbol</td>
-                <td>Price</td>
-                <td>S / L</td>
-                <td>T / P</td>
-                <td>Close Time</td>
-                <td colspan="3">Comment</td>
+                <td style="text-align: center;">Ticket</td>
+                <td style="text-align: center;">Type</td>
+                <td style="text-align: center;">Size</td>
+                <td style="text-align: center;">Symbol</td>
+                <td style="text-align: center;">Price</td>
+                <td style="text-align: center;">S / L</td>
+                <td style="text-align: center;">T / P</td>
+                <td style="text-align: center;">Close Time</td>
+                <td style="text-align: center;" colspan="3">Comment</td>
             </tr>
             @foreach($orders as $trade)
                 <tr>
-                    <td>{{ date('Y-m-d H:i:s', $trade[7]) }}</td>
-                    <td>{{ $trade[1] }}</td>
-                    <td>{{ config('mt4.cmd')[$trade[12]] }}</td>
-                    <td>{{ $trade[6]/100 }}</td>
-                    <td>{{ $trade[2] }}</td>
-                    <td>{{ $trade[3] }}</td>
-                    <td>{{ $trade[13] }}</td>
-                    <td>{{ $trade[14] }}</td>
-                    <td>{{ date('Y-m-d H:i:s', $trade[8]) }}</td>
-                    <td>{{ $trade[9] }}</td>
+                    <td style="text-align: center;" >{{ $trade->Open_Time }}</td>
+                    <td style="text-align: center;">{{ $trade->Ticket }}</td>
+                    <td style="text-align: center;">{{ $trade->oBSFlag == 0 ? 'Sell' : 'Buy' }}</td>
+                    <td style="text-align: center;">{{ $trade->Lot }}</td>
+                    <td style="text-align: center;">{{ $trade->Symbol }}</td>
+                    <td style="text-align: center;">{{  $trade->Close_Price }}</td>
+                    <td style="text-align: center;">{{ $trade->Stop_Loss }}</td>
+                    <td style="text-align: center;">{{ $trade->Target_Price }}</td>
+                    <td style="text-align: center;">{{ $trade->Close_Time }}</td>
+                    <td style="text-align: center;">{{ $trade->Comment }}</td>
                 </tr>
             @endforeach
             <tr>

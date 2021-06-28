@@ -64,16 +64,10 @@ class SendEmailMarketing extends Command
             ];
             $orders = [];
             foreach($logins as $key => $login){
-//                $data['Account'] = $login;
-                $data['Account'] = '281422371';
+               $data['Account'] = $login;
                 $orders = array_merge($orders,  MT5Helper::getClosedAll($data));
             }
-            dd($orders);
-            $orders = array_values($orders);
             $logins = implode(" | ", $logins);
-            foreach($orders as $order){
-                dd($order);
-            }
             Mail::to($email)->send(new SendReportEmail($orders, $logins, $name));
         }
     }
