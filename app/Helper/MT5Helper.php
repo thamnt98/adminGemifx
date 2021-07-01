@@ -149,7 +149,7 @@ class MT5Helper
             $trades = array_merge($trades, $tradeByLogin);
             foreach ($tradeByLogin as $key => $trade) {
                 if (strtotime($trade->Close_Time) - strtotime($trade->Open_Time) > 180) {
-                    $lots += $lots + $trade->Lot;
+                    $lots += round($lots + $trade->Lot, 2);
                     $symbol = $trade->Symbol;
                     if (in_array($symbol, config('trader_type.USStocks'))) {
                         $commission += round($trade->Lot * $commissionValue[0], 2);
@@ -175,30 +175,6 @@ class MT5Helper
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
         return $result->lstCLOSE;
-    }
-
-    public function transferCommission()
-    {
-        $admins = Admin::where('role', config('role.staff'))->get();
-        $to = date('Y-m-d H:i:s', strtotime('now'));
-        $from = date('Y-m-d H:i:s', strtotime('-1 week'));
-        foreach ($admins as $key => $admin) {
-            $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
-            $result = $this->getOpenedTrades($logins, $from, $to);
-            $commission = $result[2];
-            if ($commission) {
-                $userId = User::where('email', $admin->email)->pluck('id');
-                $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
-                if (count($account)) {
-                    $data = [
-                        'Account' => $account[0],
-                        'Amount' => $commission,
-                        'Comment' => 'transfer commission'
-                    ];
-                    $this->makeWithdrawal($data);
-                }
-            }
-        }
     }
 
     public static function getMT5Connect(){

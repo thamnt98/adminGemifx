@@ -6,6 +6,9 @@ use App\Helper\MT4Connect;
 use App\Helper\MT5Helper;
 use App\Repositories\LiveAccountRepository;
 use Illuminate\Console\Command;
+use App\Models\Admin;
+use App\Models\User;
+use App\Models\LiveAccount;
 
 class TransferCommisionToIbCommand extends Command
 {
@@ -23,7 +26,6 @@ class TransferCommisionToIbCommand extends Command
      */
     protected $description = 'Transfer commission to IB after order closed';
 
-    protected $mT5Helper;
     protected $liveAccountRepository;
 
     /**
@@ -31,9 +33,8 @@ class TransferCommisionToIbCommand extends Command
      * @param MT5Helper $mT5Helper
      * @param LiveAccountRepository $liveAccountRepository
      */
-    public function __construct(MT5Helper $mT5Helper, LiveAccountRepository $liveAccountRepository)
+    public function __construct(LiveAccountRepository $liveAccountRepository)
     {
-        $this->mT5Helper = $mT5Helper;
         $this->liveAccountRepository = $liveAccountRepository;
         parent::__construct();
     }
@@ -45,6 +46,25 @@ class TransferCommisionToIbCommand extends Command
      */
     public function handle()
     {
-        return $this->mT5Helper->transferCommission();
+        $admins = Admin::where('role', config('role.staff'))->get();
+        $to = date('Y-m-d H:i:s', strtotime('now'));
+        $from = date('Y-m-d H:i:s', strtotime('-1 week'));
+        foreach ($admins as $key => $admin) {
+            $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
+            $result = MT5Helper::getOpenedTrades($logins, $from, $to);
+            $commission = $result[2];
+            if ($commission) {
+                $userId = User::where('email', $admin->email)->pluck('id');
+                $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
+                if (count($account)) {
+                    $data = [
+                        'Account' => $account[0],
+                        'Amount' => $commission,
+                        'Comment' => 'transfer commission'
+                    ];
+                    MT5Helper::makeWithdrawal($data);
+                }
+            }
+        }
     }
 }
