@@ -149,7 +149,7 @@ class MT5Helper
             $trades = array_merge($trades, $tradeByLogin);
             foreach ($tradeByLogin as $key => $trade) {
                 if (strtotime($trade->Close_Time) - strtotime($trade->Open_Time) > 180) {
-                    $lots = $trade->Lot;
+                    $lots += $trade->Lot;
                     $symbol = $trade->Symbol;
                     if (in_array($symbol, config('trader_type.USStocks'))) {
                         $commission += round($trade->Lot * $commissionValue[0], 2);
