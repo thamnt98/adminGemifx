@@ -1,9 +1,19 @@
 @extends('layouts.base')
 
 @section('css')
-<link href="{{ asset('css/boostrap-chosen.css') }}" rel="stylesheet">
+    <style>
+        a.c-sidebar-nav-link{
+            height: 50px;
+            padding-left: 16px;
+            font-size: 13px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
 @endsection
-
 @section('content')
 
 <div class="container-fluid">
@@ -24,8 +34,8 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Customer</label>
-                <select class="form-control" name="customer">
-                    <option value="">Choose one customer</option>
+                <select class="form-control selectpicker" name="customer"  data-live-search="true">
+                    <option value="" selected>Choose one customer</option>
                     @foreach($users as $user)
                         @if(count($user->liveAccounts) <2)
                             @if(old('customer') == $user->id || $id == $user->id)
@@ -78,5 +88,13 @@
         <button type="submit" class="btn btn-primary">Open account</button>
     </form>
 </div>
+
+@endsection
+@section('javascript')
+    <script>
+        $(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
 
 @endsection
