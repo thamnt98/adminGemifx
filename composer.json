@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.4",
         "prettus/l5-repository": "^2.7",
-        "qoraiche/laravel-mail-editor": "^3.2"
+        "qoraiche/laravel-mail-editor": "^3.2",
+        "spatie/laravel-permission": "^4.2"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
