@@ -13,18 +13,27 @@ use Illuminate\Validation\Rule;
 
 class SendEmailMarketingController extends Controller
 {
-    public function main(Request $request){
+    public function main(Request $request)
+    {
+        $status = 200;
         $data = $request->except('_token');
         $validateData = $this->validateData($data);
-        if ($validateData->fails()) {
-            return redirect()->back()->withErrors($validateData->errors())->withInput();
-        }
         try {
-            Mail::bcc($data['users'])->queue(new EmailMarketing($data['template_email'], $data['title']));
-            return redirect()->back()->with('success', 'Gửi email thành công');
+            if ($validateData->fails()) {
+                $status = 400;
+                $message = $validateData->errors();
+            } else {
+                Mail::bcc($data['users'])->queue(new EmailMarketing($data['template_email'], $data['title']));
+                $message = 'Gửi email thành công';
+            }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gửi email thất bại');
+            $status = 417;
+            $message = 'Gửi email thất bại ';
         }
+        return json_encode([
+            'status' => $status,
+            'message' => $message
+        ]);
     }
 
     public function validateData($data)
