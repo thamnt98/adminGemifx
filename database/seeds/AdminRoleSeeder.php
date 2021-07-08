@@ -36,7 +36,7 @@ class AdminRoleSeeder extends Seeder
         $permissions = $this->permissionRepository->getAllPermission(1);
         $role->syncPermissions($permissions);
 
-        $this->permissionRepository->syncPermisionForUsers([$superAdmin], $permissions);
+        $this->permissionRepository->syncPermisionAndRoleForUsers([$superAdmin], $permissions, 'superAdmin');
         $roleData = [
             'guard_name' => 'web',
             'name' => 'standardManager',
@@ -46,7 +46,7 @@ class AdminRoleSeeder extends Seeder
         $role = $this->permissionRepository->createOrUpdateSuperAdminRole($roleData);
         $permissions = $this->permissionRepository->getAllPermission(2);
         $role->syncPermissions($permissions);
-        $this->permissionRepository->syncPermisionForUsers($manager, $permissions);
+        $this->permissionRepository->syncPermisionAndRoleForUsers($manager, $permissions, 'standardManager');
         $roleData = [
             'guard_name' => 'web',
             'name' => 'standardStaff',
@@ -56,6 +56,6 @@ class AdminRoleSeeder extends Seeder
         $role = $this->permissionRepository->createOrUpdateSuperAdminRole($roleData);
         $permissions = $this->permissionRepository->getAllPermission(3);
         $role->syncPermissions($permissions);
-        $this->permissionRepository->syncPermisionForUsers($staff, $permissions);
+        $this->permissionRepository->syncPermisionAndRoleForUsers($staff, $permissions, 'standardStaff');
     }
 }

@@ -98,4 +98,19 @@ Route::group([
     });
     Route::get('/email/marketing', 'Email\EmailController@main')->name('email.marketing')->middleware('permission:email.create');
     Route::post('/email/marketing', 'Email\SendEmailMarketingController@main')->name('email.marketing.send')->middleware('permission:email.send');
+    Route::group([
+        'namespace' => 'Role',
+        'prefix' => 'role',
+    ], function () {
+        Route::get('list', 'ListController@main')->name('role.list')
+            ->middleware('permission:role.show');
+        Route::get('/{id}/detail', 'DetailController@main')->name('role.detail')
+            ->middleware('permission:role.show');
+        Route::post('/{id}/update', 'UpdateController@main')->name('role.update')
+            ->middleware('permission:role.edit');
+        Route::get('create', 'CreateController@main')->name('role.create')
+            ->middleware('permission:role.create');
+        Route::post('store', 'StoreController@main')->name('role.store')
+            ->middleware('permission:role.create');
+    });
 });
