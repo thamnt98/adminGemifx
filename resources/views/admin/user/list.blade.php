@@ -14,9 +14,9 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
-            <a style="margin-bottom: 40px" href="{{ route('user.store') }}" class="btn btn-info">Thêm mới</a>
-        @endif
+            @can('user.create')
+                <a style="margin-bottom: 40px" href="{{ route('user.store') }}" class="btn btn-info">Thêm mới</a>
+            @endcan
         <div class="form-search row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
@@ -73,11 +73,11 @@
                             <a href="{{ route('user.detail', $user->id) }}"
                                class="btn btn-sm btn-success bold uppercase"
                                title="Edit"><i class="fa fa-edit"></i> </a>
-                            @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                            @can('user.delete')
                                 <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-user"
-                               data-toggle="modal" data-target="#deleteUser" data-id="{{ $user->id }}"
-                               data-name="{{ $user->full_name }}"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
-                            @endif
+                                   data-toggle="modal" data-target="#deleteUser" data-id="{{ $user->id }}"
+                                   data-name="{{ $user->full_name }}"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                            @endcan
                         </td>
                     </tr>
                     <!-- Modal -->

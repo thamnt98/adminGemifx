@@ -25,7 +25,7 @@ class AdminRoleSeeder extends Seeder
          */
         $superAdmin = \App\Models\Admin::where('role', 1)->first();
         $manager = \App\Models\Admin::where('role', 2)->whereNull('admin_id')->get();
-        $staff = \App\Models\Admin::where('role', 3)->whereNotNull('admin_id')->get();
+        $staff = \App\Models\Admin::where('role', 2)->whereNotNull('admin_id')->get();
         $roleData = [
             'guard_name' => 'web',
             'name' => 'superAdmin',
@@ -54,8 +54,8 @@ class AdminRoleSeeder extends Seeder
             'allowed_scope' => 2,
         ];
         $role = $this->permissionRepository->createOrUpdateSuperAdminRole($roleData);
-        $permissions = $this->permissionRepository->getAllEventPermission(3);
+        $permissions = $this->permissionRepository->getAllPermission(3);
         $role->syncPermissions($permissions);
-        $this->permissionRepository->syncPermisionForUsersWithRole($staff, $permissions);
+        $this->permissionRepository->syncPermisionForUsers($staff, $permissions);
     }
 }

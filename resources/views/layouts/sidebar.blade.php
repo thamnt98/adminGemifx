@@ -10,68 +10,78 @@
             Dashboard
         </a>
     </li>
-    @if(is_null(\Illuminate\Support\Facades\Auth::user()->admin_id))
+    @can('agent.show')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('agent.list') }}">
                 <i class="fa fa-user"></i>
                 Agent
             </a>
         </li>
-    @endif
-    <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('user.list') }}">
-            <i class="fa fa-users"></i>
-            Khách hàng
-        </a>
-    </li>
-    <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('account.live') }}">
-            <i class="fa fa-home"></i>
-            Tài khoản
-        </a>
-    </li>
-    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+    @endcan
+    @can('user.show')
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('user.list') }}">
+                <i class="fa fa-users"></i>
+                Khách hàng
+            </a>
+        </li>
+    @endcan
+    @can('account.show')
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('account.live') }}">
+                <i class="fa fa-home"></i>
+                Tài khoản
+            </a>
+        </li>
+    @endcan
+    @can('deposit.create')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('deposit.list') }}">
                 <i class="fa fa-credit-card"></i>
                 Deposit
             </a>
         </li>
+    @endcan
+    @can('withdrawal.create')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('withdrawal.list') }}">
                 <i class="fa fa-credit-card"></i>
                 Withdrawal
             </a>
         </li>
+    @endcan
+    @can('email.send')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('email.marketing') }}">
                 <i class="fa fa-envelope"></i>
                 Email marketing
             </a>
         </li>
-    @endif
-    <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('report.trade') }}">
-            <i class="fa fa-bar-chart" aria-hidden="true"></i>
-            Report
-        </a>
-    </li>
-    @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.staff'))
-        @if(is_null(\Illuminate\Support\Facades\Auth::user()->admin_id))
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('agent.link') }}">
-                    <i class="fa fa-user"></i>
-                    Agent Link
-                </a>
-            </li>
-        @endif
+    @endcan
+    @can('report.*')
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('report.trade') }}">
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                Report
+            </a>
+        </li>
+    @endcan
+    @can('agent.link')
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('agent.link') }}">
+                <i class="fa fa-user"></i>
+                Agent Link
+            </a>
+        </li>
+    @endcan
+    @can('user.link')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('customer.link') }}">
                 <i class="fa fa-user"></i>
                 Customer Link
             </a>
         </li>
-    @endif
+    @endcan
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
         <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
     </div>

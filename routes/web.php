@@ -37,66 +37,65 @@ Route::group([
         'namespace' => 'User',
         'prefix' => 'user',
     ], function () {
-        Route::get('/list', 'ListController@main')->name('user.list');
-        Route::get('/create', 'CreateController@main')->name('user.create')->middleware('role.admin');
-        Route::post('/create', 'StoreController@main')->name('user.store')->middleware('role.admin');
-        Route::get('/detail/{id}', 'DetailController@main')->name('user.detail');
-        Route::post('/update/{id}', 'UpdateController@main')->name('user.update')->middleware('role.admin');
-        Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete')->middleware('role.admin');
+        Route::get('/list', 'ListController@main')->name('user.list')->middleware('permission:user.show');
+        Route::get('/create', 'CreateController@main')->name('user.create')->middleware('permission:user.create');
+        Route::post('/create', 'StoreController@main')->name('user.store')->middleware('permission:user.create');
+        Route::get('/detail/{id}', 'DetailController@main')->name('user.detail')->middleware('permission:user.show');
+        Route::post('/update/{id}', 'UpdateController@main')->name('user.update')->middleware('permission:user.edit');
+        Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete')->middleware('permission:user.edit');
     });
     Route::group([
         'namespace' => 'Account',
         'prefix' => 'account',
     ], function () {
-        Route::get('/live', 'LiveListController@main')->name('account.live');
-        Route::post('/delete/{login}', 'DeleteLiveAccountController@main')->name('account.live.delete')->middleware('role.admin');
-        Route::get('/create/{id}', 'CreateLiveAccountController@main')->name('account.live.create')->middleware('role.admin');
-        Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open')->middleware('role.admin');
-        Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail');
-        Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update')->middleware('role.admin');
-        Route::get('/create-withdrawal', 'LiveListController@createWithdrawal')->name('account.create_withdrawal')->middleware('role.admin');
-        Route::post('/create-withdrawal', 'LiveListController@createWithdrawalPost')->name('account.create.withdrawal')->middleware('role.admin');
-        Route::get('/create-deposit', 'LiveListController@createDeposit')->name('account.create_deposit')->middleware('role.admin');
-        Route::post('/create-deposit', 'LiveListController@createDepositPost')->name('account.create.deposit')->middleware('role.admin');
-        Route::post('/get-list-login', 'LiveListController@listLogin')->name('account.list.login')->middleware('role.admin');
+        Route::get('/live', 'LiveListController@main')->name('account.live')->middleware('permission:account.show');
+        Route::get('/create/{id}', 'CreateLiveAccountController@main')->name('account.live.create')->middleware('permission:account.create');
+        Route::post('/create', 'OpenLiveAccountController@main')->name('account.live.open')->middleware('permission:account.create');
+        Route::get('/detail/{id}', 'DetailLiveAccountController@main')->name('account.live.detail')->middleware('permission:account.show');;
+        Route::post('/detail/{id}', 'UpdateLiveAccountController@main')->name('account.live.update')->middleware('permission:account.edit');
+        Route::get('/create-withdrawal', 'LiveListController@createWithdrawal')->name('account.create_withdrawal')->middleware('permission:withdrawal.create');
+        Route::post('/create-withdrawal', 'LiveListController@createWithdrawalPost')->name('account.create.withdrawal')->middleware('permission:withdrawal.create');
+        Route::get('/create-deposit', 'LiveListController@createDeposit')->name('account.create_deposit')->middleware('permission:deposit.create');
+        Route::post('/create-deposit', 'LiveListController@createDepositPost')->name('account.create.deposit')->middleware('permission:deposit.create');
+        Route::post('/get-list-login', 'LiveListController@listLogin')->name('account.list.login')->middleware('permission:deposit.create|permission:withdrawal.create');
     });
     Route::group([
         'namespace' => 'Deposit',
         'prefix' => 'deposit',
         'middleware' => 'role.admin'
     ], function () {
-        Route::get('/list', 'ListController@main')->name('deposit.list');
-        Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve');
-        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject');
+        Route::get('/list', 'ListController@main')->name('deposit.list')->middleware('permission:deposit.show');
+        Route::post('/approve/{id}', 'ApproveController@main')->name('deposit.approve')->middleware('permission:deposit.approve');
+        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject')->middleware('permission:deposit.approve');;
     });
     Route::group([
         'namespace' => 'Withdrawal',
         'prefix' => 'withdrawal',
         'middleware' => 'role.admin'
     ], function () {
-        Route::get('/list', 'ListController@main')->name('withdrawal.list');
-        Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve');
-        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject');
+        Route::get('/list', 'ListController@main')->name('withdrawal.list')->middleware('permission:withdrawal.show');
+        Route::post('/approve/{id}', 'ApproveController@main')->name('withdrawal.approve')->middleware('permission:withdrawal.approve');
+        Route::post('/reject/{id}', 'RejectController@main')->name('deposit.reject')->middleware('permission:withdrawal.approve');;
     });
     Route::group([
         'namespace' => 'Agent',
         'prefix' => 'agent',
     ], function () {
-        Route::get('/customer/link', 'LinkController@main')->name('customer.link');
-        Route::get('/link', 'AgentLinkController@main')->name('agent.link');
-        Route::get('/list', 'ListController@main')->name('agent.list');
-        Route::get('/detail/{id}', 'DetailController@main')->name('agent.detail');
-        Route::post('/detail/{id}', 'UpdateController@main')->name('agent.update');
-        Route::post('/active/{id}', 'ActiveController@main')->name('agent.active');
-        Route::get('/link-manager-agent/{id}', 'ListController@listStaffManager')->name('agent.manager-staff');
-        Route::get('/list-status-noactive/{id}', 'ListController@listStaffNoActive')->name('agent.list-status-noactive');
+        Route::get('/customer/link', 'LinkController@main')->name('customer.link')->middleware('permission:user.link');;
+        Route::get('/link', 'AgentLinkController@main')->name('agent.link')->middleware('permission:agent.link');;
+        Route::get('/list', 'ListController@main')->name('agent.list')->middleware('permission:agent.show');;
+        Route::get('/detail/{id}', 'DetailController@main')->name('agent.detail')->middleware('permission:agent.show');
+        Route::post('/detail/{id}', 'UpdateController@main')->name('agent.update')->middleware('permission:agent.edit');;
+        Route::post('/active/{id}', 'ActiveController@main')->name('agent.active')->middleware('permission:agent.approve');;
+        Route::get('/link-manager-agent/{id}', 'ListController@listStaffManager')->name('agent.manager-staff')->middleware('permission:agent.show');;;
+        Route::get('/list-status-noactive/{id}', 'ListController@listStaffNoActive')->name('agent.list-status-noactive')->middleware('permission:agent.show');;;
     });
     Route::group([
         'namespace' => 'Report',
         'prefix' => 'report',
     ], function () {
-        Route::get('/trade', 'GetTradeListController@main')->name('report.trade');
+        Route::get('/trade', 'GetTradeListController@main')->name('report.trade')->middleware('permission:report.*');;;
     });
-    Route::get('/email/marketing', 'Email\EmailController@main')->name('email.marketing');
-    Route::post('/email/marketing', 'Email\SendEmailMarketingController@main')->name('email.marketing.send');
+    Route::get('/email/marketing', 'Email\EmailController@main')->name('email.marketing')->middleware('permission:email.create');
+    Route::post('/email/marketing', 'Email\SendEmailMarketingController@main')->name('email.marketing.send')->middleware('permission:email.send');
 });

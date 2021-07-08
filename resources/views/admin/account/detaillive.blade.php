@@ -25,12 +25,12 @@
                 <a class="nav-link active" id="information-tab-md" data-toggle="tab" href="#information-md" role="tab"
                     aria-controls="information-md" aria-selected="true">Information</a>
             </li>
-            @if(\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+            @can('withdrawal.create')
                 <li class="nav-item waves-effect waves-light">
                     <a class="nav-link" id="withdrawal-tab-md" data-toggle="tab" href="#withdrawal-md" role="tab"
                        aria-controls="withdrawal-md" aria-selected="false">Withdrawal</a>
                 </li>
-            @endif
+            @endcan
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel"
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Group</label>
-                            <select class="form-control" name="group" @if(!$isAdmin) readonly="" @endif>
+                            <select class="form-control" name="group" @if(!$canEdit) readonly="" @endif>
                                 @foreach($groups as $group)
                                 @if(old('group', $account->group) == $group)
                                 <option value="{{$group}}" selected>{{$group}}</option>
@@ -61,7 +61,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Leverage</label>
-                            <select class="form-control" name="leverage" @if(!$isAdmin) readonly="" @endif>
+                            <select class="form-control" name="leverage" @if(!$canEdit) readonly="" @endif>
                                 <option value="">Select one leverage</option>
                                 @foreach(config('mt4.leverage') as $key => $leverage)
                                 @if(old('leverage', $account->leverage) == $key)
@@ -77,7 +77,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Phone number</label>
-                            <input class="form-control" type="text" name="phone" @if(!$isAdmin) readonly="" @endif
+                            <input class="form-control" type="text" name="phone" @if(!$canEdit) readonly="" @endif
                                    value="{{ old('phone', $account->phone_number) }}">
                             @if($errors->has('phone'))
                                 <span class="text-danger text-md-left">{{ $errors->first('phone') }}</span>
@@ -125,12 +125,13 @@
                             @endif
                         </div>
                     </div>
-                    @if($isAdmin)
+                    @if($canEdit)
                         <button type="submit" class="btn btn-primary">Update</button>
                     @endif
                 </form>
             </div>
-            <div class="tab-pane fade" id="withdrawal-md" role="tabpanel" aria-labelledby="withdrawal-tab-md"
+            @can('withdrawal.show')
+                <div class="tab-pane fade" id="withdrawal-md" role="tabpanel" aria-labelledby="withdrawal-tab-md"
                 style="margin:40px">
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -186,29 +187,32 @@
                     </table>
                 </div>
             </div>
+            @endcan
         </div>
     </section>
 </div>
-<div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">Bạn có chắc chắn xác nhận không ?</div>
-            <div class="modal-footer">
-                <form method="post" id="approve-order">
-                    @csrf
-                    <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
-                    <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
-                </form>
+@can('withdrawal.approve')
+    <div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xác nhận</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn xác nhận không ?</div>
+                <div class="modal-footer">
+                    <form method="post" id="approve-order">
+                        @csrf
+                        <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                        <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Approve</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endcan
 @endsection
 @section('javascript')
 <script src="{{ asset('js/jquery.min.js') }}"></script>

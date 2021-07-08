@@ -38,10 +38,12 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px">Search</button>
-                    @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                    @can('deposit.create')
                         <a href="{{route('account.create_deposit')}}" class="btn btn-success btn-button " style="margin-top: 10px">Deposit</a>
+                    @endcan
+                    @can('withdrawal.create')
                         <a href="{{route('account.create_withdrawal')}}" class="btn btn-info btn-button" style="margin-top: 10px">Withdrawal</a>
-                    @endif
+                    @endcan
                 </form>
             </div>
             <div class="col-md-2"></div>

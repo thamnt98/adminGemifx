@@ -25,12 +25,12 @@
                 <a class="nav-link" id="account-tab-md" data-toggle="tab" href="#account-md" role="tab"
                     aria-controls="account-md" aria-selected="false">Account</a>
             </li>
-            @if($isAdmin)
+            @can('deposit.create')
                 <li class="nav-item waves-effect waves-light">
                     <a class="nav-link" id="deposit-tab-md" data-toggle="tab" href="#deposit-md" role="tab"
-                        aria-controls="account-md" aria-selected="false">Deposit</a>
+                       aria-controls="account-md" aria-selected="false">Deposit</a>
                 </li>
-            @endif
+            @endcan
         </ul>
         <div class="tab-content card pt-5" id="myTabContentMD">
             <div class="tab-pane fade show active" id="information-md" role="tabpanel"
@@ -40,7 +40,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="firstName">First name</label>
-                            <input type="text" class="form-control" id="firstName" name="first_name" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="firstName" name="first_name" @if(!$canEdit) readonly @endif
                                 value="{{ old('first_name', $user->first_name) }}">
                             @if($errors->has('first_name'))
                             <span class="text-danger text-md-left">{{ $errors->first('first_name') }}</span>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="lastName">Last name</label>
-                            <input type="text" class="form-control" id="lastName" name="last_name" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="lastName" name="last_name" @if(!$canEdit) readonly @endif
                                 value="{{ old('last_name', $user->last_name) }}">
                             @if($errors->has('last_name'))
                             <span class="text-danger text-md-left">{{ $errors->first('last_name') }}</span>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="phoneNumber">Phone Number</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phone_number" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="phoneNumber" name="phone_number" @if(!$canEdit) readonly @endif
                                 value="{{ old('phone_number', $user->phone_number) }}">
                             @if($errors->has('phone_number'))
                             <span class="text-danger text-md-left">{{ $errors->first('phone_number') }}</span>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="phoneNumber">IB ID</label>
-                            <input type="text" class="form-control" id="ib_id" name="ib_id" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="ib_id" name="ib_id" @if(!$canEdit) readonly @endif
                                    value="{{ old('ib_id', $user->ib_id) }}">
                             @if($errors->has('ib_id'))
                                 <span class="text-danger text-md-left">{{ $errors->first('ib_id') }}</span>
@@ -80,7 +80,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="city" name="city" @if(!$canEdit) readonly @endif
                                 value="{{ old('city', $user->city) }}">
                             @if($errors->has('city'))
                             <span class="text-danger text-md-left">{{ $errors->first('city') }}</span>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="state">State</label>
-                            <input type="text" class="form-control" id="state" name="state" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="state" name="state" @if(!$canEdit) readonly @endif
                                 value="{{ old('state', $user->state) }}">
                             @if($errors->has('state'))
                             <span class="text-danger text-md-left">{{ $errors->first('state') }}</span>
@@ -98,12 +98,12 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="zipCode">Zip code</label>
-                            <input type="text" class="form-control" id="zipCode" name="zip_code" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="zipCode" name="zip_code" @if(!$canEdit) readonly @endif
                                 value="{{ old('zip_code', $user->zip_code) }}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="country">State</label>
-                            <select id="country" class="form-control" name="country" @if(!$isAdmin) readonly @endif>
+                            <select id="country" class="form-control" name="country" @if(!$canEdit) readonly @endif>
                                 <option value="">Choose...</option>
                                 @foreach(config('country') as $key => $country)
                                 @if(old('country', $user->country) == $key)
@@ -121,7 +121,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" @if(!$isAdmin) readonly @endif
+                            <input type="text" class="form-control" id="address" name="address" @if(!$canEdit) readonly @endif
                                 value="{{ old('address', $user->address) }}">
                             @if($errors->has('address'))
                             <span class="text-danger text-md-left">{{ $errors->first('address') }}</span>
@@ -129,7 +129,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="copyOfId">Copy of id</label>
-                            <input  class="form-control-file" id="copyOfId" name="copy_of_id" @if(!$isAdmin) type="hidden" @else type="file"  @endif>
+                            <input  class="form-control-file" id="copyOfId" name="copy_of_id" @if(!$canEdit) type="hidden" @else type="file"  @endif>
                             <img style="margin-top:20px; height: 75px" src="{{ $user->copy_of_id ?? asset('images/no-photo.png')}}">
                             @if($errors->has('copy_of_id'))
                             <span class="text-danger text-md-left">{{ $errors->first('copy_of_id') }}</span>
@@ -139,7 +139,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="proofOfAddress">Proof of address</label>
-                            <input class="form-control-file" id="proofOfAddress" name="proof_of_address" @if(!$isAdmin) type="hidden" @else type="file" @endif>
+                            <input class="form-control-file" id="proofOfAddress" name="proof_of_address" @if(!$canEdit) type="hidden" @else type="file" @endif>
                             <img style="margin-top:20px; height: 75px" src="{{ $user->proof_of_address ?? asset('images/no-photo.png')}}">
                             @if($errors->has('proof_of_address'))
                             <span class="text-danger text-md-left">{{ $errors->first('proof_of_address')}}</span>
@@ -147,23 +147,26 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="addtionFile">Addtional file</label>
-                            <input class="form-control-file" id="addtionFile" name="addtional_file" @if(!$isAdmin) type="hidden" @else type="file" @endif>
+                            <input class="form-control-file" id="addtionFile" name="addtional_file" @if(!$canEdit) type="hidden" @else type="file" @endif>
                             <img style="margin-top:20px; height: 75px" src="{{ $user->addtional_file  ?? asset('images/no-photo.png')  }}">
                             @if($errors->has('addtional_file'))
                             <span class="text-danger text-md-left">{{ $errors->first('addtional_file')}}</span>
                             @endif
                         </div>
                     </div>
-                    @if($isAdmin)
+                    @if($canEdit)
                         <button type="submit" class="btn btn-primary " style="margin-top: 20px">Cập nhật</button>
                     @endif
                 </form>
             </div>
-            <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md"
+            @can('account.show')
+                <div class="tab-pane fade" id="account-md" role="tabpanel" aria-labelledby="account-tab-md"
                 style="margin:40px">
-                @if(count($user->liveAccounts) <2 && $isAdmin)
+                @if(count($user->liveAccounts) <2)
+                    @can('account.create')
                     <a style="margin-bottom: 40px" href="{{ route('account.live.create', $user->id) }}"
                        class="btn btn-info">Thêm mới</a>
+                    @endcan
                 @endif
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -196,9 +199,11 @@
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="deposit-md" role="tabpanel" aria-labelledby="deposit-tab-md"
+            @endcan
+            @can('deposit.show')
+                <div class="tab-pane fade" id="deposit-md" role="tabpanel" aria-labelledby="deposit-tab-md"
                 style="margin:40px">
-                <div class="table-responsive">
+                    <div class="table-responsive">
                     <table class="table table-striped">
                     <thead>
                 <tr>
@@ -257,11 +262,13 @@
                 </tbody>
                     </table>
                 </div>
-            </div>
+                </div>
+            @endcan
         </div>
     </section>
 </div>
-<div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@can('deposit.approve')
+    <div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -281,6 +288,7 @@
         </div>
     </div>
 </div>
+@endcan
 @endsection
 @section('javascript')
 <script src="{{ asset('js/jquery.min.js') }}"></script>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\SendOtpViaMail;
 use App\Models\AdminCommission;
 use App\Repositories\AdminRepository;
+use App\Repositories\PermissionRepository;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,11 +21,13 @@ class HandleRegisterController extends Controller
 
     protected $adminRepository;
     protected $userRepository;
+    protected $permissionRepository;
 
-    public function __construct(AdminRepository $adminRepository, UserRepository $userRepository)
+    public function __construct(AdminRepository $adminRepository, UserRepository $userRepository, PermissionRepository $permissionRepository)
     {
         $this->adminRepository = $adminRepository;
         $this->userRepository = $userRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function main(Request $request)
@@ -71,12 +74,15 @@ class HandleRegisterController extends Controller
             $adminCommission['us_stock_commission'] = '0.1';
             $adminCommission['forex_commission'] = '3';
             $adminCommission['other_commission'] = '4';
+            $roleName = 'standardStaff';
             if(is_null($data['admin_id'])){
+                $roleName = 'standardManager';
                 $adminCommission['staff_us_stock_commission'] = '0.33';
                 $adminCommission['staff_forex_commission'] = '1';
                 $adminCommission['staff_other_commission'] = '1.33';
             }
             AdminCommission::insert($adminCommission);
+            $this->permissionRepository->syncPermissionForUserByRoleName($admin, $roleName);
             DB::commit();
             return redirect('/login')->with('success', 'You registered successfully');
         } catch (Exception $e) {

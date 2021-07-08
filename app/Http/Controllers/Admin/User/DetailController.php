@@ -26,7 +26,7 @@ class DetailController extends Controller
     public function main($id)
     {
         $user = $this->userRepository->find($id);
-        $isAdmin = Auth::user()->role == config('role.admin');
-        return view('admin.user.detail', compact('user', 'isAdmin'));
+        $canEdit = Auth::user()->hasPermissionTo('user.edit');
+        return view('admin.user.detail', compact('user', 'canEdit'));
     }
 }

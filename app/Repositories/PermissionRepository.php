@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Role;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
 use App\Models\Permission;
@@ -38,21 +39,20 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         DB::transaction(function () use ($data) {
-            $this->insert($data);
+            Permission::insert($data);
         });
     }
 
     public function getAllPermission($mode)
     {
-        dd($this->where('id'), 1)->get();
         if ($mode == 1){
-            return $this->all();
+            return Permission::whereNotIn('name', ['agent.link', 'user.link'])->get();
         }
         $permissions = ['user.show', 'user.link', 'account.show', 'deposit.show', 'withdrawal.show', 'report.*'];
         if($mode == 2){
-            $permissions[] = ['agent.link', 'agent.show'];
+            $permissions = array_merge($permissions, ['agent.link', 'agent.show']);
         }
-        return $this->whereIn('name', $permissions)->get();
+        return Permission::whereIn('name', $permissions)->get();
     }
 
     /**
@@ -67,8 +67,14 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
     public function syncPermisionForUsers($users, $permissions)
     {
         foreach ($users as $user) {
-            return $user->syncPermissions($permissions);
+            $user->syncPermissions($permissions);
         }
     }
-
+    public function syncPermissionForUserByRoleName($user, $roleName){
+        $role = Role::where('name', $roleName)->first();
+        if($role){
+            $permissions = $role->permissions;
+            $user->syncPermissions($permissions);
+        }
+    }
 }

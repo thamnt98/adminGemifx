@@ -29,9 +29,9 @@ class DetailLiveAccountController extends Controller
     public function main($id)
     {
         $account = $this->liveAccountRepository->find($id);
-        $isAdmin = Auth::user()->role == config('role.admin');
+        $canEdit = Auth::user()->hasPermissionTo('account.edit');
         $withdrawals = $this->withdrawalRepository->getWithdrawalByLogin($account->login);
         $groups = MT5Helper::getGroups();
-        return view('admin.account.detaillive', compact('account', 'withdrawals', 'isAdmin', 'groups'));
+        return view('admin.account.detaillive', compact('account', 'withdrawals', 'canEdit', 'groups'));
     }
 }
