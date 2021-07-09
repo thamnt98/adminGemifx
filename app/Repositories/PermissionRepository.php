@@ -80,6 +80,7 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
         if ($role) {
             $permissions = $role->permissions;
             $user->syncPermissions($permissions);
+            $user->syncRoles($roleName);
         }
     }
 
