@@ -1,7 +1,8 @@
 @extends('layouts.base')
 
 @section('css')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/treeview.css') }}">
 @endsection
 @section('content')
@@ -19,20 +20,20 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        <form method="post" action="{{ route('role.store') }}">
+        <form method="post" action="{{ route('role.update', $roleData['id']) }}">
             @csrf
-            <div class="form-row">
+            <div class="">
                 <div class="form-group col-md-6">
-                    <label>Role name</label>
+                    <label><b>Role name</b></label>
                     <input type="text" name="display_name" value="{{ old('display_name', $roleData['display_name']) }}" class="form-control">
                     @if($errors->has('display_name'))
                         <span class="text-danger text-md-left">{{ $errors->first('display_name') }}</span>
                     @endif
                 </div>
             </div>
-            <div class="form-row">
+            <div class="">
                 <div class="form-group col-md-6">
-                    <label>Permission</label>
+                    <label><b>Permission</b></label>
                     <div class="treeview-content">
                         {!! $permissions !!}
                     </div>
@@ -61,12 +62,14 @@
             if(permissionIds.length == 0){
                 permissionIds = JSON.parse('{{json_encode($roleData['permissionIds'])}}');
             }
-            for(id of permissionIds){
+            $.each(permissionIds, function (i,k) {
+                let id = k;
                 if (!$('.treeview #'+id).is(':checked')) {
-                    $('.treeview #'+id).attr('checked', 'checked')
+                    $('input[type="checkbox"]#' + id).attr("checked",true);
                 }
-            }
+            });
         });
+
         $('input[type="checkbox"]').change(function(e) {
 
             var checked = $(this).prop("checked"),
@@ -121,5 +124,11 @@
         for (i = 0; i < toggler.length; i++) { toggler[i].addEventListener("click", function() {
             this.parentElement.querySelector(".nested").classList.toggle("active");
             this.classList.toggle("fa-caret-right-down"); }); }
+
+        $('input[type="checkbox"].level-1').each(function(){
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("fa-caret-right-down");
+        })
+
     </script>
 @endsection

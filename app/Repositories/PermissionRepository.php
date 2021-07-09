@@ -92,7 +92,9 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
         return $roles;
     }
     public function getPermissionInTreeStructure(){
-        $permissions = $this->getAllPermission(1);
+        $permissions = Permission::all()->filter(function($item){
+            return !in_array($item->name, ['role.*', 'role.create', 'role.edit', 'role.delete', 'role.show']);
+        });
         $html ='';
         $i = 1;
         foreach ($permissions as $permission) {
@@ -197,4 +199,28 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
             'permissionIds' => $permissionIds
         ];
     }
+
+
+    /**
+     * @param $roleId
+     * @param $data
+     * @return bool
+     */
+    public function updateRoleById($roleId, $data)
+    {
+        $role = $this->roleRepository->find($roleId);
+        return DB::transaction(function () use ($data, $role) {
+            $role->update([
+                'display_name' => $data['display_name'],
+            ]);
+            $permissions = Permission::whereIn('id', $data['permissions'])->get();
+            $role->syncPermissions($permissions);
+            $users = $role->users;
+            foreach ($users as $user){
+                $user->syncPermissions($permissions);
+            }
+        });
+    }
+
+
 }

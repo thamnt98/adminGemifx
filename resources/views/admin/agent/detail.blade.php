@@ -49,9 +49,9 @@
                 <div class="form-group col-md-6">
                     <label>Role</label>
                     <select class="form-control" name="role" id="role">
-                        <option value="manager" @if(old('role', $agent->role) == 'manager') selected @endif>Manager
-                        </option>
-                        <option value="staff" @if(old('role', $agent->role) == 'staff') selected @endif>Staff</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->name }}" @if(old('role', $agent->roles->first()->name) == $role->name) selected @endif>{{ $role->display_name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group col-md-6">
@@ -137,7 +137,7 @@
 @section('javascript')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script>
-        if ($('#role').val() == 'manager') {
+        if ($('#role').val() == 'standardManager') {
             $('.staff-commission').removeClass('hidden');
             $('.belong-manager').addClass('hidden');
         } else {
@@ -145,7 +145,7 @@
             $('.belong-manager').removeClass('hidden');
         }
         $('#role').on('change', function () {
-            if ($('#role').val() == 'manager') {
+            if ($('#role').val() == 'standardManager') {
                 $('.staff-commission').removeClass('hidden');
                 $('.belong-manager').addClass('hidden');
             } else {

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Admin;
 use App\Models\AdminCommission;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Eloquent\BaseRepository as EloquentBaseRepository;
@@ -55,7 +56,7 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
 
     public function getManagerList()
     {
-        return $this->whereNull('admin_id')->where('role', config('role.staff'))->get(['id', 'name']);
+        return $this->whereNull('admin_id')->get(['id', 'name']);
     }
 
     public function activeAgent($id, $status)
@@ -71,14 +72,19 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
     public function updateAgent($id, $data)
     {
         $user = $this->where('id', $id)->first();
-        if ($data['role'] == 'staff') {
+        if ($data['role'] == 'standardStaff') {
             $this->where('admin_id', $user->id)->update(['admin_id' => $data['admin_id']]);
         }
-        if ($data['role'] == 'manager') {
+        if ($data['role'] == 'standardManager') {
             $data['admin_id'] = null;
         }
+        $role = $data['role'];
         unset($data['role']);
-        $this->update($data, $id);
+        $agent = $this->update($data, $id);
+        $permissions = Role::findByName($role)->permissions;
+        $agent->syncPermissions($permissions);
+        $agent->syncRoles($role);
+        unset($data['role']);
         $commission = [
             'us_stock_commission' => $data['us_stock_commission'],
             'forex_commission' => $data['forex_commission'],
@@ -88,6 +94,7 @@ class AdminRepository extends EloquentBaseRepository implements RepositoryInterf
             'staff_other_commission' => $data['staff_other_commission'],
         ];
         AdminCommission::where('admin_id', $id)->update($commission);
+
     }
 
     public function changePassword($data)

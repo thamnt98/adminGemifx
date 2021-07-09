@@ -22,18 +22,18 @@
         @endif
         <form method="post" action="{{ route('role.store') }}">
             @csrf
-            <div class="form-row">
+            <div class="">
                 <div class="form-group col-md-6">
-                    <label>Role name</label>
+                    <label><b>Role name</b></label>
                     <input type="text" name="display_name" value="{{ old('display_name') }}" class="form-control">
                     @if($errors->has('display_name'))
                         <span class="text-danger text-md-left">{{ $errors->first('display_name') }}</span>
                     @endif
                 </div>
             </div>
-            <div class="form-row">
+            <div class="">
                 <div class="form-group col-md-6">
-                    <label>Permission</label>
+                    <label><b>Permission</b></label>
                     <div class="treeview-content">
                         {!! $permissions !!}
                     </div>
@@ -42,6 +42,11 @@
                     @endif
                 </div>
             </div>
+            @if(old('permissions'))
+                @foreach (old('permissions') as $key => $oldPermission)
+                    <input class="old-permisisons hidden" value="{{ $oldPermission }}">
+                @endforeach
+            @endif
             <button type="submit" class="btn btn-primary">Create Role</button>
         </form>
     </div>
@@ -49,13 +54,6 @@
 @endsection
 @section('javascript')
     <script>
-        $(document).ready(function () {
-            if ($('.custom-select-value').val() == '1') {
-                $('.treeview').addClass('hidden');
-            } else {
-                $('.treeview').removeClass('hidden');
-            }
-        });
 
         $(document).ready(function () {
             let permissionIds = [];
@@ -64,12 +62,12 @@
             })
             $.each(permissionIds, function (i,k) {
                 let id = k;
-                console.log(id)
-                if ($('.treeview #'+id).prop('checked') != true) {
-                    $('.treeview #'+id).trigger('click')
+                if (!$('.treeview #'+id).is(':checked')) {
+                    $('input[type="checkbox"]#' + id).attr("checked",true);
                 }
             });
         });
+
         $('input[type="checkbox"]').change(function(e) {
 
             var checked = $(this).prop("checked"),
@@ -125,5 +123,9 @@
         for (i = 0; i < toggler.length; i++) { toggler[i].addEventListener("click", function() {
             this.parentElement.querySelector(".nested").classList.toggle("active");
             this.classList.toggle("fa-caret-right-down"); }); }
+        $('input[type="checkbox"].level-1').each(function(){
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("fa-caret-right-down");
+        })
     </script>
 @endsection

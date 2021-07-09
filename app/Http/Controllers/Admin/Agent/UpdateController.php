@@ -37,10 +37,13 @@ class UpdateController extends Controller
             return redirect()->back()->withErrors($validateData->errors())->withInput();
         }
         try {
+            DB::beginTransaction();
             $ibId = Admin::find($id)->ib_id;
             $this->adminRepository->updateAgent($id, $data);
+            DB::commit();
             return redirect()->back()->with('success', 'Bạn đã cập nhật thành công');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             return redirect()->back()->with('error', 'Cập nhật thất bại');
         }

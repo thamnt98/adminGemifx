@@ -34,7 +34,6 @@ class ListController extends Controller
         $totalAgents = $this->adminRepository->totalAgent();
         $data = [];
         foreach($agents as $agent){
-            $agent = $agent->toArray();
             $agent['count'] = $this->adminRepository->countAgentManager($agent['id']);
             $data[] = $agent;
         }

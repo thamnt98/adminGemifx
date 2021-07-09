@@ -89,9 +89,9 @@
                             <th scope="col">Phone number</th>
                             <th scope="col">Role</th>
                             <th scope="col">Status</th>
-                            @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                            @can('agent.edit')
                                 <th></th>
-                            @endif
+                            @endcan
                         </tr>
                         </thead>
                         <tbody>
@@ -105,15 +105,11 @@
                                 <th scope="row">{{ $agent->email }}</th>
                                 <th scope="row">{{ $agent->phone_number }}</th>
                                 <th scope="row">
-                                    @if (is_null($agent['admin_id']))
-                                        Manager
-                                    @else
-                                        Staff
-                                    @endif
+                                    {{ ($agent->roles->first()->display_name) }}
                                 </th>
                                 <th>
-                                    @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
-                                        @if ($agent->status == 1)
+                                    @if (\Illuminate\Support\Facades\Auth::user()->hasPermissionTo('agent.approve'))
+                                    @if ($agent->status == 1)
                                             <a style="color:white" class="btn btn-dark bold btn-active"
                                                data-toggle="modal" data-target="#active"
                                                data-id="{{ $agent->id }}" data-status="2"
@@ -133,14 +129,14 @@
                                         @endif
                                     @endif
                                 </th>
-                                @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                                @can('agent.edit')
                                     <th>
                                         <a href="{{ route('agent.detail', $agent->id) }}"
                                            class="btn btn-sm btn-success bold uppercase" title="Edit"><i
                                                 class="fa fa-edit"></i>
                                         </a>
                                     </th>
-                                @endif
+                                @endcan
                             </tr>
                         @endforeach
                         </tbody>

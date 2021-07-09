@@ -18,12 +18,14 @@
         </div>
         <form>
             @csrf
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <a target="_blank" href="{{ url('/maileclipse/templates') }}"> <i
-                            class="fa fa-angle-double-right"></i>Edit Email Template</a>
+            @can('email.create')
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <a target="_blank" href="{{ url('/maileclipse/templates') }}"> <i
+                                class="fa fa-angle-double-right"></i>Edit Email Template</a>
+                    </div>
                 </div>
-            </div>
+            @endcan
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Select Email Template</label>
@@ -33,9 +35,6 @@
                         @endforeach
                     </select>
                     <div class="errors errors-template_email"></div>
-                    {{--                    @if($errors->has('template_email'))--}}
-                    {{--                        <span class="text-danger text-md-left">{{ $errors->first('template_email') }}</span>--}}
-                    {{--                    @endif--}}
                 </div>
             </div>
             <div class="form-row">

@@ -37,8 +37,8 @@
     @can('role.show')
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('role.list') }}">
-                <i class="fa fa-home"></i>
-                vai trò và quyền hạn
+                <i class="fa fa-cog"></i>
+                Vai trò và quyền hạn
             </a>
         </li>
     @endcan

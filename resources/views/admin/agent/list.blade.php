@@ -178,14 +178,10 @@
                                     @endif
                                 @endif
                                 <th scope="row">
-                                    @if (is_null($agent['admin_id']))
-                                        Manager
-                                    @else
-                                        Staff
-                                    @endif
+                                    {{ ($agent->roles->first()->display_name) }}
                                 </th>
                                 <th>
-                                    @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                                    @if (\Illuminate\Support\Facades\Auth::user()->hasPermissionTo('agent.approve'))
                                         @if ($agent['status'] == 1)
                                             <a style="color:white" class="btn btn-dark bold btn-active"
                                                data-toggle="modal" data-target="#active"
@@ -206,14 +202,14 @@
                                         @endif
                                     @endif
                                 </th>
-                                @if (\Illuminate\Support\Facades\Auth::user()->role == config('role.admin'))
+                                @can('agent.edit')
                                     <th>
                                         <a href="{{ route('agent.detail', $agent['id']) }}"
                                            class="btn btn-sm btn-success bold uppercase" title="Edit"><i
                                                 class="fa fa-edit"></i>
                                         </a>
                                     </th>
-                                @endif
+                                @endcan
                             </tr>
                         @endforeach
                         </tbody>
