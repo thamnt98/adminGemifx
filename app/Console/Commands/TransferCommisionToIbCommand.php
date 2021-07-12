@@ -49,7 +49,7 @@ class TransferCommisionToIbCommand extends Command
     {
         $admins = Admin::where('role', config('role.staff'))->get();
         $data['EndTm'] = date('Y-m-d H:i:s', strtotime('now'));
-        $data['startTm']  = date('Y-m-d H:i:s', strtotime('2021-07-01 00:00:00'));
+        $data['StartTm']  = date('Y-m-d H:i:s', strtotime('2021-07-0 00:00:00'));
         foreach ($admins as $key => $admin) {
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = MT5Helper::getOpenedTrades($logins, $data);
@@ -66,7 +66,7 @@ class TransferCommisionToIbCommand extends Command
                         'Comment' => 'transfer commission'
                     ];
                     $transfer = MT5Helper::makeDeposit($data, false);
-                    Log::channel('transfer_commission')->info('Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
+                    Log::channel('transfer_commission')->info('From: ' . $data['StartTm'] . ' to: ' . $data['EndTm'] .  ' Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
                 }
             }
         }
