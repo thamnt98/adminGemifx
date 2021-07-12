@@ -53,6 +53,12 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
+        'transfer_commission' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/commission/transfer.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
 
         'slack' => [
             'driver' => 'slack',

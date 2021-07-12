@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\LiveAccount;
+use Illuminate\Support\Facades\Log;
 
 class TransferCommisionToIbCommand extends Command
 {
@@ -47,11 +48,11 @@ class TransferCommisionToIbCommand extends Command
     public function handle()
     {
         $admins = Admin::where('role', config('role.staff'))->get();
-        $to = date('Y-m-d H:i:s', strtotime('now'));
-        $from = date('Y-m-d H:i:s', strtotime('-1 week'));
+        $data['EndTm'] = date('Y-m-d H:i:s', strtotime('now'));
+        $data['startTm']  = date('Y-m-d H:i:s', strtotime('2021-07-01 00:00:00'));
         foreach ($admins as $key => $admin) {
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
-            $result = MT5Helper::getOpenedTrades($logins, $from, $to);
+            $result = MT5Helper::getOpenedTrades($logins, $data);
             $commission = $result[2];
             if ($commission) {
                 $userId = User::where('email', $admin->email)->pluck('id');
@@ -63,6 +64,7 @@ class TransferCommisionToIbCommand extends Command
                         'Comment' => 'transfer commission'
                     ];
                     MT5Helper::makeWithdrawal($data);
+                    Log::channel('transfer_commission')->info('Ib id: ' . $admin->ib_id, '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
                 }
             }
         }
