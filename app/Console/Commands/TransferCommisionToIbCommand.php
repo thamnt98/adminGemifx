@@ -63,7 +63,7 @@ class TransferCommisionToIbCommand extends Command
                         'Amount' => $commission,
                         'Comment' => 'transfer commission'
                     ];
-                    MT5Helper::makeDeposit($data);
+                    MT5Helper::makeDeposit($data, false);
                     Log::channel('transfer_commission')->info('Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
                 }
             }

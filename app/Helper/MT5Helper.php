@@ -112,7 +112,7 @@ class MT5Helper
         return $result;
     }
 
-    public static function makeDeposit($data)
+    public static function makeDeposit($data, $isReturn = true)
     {
         $mt5 = self::getMT5Connect();
         $endpoint = self::$mt5Url . 'MAKE_DEPOIST_BALANCE?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
@@ -122,7 +122,9 @@ class MT5Helper
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
-        return $result;
+        if($isReturn){
+            return $result;
+        }
     }
 
     public static function makeWithdrawal($data)
