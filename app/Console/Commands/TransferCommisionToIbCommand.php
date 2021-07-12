@@ -55,8 +55,10 @@ class TransferCommisionToIbCommand extends Command
             $result = MT5Helper::getOpenedTrades($logins, $data);
             $commission = $result[2];
             if ($commission) {
-                $userId = User::where('email', $admin->email)->pluck('id');
-                $account = LiveAccount::where('user_id', $userId[0])->pluck('login');
+                $user = User::where('email', $admin->email)->first();
+                if(is_null($user)) continue;
+                $userId = $user->id;
+                $account = LiveAccount::where('user_id', $userId)->pluck('login');
                 if (count($account)) {
                     $data = [
                         'Account' => $account[0],
