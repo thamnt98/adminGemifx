@@ -136,7 +136,9 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
         }
         $commission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission']);
         $commission = array_values($commission->first()->toArray());
-        $staffCommission = array_values($staffCommission->first()->toArray());
+        if (count($staffCommission)){
+            $staffCommission = array_values($staffCommission->first()->toArray());
+        }
         if ($search) {
             $admin = Admin::where('ib_id', trim($search))->first();
             if (!$admin)
