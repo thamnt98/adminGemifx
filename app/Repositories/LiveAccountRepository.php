@@ -130,12 +130,13 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function getLoginsByAdmin($admin, $search = null)
     {
+        $staffCommission = [];
         if(is_null($admin->admin_id)) {
             $staffCommission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission', 'staff_us_stock_commission', 'staff_forex_commission', 'staff_other_commission']);
         }
         $commission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission']);
         $commission = array_values($commission->first()->toArray());
-        $staffCommission = array_values($staffCommission->first()  ->toArray());
+        $staffCommission = array_values($staffCommission->first()->toArray());
         if ($search) {
             $admin = Admin::where('ib_id', trim($search))->first();
             if (!$admin)
