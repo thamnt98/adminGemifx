@@ -60,12 +60,12 @@ class TransferCommisionToIbCommand extends Command
                 $userId = $user->id;
                 $account = LiveAccount::where('user_id', $userId)->pluck('login');
                 if (count($account)) {
-                    $data = [
+                    $transfer = [
                         'Account' => $account[0],
                         'Amount' => $commission,
                         'Comment' => 'transfer commission'
                     ];
-                    $transfer = MT5Helper::makeDeposit($data, false);
+                    MT5Helper::makeDeposit($transfer, false);
                     Log::channel('transfer_commission')->info('From: ' . $data['StartTm'] . ' to: ' . $data['EndTm'] .  ' Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
                 }
             }
