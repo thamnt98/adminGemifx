@@ -53,6 +53,8 @@ class TransferCommisionToIbCommand extends Command
         foreach ($admins as $key => $admin) {
             if (in_array($admin->ib_id, ['919064', '265067'])){
                 $data['StartTm'] = date('Y-m-d H:i:s', strtotime('2021-07-15 20:30:00'));
+            }else{
+                $data['StartTm'] = date('Y-m-d H:i:s', strtotime('2021-07-14 21:30:00'));
             }
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = MT5Helper::getOpenedTrades($logins, $data);
