@@ -132,7 +132,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
     {
         $staffCommission = [];
         if(is_null($admin->admin_id)) {
-            $staffCommission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission', 'staff_us_stock_commission', 'staff_forex_commission', 'staff_other_commission']);
+            $staffCommission = AdminCommission::where('admin_id', $admin->id)->get(['staff_us_stock_commission', 'staff_forex_commission', 'staff_other_commission']);
         }
         $commission = AdminCommission::where('admin_id', $admin->id)->get(['us_stock_commission', 'forex_commission', 'other_commission']);
         $commission = array_values($commission->first()->toArray());
