@@ -49,14 +49,17 @@ class TransferCommisionToIbCommand extends Command
     {
         $admins = Admin::where('role', config('role.staff'))->get();
         $data['EndTm'] = date('Y-m-d H:i:s', strtotime('now'));
-        $data['StartTm']  = date('Y-m-d H:i:s', strtotime('2021-07-01 00:00:00'));
+        $data['StartTm'] = date('Y-m-d H:i:s', strtotime('2021-07-14 21:30:00'));
         foreach ($admins as $key => $admin) {
+            if (in_array($admin->ib_id, ['919064', '265067'])){
+                $data['StartTm'] = date('Y-m-d H:i:s', strtotime('2021-07-15 20:30:00'));
+            }
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = MT5Helper::getOpenedTrades($logins, $data);
             $commission = $result[2];
             if ($commission) {
                 $user = User::where('email', $admin->email)->first();
-                if(is_null($user)) continue;
+                if (is_null($user)) continue;
                 $userId = $user->id;
                 $account = LiveAccount::where('user_id', $userId)->pluck('login');
                 if (count($account)) {
@@ -66,7 +69,7 @@ class TransferCommisionToIbCommand extends Command
                         'Comment' => 'transfer commission'
                     ];
                     MT5Helper::makeDeposit($transfer, false);
-                    Log::channel('transfer_commission')->info('From: ' . $data['StartTm'] . ' to: ' . $data['EndTm'] .  ' Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' .  $commission);
+                    Log::channel('transfer_commission')->info('From: ' . $data['StartTm'] . ' to: ' . $data['EndTm'] . ' Ib id: ' . $admin->ib_id . '------------' . 'Login: ' . $account[0] . '----------------' . 'Amount: ' . $commission);
                 }
             }
         }
