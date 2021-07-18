@@ -71,15 +71,15 @@ class HandleRegisterController extends Controller
             $data['application_type'] = 1;
             $this->userRepository->create($data);
             $adminCommission['admin_id'] = $admin->id;
-            $adminCommission['us_stock_commission'] = '0.1';
+            $adminCommission['us_stock_commission'] = '0.05';
             $adminCommission['forex_commission'] = '3';
-            $adminCommission['other_commission'] = '4';
+            $adminCommission['other_commission'] = '3';
             $roleName = 'standardStaff';
             if(is_null($data['admin_id'])){
                 $roleName = 'standardManager';
-                $adminCommission['staff_us_stock_commission'] = '0.33';
+                $adminCommission['staff_us_stock_commission'] = '0.02';
                 $adminCommission['staff_forex_commission'] = '1';
-                $adminCommission['staff_other_commission'] = '1.33';
+                $adminCommission['staff_other_commission'] = '1';
             }
             AdminCommission::insert($adminCommission);
             $this->permissionRepository->syncPermissionForUserByRoleName($admin, $roleName);
