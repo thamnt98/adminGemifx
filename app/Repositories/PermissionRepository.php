@@ -50,6 +50,9 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
         if ($mode == 1) {
             return Permission::whereNotIn('name', ['agent.link', 'user.link'])->get();
         }
+        if($mode == 4){
+            return Permission::whereNotIn('name', ['agent.link', 'user.link', 'role.*', 'role.show', 'role.create', 'role.edit', 'role.delete'])->get();
+        }
         $permissions = ['user.show', 'user.link', 'account.show', 'deposit.show', 'withdrawal.show', 'report.*'];
         if ($mode == 2) {
             $permissions = array_merge($permissions, ['agent.link', 'agent.show']);
@@ -130,7 +133,7 @@ class PermissionRepository extends EloquentBaseRepository implements RepositoryI
                 $i++;
             }
         }
-        return $html;
+            return $html;
     }
 
     /**

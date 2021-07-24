@@ -48,8 +48,8 @@ class TransferCommisionToIbCommand extends Command
     public function handle()
     {
         $admins = Admin::where('role', config('role.staff'))->get();
-        $data['StartTm'] = date('Y-m-d H:i:s',  strtotime('-1 days', time()));
-        $data['EndTm'] = date('Y-m-d H:i:s');
+        $data['StartTm'] = '2021-07-19 00:00:00';
+        $data['EndTm'] = '2021-07-23 23:59:59';
         foreach ($admins as $key => $admin) {
             $logins = $this->liveAccountRepository->getLoginsByAdmin($admin);
             $result = MT5Helper::getOpenedTrades($logins, $data);

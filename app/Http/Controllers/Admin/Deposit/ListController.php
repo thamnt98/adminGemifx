@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Repositories\DepositRepository;
 use Illuminate\Http\Request;
 
-class ListController extends Controller
+class
+ListController extends Controller
 {
     /**
      * @var DepositRepository
