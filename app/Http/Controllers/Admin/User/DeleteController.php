@@ -46,9 +46,9 @@ class DeleteController extends Controller
         try {
             DB::beginTransaction();
             $this->userRepository->delete($id);
-            $message = $this->liveAccountRepository->deleteLiveAccountByUserId($id);
-            if (!empty($message)) {
-                return redirect()->back()->with('error', $message);
+            $result = $this->liveAccountRepository->deleteLiveAccountByUserId($id);
+            if (!$result) {
+                return redirect()->back()->with('error', 'Bạn đã xóa thất bại ');
             }
             $this->withdrawalRepository->deleteWithdrawalByUserId($id);
             $this->depositRepository->deleteDepositByUserId($id);

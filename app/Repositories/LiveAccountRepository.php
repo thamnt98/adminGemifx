@@ -29,9 +29,7 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
 
     public function deleteLiveAccountByUserId($userId)
     {
-        $logins = $this->where('user_id', $userId)->pluck('login')->toArray();
-        $this->where('user_id', $userId)->delete();
-        return $message;
+        return $this->where('user_id', $userId)->delete();
     }
 
     public function deleteByLogin($login)
