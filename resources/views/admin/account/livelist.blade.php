@@ -68,8 +68,8 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $account->login }}</td>
                         <td>{{ $account->ib_id }}</td>
-                        <td>{{ $account->user->email }}</td>
-                        <td>{{ $account->user->full_name }}</td>
+                        <td>{{ $account->user ? $account->user->email : "Khách hàng này đã bị xóa " }}</td>
+                        <td>{{ $account->user ? $account->user->full_name : "Khách hàng này đã bị xóa " }}</td>
                         <td>{{ $account->group }}</td>
                         <td>{{ $account->leverage }}</td>
                         <td style="width: 14%">
