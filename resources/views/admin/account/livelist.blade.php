@@ -1,4 +1,8 @@
 @extends('layouts.base')
+@section('css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+@endsection
 
 @section('content')
 
@@ -49,12 +53,16 @@
             <div class="col-md-2"></div>
         </div>
         <div class="table-responsive" style="margin-top: 70px">
-            <table class="table table-striped" data-pagination="true">
+            <table class="table table-striped"  id="example" data-pagination="true">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Login</th>
                     <th scope="col">IB ID</th>
+                    @if(\Illuminate\Support\Facades\Auth::user()->hasAnyRole('admin', 'superAdmin'))
+                        <th scope="col">Balance</th>
+                        <th scope="col">Equity</th>
+                    @endif
                     <th scope="col">Email</th>
                     <th scope="col">Full Name</th>
                     <th scope="col">Group</th>
@@ -68,11 +76,15 @@
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $account->login }}</td>
                         <td>{{ $account->ib_id }}</td>
+                        @if(\Illuminate\Support\Facades\Auth::user()->hasAnyRole('admin', 'superAdmin'))
+                            <td>{{ $account->mt5->oInfo->Balance }}</td>
+                            <td>{{ $account->mt5->oAccount->Equity }}</td>
+                        @endif
                         <td>{{ $account->user ? $account->user->email : "Khách hàng này đã bị xóa " }}</td>
                         <td>{{ $account->user ? $account->user->full_name : "Khách hàng này đã bị xóa " }}</td>
                         <td>{{ $account->group }}</td>
                         <td>{{ $account->leverage }}</td>
-                        <td style="width: 14%">
+                        <td style="width: 30px">
                             <a href="{{ route('account.live.detail', $account->id) }}"
                                class="btn btn-sm btn-success bold uppercase" title="Edit"><i class="fa fa-edit"></i>
                             </a>
@@ -87,5 +99,20 @@
     </div>
 @endsection
 @section('javascript')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}" ></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable(
+                {
+                    searching:false,
+                    columnDefs : [
+                        { targets: 0, sortable: false},
+                    ],
+                    order: [[ 1, "asc" ]]
+                }
+            );
+        } );
+    </script>
 @endsection

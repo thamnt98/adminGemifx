@@ -145,9 +145,15 @@ class MT5Helper
         $lots = 0;
         $commission = 0;
         $trades = [];
+        $deposit = 0;
+        $withdrawal = 0;
+        $profit = 0;
         foreach ($logins as $login => $commissionValue) {
             $data['Account'] = $login;
-            $tradeByLogin = self::getClosedAll($data);
+            $result = self::getClosedAll($data);
+            $tradeByLogin = $result->lstCLOSE;
+            $deposit += $result->Depoist;
+            $withdrawal += $result->Withdraw;
             $trades = array_merge($trades, $tradeByLogin);
             foreach ($tradeByLogin as $key => $trade) {
                 if (strtotime($trade->Close_Time) - strtotime($trade->Open_Time) > 180) {
@@ -163,7 +169,7 @@ class MT5Helper
                 }
             }
         }
-        return [$trades, $lots, $commission];
+        return [$trades, $lots, $commission, $profit, $withdrawal, $deposit];
     }
 
     public static function getClosedAll($data)
@@ -176,10 +182,20 @@ class MT5Helper
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
-        return $result->lstCLOSE;
+        return $result;
     }
 
     public static function getMT5Connect(){
         return MT5Connect::first();
+    }
+
+    public static function changeInvestorPassword($data)
+    {
+        $mt5 = self::getMT5Connect();
+        $endpoint = self::$mt5Url . 'CHANGE_INVESTOR_PASSWORD?Session=' . $mt5->session .  '&ManagerIndex=' . $mt5->manager_index .'&Account=' . $data['login'] . '&Password=' . $data['password'];
+        $client = new Client();
+        $response = $client->request('GET', $endpoint);
+        $result = json_decode($response->getBody());
+        return $result;
     }
 }
