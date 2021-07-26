@@ -15,9 +15,9 @@
                 <strong>{{ $message }}</strong>
             </div>
         @endif
-        @if($isAdmin)
-            <a style="margin-bottom: 40px" href="{{ route('account.live.create', 0) }}" class="btn btn-info">Thêm mới</a>
-        @endif
+            @can('account.create')
+                <a style="margin-bottom: 40px" href="{{ route('account.live.create', 0) }}" class="btn btn-info">Thêm mới</a>
+            @endcan
         <div class="form-search row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
