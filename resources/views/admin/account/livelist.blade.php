@@ -95,7 +95,6 @@
                 </tbody>
             </table>
         </div>
-        {!! $accountList->appends(request()->input())->links() !!}
     </div>
 @endsection
 @section('javascript')
