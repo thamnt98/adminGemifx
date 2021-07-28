@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin\Email;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AdminRepository;
