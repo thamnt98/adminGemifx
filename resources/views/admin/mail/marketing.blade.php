@@ -64,6 +64,11 @@
                                     <option value="{{ $c3->email }}">{{ $c3->email }}</option>
                                 @endforeach
                             </optgroup>
+                            <optgroup label="Market Account">
+                                @foreach($users['guests'] as $c4)
+                                    <option value="{{ $c4->email }}">{{ $c4->email }}</option>
+                                @endforeach
+                            </optgroup>
                         </select>
                         <div class="errors errors-users"></div>
                     </div>

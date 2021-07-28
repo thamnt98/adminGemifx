@@ -31,6 +31,7 @@ class EmailController extends Controller
         $users = $this->userRepository->getCustomersHasMT4AccountOrNo();
         $agents = $this->adminRepository->getAgentList();
         $users['agents'] = $agents;
+        $users['guests'] = DB::connection('markjnee')->select('select email from users');
         return view('admin.mail.marketing', compact('templates', 'users'));
     }
 }
