@@ -25,7 +25,8 @@ class User extends Model
         'copy_of_id',
         'proof_of_address',
         'addtional_file',
-        'ib_id'
+        'ib_id',
+        'check_active'
     ];
 
     public function getFullNameAttribute()

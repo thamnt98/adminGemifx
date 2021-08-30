@@ -1,6 +1,14 @@
 @extends('layouts.base')
 
 @section('content')
+<style>
+    .table_td{
+        display: flex;
+    }
+    .table_td a{
+        margin-right: 5px;
+    }
+</style>
     <div class="container-fluid">
         @if ($message = Session::get('error'))
             <div class="alert alert-danger alert-block">
@@ -53,7 +61,8 @@
                     <th scope="col">Address</th>
                     <th scope="col">Country</th>
                     <th scope="col">Copy_of_id</th>
-                    <th scope="col"></th>
+                    <th scope="col">Verify profile</th>
+                    <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,14 +78,31 @@
                         <td>
                             <img style="height: 75px" src="{{ $user->copy_of_id }}">
                         </td>
-                        <td style="width: 14%">
+                        <td>
+                            @if($user->check_active == 1)
+                                <span style="color: #2eb85c; font-weight: bold">Confirm </span>
+                            @else
+                                <span style="color: black; font-weight: bold">Unconfirmed</span>
+                            @endif
+                        </td>
+                        <td class="table_td">
                             <a href="{{ route('user.detail', $user->id) }}"
                                class="btn btn-sm btn-success bold uppercase"
                                title="Edit"><i class="fa fa-edit"></i> </a>
                             @can('user.delete')
                                 <a style="color:white" class="btn btn-sm btn-danger bold uppercase btn-delete-user"
                                    data-toggle="modal" data-target="#deleteUser" data-id="{{ $user->id }}"
+                                   target="delete"
                                    data-name="{{ $user->full_name }}"><i class="fa fa-trash-o" aria-hidden="true"></i> </a>
+                                <a style="color:white" class="btn btn-sm btn-primary bold uppercase btn-active-user"
+                                    title="Active"
+                                   data-toggle="modal" data-target="#activeUser" data-id="{{ $user->id }}"
+                                   data-name="{{ $user->full_name }}">Approved </a>
+                                <a style="color:white" class="btn btn-sm btn-warning bold uppercase btn-inactive-user"
+                                    title="Inactive"
+                                    target="inactive"
+                                   data-toggle="modal" data-target="#inActiveUser" data-id="{{ $user->id }}"
+                                   data-name="{{ $user->full_name }}">Reject </a>
                             @endcan
                         </td>
                     </tr>
@@ -97,7 +123,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body"></div>
+                <div class="modal-body modal-body-delete"></div>
                 <div class="modal-footer">
                     <form method="post" id="delete-user">
                         @csrf
@@ -108,18 +134,83 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="activeUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+   <div class="modal-dialog" role="document">
+       <div class="modal-content">
+           <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Xác thực người dùng</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body modal-body-active"></div>
+           <div class="modal-footer">
+               <form method="post" id="active-user">
+                   @csrf
+                   <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+                   <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Xác thực</a>
+               </form>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="inActiveUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+   <div class="modal-content">
+       <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLabel">Hủy xác thực người dùng</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+           </button>
+       </div>
+       <div class="modal-body modal-body-inactive"></div>
+       <div class="modal-footer">
+           <form method="post" id="inactive-user">
+               @csrf
+               <a href="#" class="btn btn-secondary" data-dismiss="modal">Hủy</a>
+               <a href="#" onclick="$(this).closest('form').submit();" class="btn btn-primary">Hủy xác thực</a>
+           </form>
+       </div>
+   </div>
+</div>
+</div>
 @endsection
 @section('javascript')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script>
         $('.btn-delete-user').on('click', function () {
+            console.log('abc');
             let currentUrl = window.location.origin
             let id = $(this).attr('data-id');
             let name = $(this).attr('data-name');
-            $('.modal-body').html("Bạn có muốn xóa khách hàng " + name +
+            $('.modal-body-delete').html("Bạn có muốn xóa khách hàng " + name +
                 " cùng với tất cả tài khoản của họ không ?");
             let redirectUrl = currentUrl + '/admin/user/delete/' + id;
             $("#delete-user").attr('action', redirectUrl);
+        })
+
+        $('.btn-active-user').on('click', function () {
+            let currentUrl = window.location.origin
+            let id = $(this).attr('data-id');
+            let name = $(this).attr('data-name');
+            $('.modal-body-active').html("Bạn có muốn đồng ý xác thực " + name +
+                " cùng với tất cả tài khoản của họ không ?");
+            let redirectUrl = currentUrl + '/admin/user/active/' + id;
+            $("#active-user").attr('action', redirectUrl);
+        })
+
+        $('.btn-inactive-user').on('click', function () {
+            let currentUrl = window.location.origin
+            let id = $(this).attr('data-id');
+            let name = $(this).attr('data-name');
+            $('.modal-body-inactive').html("Bạn có muốn đồng ý hủy xác thực " + name +
+                " cùng với tất cả tài khoản của họ không ?");
+            let redirectUrl = currentUrl + '/admin/user/inactive/' + id;
+            $("#inactive-user").attr('action', redirectUrl);
         })
 
     </script>

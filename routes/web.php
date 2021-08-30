@@ -43,6 +43,8 @@ Route::group([
         Route::get('/detail/{id}', 'DetailController@main')->name('user.detail')->middleware('permission:user.show|all.user.show');
         Route::post('/update/{id}', 'UpdateController@main')->name('user.update')->middleware('permission:user.edit');
         Route::post('/delete/{id}', 'DeleteController@main')->name('user.delete')->middleware('permission:user.edit');
+        Route::post('/active/{id}', 'DeleteController@active')->name('user.active')->middleware('permission:user.edit');
+        Route::post('/inactive/{id}', 'DeleteController@inactive')->name('user.inactive')->middleware('permission:user.edit');
     });
     Route::group([
         'namespace' => 'Account',

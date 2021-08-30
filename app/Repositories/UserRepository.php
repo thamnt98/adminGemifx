@@ -120,7 +120,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
                     ->distinct('live_accounts.user_id');
             }
         }
-        return $query->orderBy('users.created_at', 'desc')->paginate(20, [
+        return $query->orderBy('users.created_at', 'desc', 'users.check_active', 'asc')->paginate(20, [
             'users.last_name',
             'users.first_name',
             'users.id',
@@ -130,6 +130,7 @@ class UserRepository extends EloquentBaseRepository implements RepositoryInterfa
             'users.copy_of_id',
             'users.address',
             'users.country',
+            'users.check_active'
         ]);
     }
 

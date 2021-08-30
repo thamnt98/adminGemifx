@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class DeleteController extends Controller
 {
+    const ACTIVE = 1;
+    const INACTIVE = 0;
     /**
      * @var UserRepository
      */
@@ -53,6 +55,32 @@ class DeleteController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Xóa thất bại');
+        }
+    }
+
+    public function active($id)
+    {
+        try {
+            DB::beginTransaction();
+            $this->userRepository->update(['check_active' => self::ACTIVE], $id);
+            DB::commit();
+            return redirect()->back()->with('success', 'Bạn đã xác thực hồ sơ thành công');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Xác thực hồ sơ thất bại');
+        }
+    }
+
+    public function inactive($id)
+    {
+        try {
+            DB::beginTransaction();
+            $this->userRepository->update(['check_active' => self::INACTIVE], $id);
+            DB::commit();
+            return redirect()->back()->with('success', 'Bạn đã hủy xác thực thành công');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Hủy xác thực thất bại');
         }
     }
 }
