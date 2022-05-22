@@ -11,7 +11,7 @@ use App\Repositories\LiveAccountRepository;
 
 class MT5Helper
 {
-    protected static $mt5Url = 'http://79.143.176.19:17014/ManagerAPIFOREX/';
+    protected static $mt5Url = 'http://176.9.76.135:8261/ForexManagerAPI/';
 
     protected static $session = 'sfkja3eipso3';
     protected static $managerIndex = '101';
