@@ -27,6 +27,7 @@ class SendEmailMarketingController extends Controller
                 $message = 'Gửi email thành công';
             }
         } catch (\Exception $e) {
+            dd($e);
             $status = 417;
             $message = 'Gửi email thất bại ';
         }
