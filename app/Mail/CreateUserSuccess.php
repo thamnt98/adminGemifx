@@ -44,7 +44,7 @@ class CreateUserSuccess extends Mailable
         ->with([
             'firstName' => $this->user['first_name'],
             'lastName' => $this->user['last_name'],
-            'url' => 'https://accounts.gemifx.com/password/reset'. '?token=' . $this->token .
+            'url' => 'https://mygemi.com/password/reset'. '?token=' . $this->token .
                 '&email=' . urlencode($this->user['email'])
         ]);
     }

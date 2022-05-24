@@ -160,9 +160,9 @@
 											style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:60px; padding-bottom:60px; padding-right: 25px; padding-left: 25px;">
 											<div align="center" class="img-container center fixedwidth"
 												style="padding-right: 0px;padding-left: 0px;"><a
-													href="https://accounts.gemifx.com/" style="outline:none"
+													href="https://mygemi.com/" style="outline:none"
 													tabindex="-1" target="_blank"> <img align="center"
-														src="https://accounts.gemifx.com/image/logo.png"
+														src="https://mygemi.com/image/logo.png"
 														style="text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 166px; display: block;"
 														title="Alternate text" width="166" /></a>
 											</div>
