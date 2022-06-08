@@ -29,9 +29,20 @@ class MT5Helper
         $this->liveAccountRepository = $liveAccountRepository;
     }
 
+    public static function getAllLogins()
+    {
+        $mt5 = self::getMT5Connect();
+        $endpoint = $mt5->mt5_url . 'GET_USER_ALL?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index. '&Agent=0';
+        $client = new Client();
+        $response = $client->request('GET', $endpoint);
+        $result = json_decode($response->getBody(), true);
+        return $result;
+    }
+
     public static function openAccount($data)
     {
-        $endpoint = self::$mt5Url . 'ADD_MT_USER';
+        $mt5 = self::getMT5Connect();
+        $endpoint = $mt5->mt5_url . 'ADD_MT_USER';
         $client = new Client([
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -50,7 +61,7 @@ class MT5Helper
     public static function updateAccount($type, $login, $data)
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . $type . '?Session=' .$mt5->session . '&ManagerIndex=' . $mt5->manager_index . '&Account=' . $login;
+        $endpoint = $mt5->mt5_url . $type . '?Session=' .$mt5->session . '&ManagerIndex=' . $mt5->manager_index . '&Account=' . $login;
         foreach ($data as $key => $value) {
             $endpoint = $endpoint . '&' . $key . '=' . $value;
         }
@@ -63,7 +74,7 @@ class MT5Helper
     public static function getGroups()
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'GET_GROUPS?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
+        $endpoint = $mt5->mt5_url . 'GET_GROUPS?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
@@ -72,13 +83,13 @@ class MT5Helper
 
     private static function connectMT5()
     {
-        // $endpoint = self::$mt5Url . 'LOGIN_SESSION?Email=startingmt5broker@gmail.com&Password=rasa8r&Source=1';
+        // $endpoint = $mt5->mt5_url . 'LOGIN_SESSION?Email=startingmt5broker@gmail.com&Password=rasa8r&Source=1';
         // $client = new Client();
         // $response = $client->request('GET', $endpoint);
         // $result = json_decode($response->getBody());
         // $mt5->session =  $result->Session;
 
-        // $endpoint = self::$mt5Url . 'INITIAL_ADD_MANAGER';
+        // $endpoint = $mt5->mt5_url . 'INITIAL_ADD_MANAGER';
         // $client = new Client([
         //     'headers' => [
         //         'Content-Type' => 'application/json',
@@ -105,7 +116,7 @@ class MT5Helper
 
     public static function getAccountInfo($login){
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'GET_USER_INFO?Session=' . $mt5->session. '&ManagerIndex=' .$mt5->manager_index . '&Account=' . $login;
+        $endpoint = $mt5->mt5_url . 'GET_USER_INFO?Session=' . $mt5->session. '&ManagerIndex=' .$mt5->manager_index . '&Account=' . $login;
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
@@ -115,7 +126,7 @@ class MT5Helper
     public static function makeDeposit($data, $isReturn = true)
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'MAKE_DEPOIST_BALANCE?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
+        $endpoint = $mt5->mt5_url . 'MAKE_DEPOIST_BALANCE?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
         foreach ($data as $key => $value) {
             $endpoint = $endpoint . '&' . $key . '=' . $value;
         }
@@ -130,7 +141,7 @@ class MT5Helper
     public static function makeWithdrawal($data)
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'MAKE_WITHDRAW_BALANCE?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
+        $endpoint = $mt5->mt5_url . 'MAKE_WITHDRAW_BALANCE?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
         foreach ($data as $key => $value) {
             $endpoint = $endpoint . '&' . $key . '=' . $value;
         }
@@ -175,7 +186,7 @@ class MT5Helper
     public static function getClosedAll($data)
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'GET_CLOSED_ALL?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
+        $endpoint = $mt5->mt5_url . 'GET_CLOSED_ALL?Session=' . $mt5->session . '&ManagerIndex=' . $mt5->manager_index;
         foreach ($data as $key => $value) {
             $endpoint = $endpoint . '&' . $key . '=' . $value;
         }
@@ -192,7 +203,7 @@ class MT5Helper
     public static function changeInvestorPassword($data)
     {
         $mt5 = self::getMT5Connect();
-        $endpoint = self::$mt5Url . 'CHANGE_INVESTOR_PASSWORD?Session=' . $mt5->session .  '&ManagerIndex=' . $mt5->manager_index .'&Account=' . $data['login'] . '&Password=' . $data['password'];
+        $endpoint = $mt5->mt5_url . 'CHANGE_INVESTOR_PASSWORD?Session=' . $mt5->session .  '&ManagerIndex=' . $mt5->manager_index .'&Account=' . $data['login'] . '&Password=' . $data['password'];
         $client = new Client();
         $response = $client->request('GET', $endpoint);
         $result = json_decode($response->getBody());
