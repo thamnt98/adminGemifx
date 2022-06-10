@@ -123,6 +123,8 @@ class LiveAccountRepository extends EloquentBaseRepository implements Repository
                 'live_accounts.leverage',
                 'live_accounts.ib_id',
                 'live_accounts.user_id',
+                'live_accounts.balance',
+                'live_accounts.equity'
             ]);
         }
         return $query->get('live_accounts.login');

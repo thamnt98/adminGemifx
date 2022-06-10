@@ -45,9 +45,6 @@ class LiveListController extends Controller
     {
         $data = $request->except('_token');
         $accountList = $this->liveAccountRepository->getAccountListBySearch($data);
-        $accountList->map(function($account){
-            return $account['mt5'] = MT5Helper::getAccountInfo($account->login);
-        });
         $isAdmin = Auth::user()->role == config('role.admin');
         return view('admin.account.livelist', compact('accountList', 'data', 'isAdmin'));
     }

@@ -13,7 +13,9 @@ class LiveAccount extends Model
         'leverage',
         'login',
         'phone_number',
-        'ib_id'
+        'ib_id',
+        'balance',
+        'equity'
     ];
 
     use SoftDeletes;
