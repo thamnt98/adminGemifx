@@ -24,6 +24,7 @@ class GetTradeListController extends Controller
 
     public function main(Request $request)
     {
+        return redirect()->route('dashboard');
         $closeTime = $request->close_time;
         $ibId = $request->ib_id;
         $login = $request->login;
